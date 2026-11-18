@@ -1,0 +1,58 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "NexoShop Reference NestJS — Orders & Outbox API",
+    "version": "1.0.0",
+    "description": "Contrato OpenAPI 3.1 propietario del módulo orders (cero carpeta contracts/ global)."
+  },
+  "paths": {
+    "/v1/orders": {
+      "post": {
+        "operationId": "placeOrder",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string", "minLength": 8 }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["tenant_id", "sku", "quantity"],
+                "properties": {
+                  "tenant_id": { "type": "string" },
+                  "sku": { "type": "string" },
+                  "quantity": { "type": "integer", "minimum": 1 }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Orden confirmada atómicamente junto con registro Outbox",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["order_id", "status", "total_cents", "currency"],
+                  "properties": {
+                    "order_id": { "type": "string", "format": "uuid" },
+                    "status": { "type": "string" },
+                    "total_cents": { "type": "integer" },
+                    "currency": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "application": "arqpixel-academy",
+  "version": "1.7.0",
+  "compatibility_schema_version": 1,
+  "environment": "local-verified-workspace",
+  "secrets_detected": false,
+  "pii_detected": false,
+  "overall_local_gate_status": "PASS",
+  "gates": {
+    "typecheck_and_build": "PASS",
+    "bundle_budget": "PASS",
+    "csp_zero_unsafe_inline": "PASS",
+    "workflow_sha_pinning_and_pnpm_policy": "PASS",
+    "pnpm_lockfile_present": "PASS",
+    "secret_and_symlink_scan": "PASS",
+    "sbom_cyclonedx_1_5": "PASS",
+    "curriculum_and_senior_dod_manifest": "PASS",
+    "biome_2_6_3_ci": "PASS",
+    "playwright_1_64_1_http_e2e_and_axe_wcag": "PASS",
+    "python_legacy_browser_e2e_runner": "BLOCKED",
+    "external_github_hosted_runner_slsa": "NOT_RUN",
+    "external_cloud_cdn_tls_deployment": "NOT_RUN",
+    "manual_nvda_voiceover_assistive_session": "NOT_RUN"
+  },
+  "bundle_metrics": {
+    "jsModuleCount": 53,
+    "totalJsRawBytes": 914905,
+    "totalJsGzipBytes": 284395,
+    "lazyVendorRawBytes": 2133699,
+    "lazyVendorGzipBytes": 421591,
+    "largestJsChunk": {
+      "file": "app.js",
+      "bytes": 142222
+    },
+    "cssRawBytes": 81595,
+    "cssGzipBytes": 18620,
+    "arquibotSpritesChecked": 16
+  },
+  "artifact_sha256": {
+    "dist/index.html": "02e3b2026f2ae364f045af66d1d37fc7ac33e9c2756b14a76dafd981b8a00704",
+    "dist/app.js": "8d8f706e9d25b4eaf0a6fecf622257a5980897e1cb643d3a13ba8c93bf4e0958",
+    "dist/styles.css": "8d195d643bd09fc59bb1e80227e117a49287f0abde5488bf025da129202e347c",
+    "dist/_headers": "283e01a6b3d20a6154265735d874e2c73c5a73701ea656706d4ab2c96662dc70",
+    "security/sbom.cdx.json": "0ccd8716593494a82bb525ba2d5f4e004c70d530c1dfa3b807476ba9f6070035",
+    "compatibility.json": "88f29955f4ca3343c84cf323d9c53f7d707894bc114ffe21276b5299df88e40c"
+  },
+  "honest_scope_notes": [
+    "Static/unit/BDD/contract/CSP/Biome/Playwright HTTP E2E + axe-core WCAG 2.2 AA gates reflect real local command executions.",
+    "External GitHub Actions cloud runners, external CDN TLS headers, and human assistive screen-reader sign-off remain NOT_RUN in offline/local build."
+  ]
+}

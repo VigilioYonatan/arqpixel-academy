@@ -1,0 +1,23 @@
+{
+  "name": "@arqpixel/nexoshop-reference-nestjs",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Repositorio ejecutable de referencia NexoShop (Arquitectura Hexagonal / DDD Pragmático / Outbox / Idempotencia) alineado con Vigilio 2026.",
+  "license": "MIT",
+  "scripts": {
+    "typecheck": "node ../../tools/typescript/bin/tsc -p tsconfig.json --noEmit",
+    "build": "node ../../tools/typescript/bin/tsc -p tsconfig.json",
+    "test": "npm run build && node --test tests/*.test.mjs"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^11.0.0",
+    "drizzle-orm": "^0.44.0",
+    "zod": "^4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@nestjs/common": { "optional": true },
+    "drizzle-orm": { "optional": true },
+    "zod": { "optional": true }
+  }
+}

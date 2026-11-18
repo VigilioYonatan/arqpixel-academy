@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "consumer": {
+    "name": "arqpixel-academy",
+    "version": "1.7.0",
+    "profile": "current-web-static-local-first"
+  },
+  "vigilio_baseline": {
+    "audit_date": "2026-11-01",
+    "catalog_source": "vigilio-docs@2026-11-01",
+    "skills_source": "platform-actions/skills@0.8.0",
+    "pinned_dev_toolchain": {
+      "typescript_vendored": "5.8.3",
+      "@biomejs/biome": "2.6.3",
+      "@playwright/test": "1.64.1",
+      "@axe-core/playwright": "4.12.1",
+      "three": "0.187.0",
+      "pnpm": "12.14.0"
+    }
+  },
+  "contracts": {
+    "global_contracts_folder_prohibited": true,
+    "storage_keys_backward_compatible": [
+      "arqpixel-progress-v1",
+      "arqpixel-minigames-v1",
+      "arqpixel-projects-v1",
+      "arqpixel-settings-v1",
+      "arqpixel-senior-suite-v2-*"
+    ],
+    "dossier_schema_version": 2,
+    "backup_schema_version": 2
+  }
+}

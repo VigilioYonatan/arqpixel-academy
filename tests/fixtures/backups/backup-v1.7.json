@@ -1,0 +1,42 @@
+{
+  "app": "ARQPIXEL",
+  "version": 1,
+  "progress": {
+    "done": ["B01", "A04", "A05"],
+    "answers": { "B01": 1, "A04": 0, "A05": 1 },
+    "missions": {
+      "S09": {
+        "score": 100,
+        "seed": 0,
+        "choice": 0,
+        "adr": "ADR v1.7 con Outbox transaccional e Idempotent Consumer.",
+        "completedAt": "2026-09-12T15:00:00.000Z",
+        "awarded": true
+      }
+    },
+    "notes": { "A05": "Evitar dual-write" },
+    "xp": 230,
+    "theme": "light",
+    "seniorMode": true,
+    "lastVisit": "2026-09-12T15:10:00.000Z"
+  },
+  "seniorSuites": {
+    "S09-0": {
+      "diagnosis": 1,
+      "architecture": ["Idempotencia", "Cola de eventos"],
+      "relations": [["Idempotencia", "Cola de eventos"]],
+      "decision": "Borrador v1.7 completo con 6 motores + STRIDE + DevSecOps.",
+      "incident": 0,
+      "capacity": 10800,
+      "reviewChoice": 2,
+      "impactChoice": 0,
+      "devsecopsControls": ["threat", "contracts"],
+      "threatChoice": 0,
+      "updated": "2026-09-12T15:08:00.000Z"
+    }
+  },
+  "miniGames": {
+    "best": { "tetris": 6, "acoplamiento": 5 },
+    "plays": { "tetris": 2, "acoplamiento": 1 }
+  }
+}

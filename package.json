@@ -1,0 +1,43 @@
+{
+  "name": "arqpixel-academy",
+  "private": true,
+  "version": "1.7.0",
+  "type": "module",
+  "packageManager": "pnpm@12.14.0",
+  "description": "Academia interactiva de arquitectura de software con Senior Mode",
+  "scripts": {
+    "build": "node tools/typescript/bin/tsc -p tsconfig.json && node scripts/copy-assets.mjs",
+    "dev": "npm run build && node scripts/serve-dist-with-headers.mjs --port 4173",
+    "serve:dist": "node scripts/serve-dist-with-headers.mjs",
+    "typecheck": "node tools/typescript/bin/tsc -p tsconfig.json --noEmit",
+    "test": "node --test tests/*.test.mjs",
+    "release-check": "node scripts/release-check.mjs",
+    "bundle:budget": "node scripts/check-bundle-budget.mjs",
+    "governance:workflows": "node scripts/check-workflows-governance.mjs",
+    "governance:lockfile": "node scripts/check-toolchain-lockfile.mjs",
+    "governance:polyglot": "node scripts/check-polyglot-architecture.mjs",
+    "governance:dod": "node scripts/check-dod-manifest.mjs",
+    "evidence:operational": "node scripts/write-operational-evidence.mjs",
+    "verify": "npm run devsecops:offline",
+    "security:scan": "node scripts/security-scan.mjs",
+    "security:headers": "node scripts/check-security-headers.mjs",
+    "security:licenses": "node scripts/check-licenses.mjs",
+    "test:security": "node --test tests/security.test.mjs tests/security-headers.test.mjs",
+    "devsecops:offline": "npm run typecheck && npm run build && npm run sbom && npm run bundle:budget && npm run governance:workflows && npm run governance:lockfile && npm run governance:polyglot && npm run governance:dod && npm test && npm run security:scan && npm run security:headers && npm run security:licenses && npm run release-check",
+    "biome:check": "biome ci src scripts tests",
+    "biome:format": "biome format --write src scripts tests",
+    "devsecops:ci": "npm run biome:check && npm run devsecops:offline && npm run test:e2e",
+    "sbom": "node scripts/generate-sbom.mjs",
+    "test:e2e": "playwright test",
+    "test:browser": "python tests/browser-e2e.py"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.12.1",
+    "@biomejs/biome": "2.6.3",
+    "@playwright/test": "1.64.1",
+    "three": "0.187.0"
+  }
+}

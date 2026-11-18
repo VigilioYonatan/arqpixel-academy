@@ -1,0 +1,16 @@
+ARQPIXEL Academy — Self-Hosted Fonts Attribution & License Notice (SIL Open Font License 1.1)
+
+All web fonts shipped in `/fonts/*.woff2` are 100% self-hosted (zero external Google Fonts / CDN requests)
+under the SIL Open Font License, Version 1.1 (OFL-1.1 — https://openfontlicense.org):
+
+1. Silkscreen (`silkscreen-latin.woff2`)
+   Copyright (c) Jason Kottke / Silkscreen Project Authors. Licensed under SIL OFL-1.1.
+
+2. DM Sans (`dm-sans-latin.woff2`, `dm-sans-latin-ext.woff2`)
+   Copyright (c) Colophon Foundry / Google Fonts Authors. Licensed under SIL OFL-1.1.
+
+3. Space Grotesk (`space-grotesk-latin.woff2`, `space-grotesk-latin-ext.woff2`)
+   Copyright (c) Florian Karsten. Licensed under SIL OFL-1.1.
+
+4. JetBrains Mono (`jetbrains-mono-latin.woff2`, `jetbrains-mono-latin-ext.woff2`)
+   Copyright (c) JetBrains s.r.o. Licensed under SIL OFL-1.1.

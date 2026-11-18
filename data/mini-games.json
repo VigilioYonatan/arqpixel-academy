@@ -1,0 +1,437 @@
+[
+  {
+    "id": "tetris",
+    "title": "Arquitectura Tetris",
+    "subtitle": "Ubica responsabilidades donde puedan evolucionar sin acoplar el dominio a detalles técnicos.",
+    "icon": "▥",
+    "tag": "CAPAS / DEPENDENCIAS",
+    "questions": [
+      {
+        "id": "tetris-01",
+        "prompt": "La pantalla muestra la lista de pedidos y permite ordenar columnas. ¿Dónde vive la representación visual?",
+        "options": [
+          "Dominio",
+          "Presentación",
+          "Infraestructura",
+          "Base de datos"
+        ],
+        "correct": 1,
+        "why": "La representación de una vista es responsabilidad de Presentación; los casos de uso exponen datos sin conocer controles visuales.",
+        "hint": "Distingue renderizar una lista de calcular una regla de negocio."
+      },
+      {
+        "id": "tetris-02",
+        "prompt": "¿Dónde colocar la regla «un pedido confirmado no puede cambiar sus líneas»?",
+        "options": [
+          "Dominio",
+          "Presentación",
+          "Infraestructura",
+          "Router HTTP"
+        ],
+        "correct": 0,
+        "why": "Una invariante de negocio debe protegerse en el modelo de dominio; puede comprobarse sin un framework web.",
+        "hint": "La regla seguiría existiendo aunque cambiáramos la UI."
+      },
+      {
+        "id": "tetris-03",
+        "prompt": "¿Dónde se coordina «reservar stock y emitir una orden» sin guardar detalles SQL en la regla?",
+        "options": [
+          "CSS",
+          "Adaptador PostgreSQL",
+          "Aplicación / caso de uso",
+          "Componente React"
+        ],
+        "correct": 2,
+        "why": "El caso de uso orquesta acciones y transacciones; el acceso concreto a datos se resuelve en adaptadores.",
+        "hint": "Una coordinación entre operaciones no es un detalle visual."
+      },
+      {
+        "id": "tetris-04",
+        "prompt": "¿Qué elemento implementa el contrato del repositorio mediante PostgreSQL?",
+        "options": [
+          "Entidad Pedido",
+          "Adaptador de infraestructura",
+          "Bounded Context",
+          "Vista de listado"
+        ],
+        "correct": 1,
+        "why": "La implementación tecnológica del puerto de repositorio es un adaptador de infraestructura.",
+        "hint": "Cambia con el motor de base de datos."
+      },
+      {
+        "id": "tetris-05",
+        "prompt": "¿Dónde declarar el puerto `NotificadorDePedidos` que consume el caso de uso?",
+        "options": [
+          "Junto al cliente SMTP concreto",
+          "En dominio/aplicación según dependencia",
+          "En un script de migración",
+          "Solo en el frontend"
+        ],
+        "correct": 1,
+        "why": "El contrato debe ser propiedad de la capa que lo necesita, no de la implementación externa; su ubicación exacta depende del tipo de abstracción.",
+        "hint": "La dirección de importación importa más que la carpeta."
+      },
+      {
+        "id": "tetris-06",
+        "prompt": "Se cambia de Stripe a otro procesador sin tocar reglas de cobro. ¿Qué parte varía?",
+        "options": [
+          "El dominio de importes",
+          "El adaptador del proveedor",
+          "La invariante de pedido",
+          "Todos los casos de uso"
+        ],
+        "correct": 1,
+        "why": "Un puerto de pagos estable permite sustituir el adaptador de infraestructura, previa validación contractual.",
+        "hint": "Busca la frontera de integración externa."
+      }
+    ]
+  },
+  {
+    "id": "acoplamiento",
+    "title": "Caza del Acoplamiento",
+    "subtitle": "Identifica imports problemáticos, ciclos, dependencia excesiva y acoplamiento accidental.",
+    "icon": "⌁",
+    "tag": "ACOPLAMIENTO",
+    "questions": [
+      {
+        "id": "acoplamiento-01",
+        "prompt": "`domain/Pedido.ts` importa `express.Request`. ¿Qué problema principal hay?",
+        "options": [
+          "Acoplamiento del dominio al framework HTTP",
+          "Mejor encapsulación del dominio",
+          "Patrón Adapter aplicado",
+          "No hay riesgo arquitectónico"
+        ],
+        "correct": 0,
+        "why": "El dominio conoce un detalle de entrega HTTP; conviene traducir entradas en la frontera.",
+        "hint": "El dominio debe poder probarse sin levantar un servidor."
+      },
+      {
+        "id": "acoplamiento-02",
+        "prompt": "A → B, B → C y C → A. ¿Qué detectas?",
+        "options": [
+          "Composición dirigida acíclica",
+          "Ciclo de dependencias",
+          "Alto aislamiento",
+          "Un evento de dominio"
+        ],
+        "correct": 1,
+        "why": "Un ciclo puede bloquear despliegues o pruebas aisladas; identifica módulos y rompe dependencias concretas.",
+        "hint": "Sigue las flechas hasta regresar al origen."
+      },
+      {
+        "id": "acoplamiento-03",
+        "prompt": "Un controlador llama SQL directamente en diez rutas repetidas. ¿Qué revisión priorizas?",
+        "options": [
+          "Más controladores",
+          "Separar caso de uso y puerto de persistencia",
+          "Mover SQL al navegador",
+          "Crear un singleton global"
+        ],
+        "correct": 1,
+        "why": "La repetición de acceso a datos desde rutas multiplica acoplamiento y dificulta pruebas y evolución.",
+        "hint": "¿Qué ocurrirá si cambia el motor de datos?"
+      },
+      {
+        "id": "acoplamiento-04",
+        "prompt": "Dos módulos consumen una interfaz estable que define su contrato, con adaptadores distintos. ¿Cuál es el juicio más razonable?",
+        "options": [
+          "Es un ciclo obligatorio",
+          "Es acoplamiento eliminable siempre",
+          "Puede ser acoplamiento deliberado y controlado",
+          "Siempre requiere microservicios"
+        ],
+        "correct": 2,
+        "why": "Las dependencias no son malas por sí mismas: la estabilidad de contratos y las razones de cambio importan.",
+        "hint": "Evita diagnósticos absolutos sin contexto."
+      },
+      {
+        "id": "acoplamiento-05",
+        "prompt": "Inventario lee tablas privadas de Facturación sin contrato. ¿Qué riesgo principal hay?",
+        "options": [
+          "Acoplamiento por esquema y propiedad de datos",
+          "Solo un problema de CSS",
+          "Obliga a CQRS por definición",
+          "No afecta las migraciones"
+        ],
+        "correct": 0,
+        "why": "Consultar tablas privadas entre contextos compromete autonomía y cambios de esquema; evalúa APIs, eventos o vistas publicadas.",
+        "hint": "¿Quién es dueño de la tabla y su evolución?"
+      },
+      {
+        "id": "acoplamiento-06",
+        "prompt": "Un servicio instancia `new SmtpClient()` en una regla central. ¿Qué mejora preserva la separación?",
+        "options": [
+          "Crear cliente global mutable",
+          "Usar un puerto de notificación e inyectar adaptador",
+          "Poner SMTP en la entidad",
+          "Duplicar código"
+        ],
+        "correct": 1,
+        "why": "La inversión de dependencias permite probar negocio sin servidor SMTP; el puerto expone solo necesidades del consumidor.",
+        "hint": "La dependencia debería apuntar hacia una abstracción estable."
+      }
+    ]
+  },
+  {
+    "id": "patrones",
+    "title": "Patrón Correcto",
+    "subtitle": "Elige un patrón solo cuando resuelve una variación real; a veces la respuesta correcta es ninguno.",
+    "icon": "◇",
+    "tag": "GOF / SOLID",
+    "questions": [
+      {
+        "id": "patrones-01",
+        "prompt": "Tres estrategias de cálculo de tarifa cambian por región y se eligen en ejecución.",
+        "options": [
+          "Singleton",
+          "Strategy",
+          "Observer",
+          "Ninguno"
+        ],
+        "correct": 1,
+        "why": "Strategy encapsula algoritmos intercambiables; evita condicionales dispersos si la variabilidad es real.",
+        "hint": "Varios algoritmos cumplen el mismo contrato."
+      },
+      {
+        "id": "patrones-02",
+        "prompt": "Un SDK nuevo tiene métodos incompatibles con el puerto ya utilizado por el negocio.",
+        "options": [
+          "Adapter",
+          "Decorator",
+          "Singleton",
+          "Ninguno"
+        ],
+        "correct": 0,
+        "why": "Adapter traduce la interfaz externa al contrato interno sin contaminar el dominio.",
+        "hint": "Piensa en traducción de contratos."
+      },
+      {
+        "id": "patrones-03",
+        "prompt": "Cuando se confirma un pedido, varios suscriptores reaccionan sin ser llamados directamente.",
+        "options": [
+          "Builder",
+          "Facade",
+          "Observer / eventos",
+          "Singleton"
+        ],
+        "correct": 2,
+        "why": "Observer o eventos desacoplan publicador y suscriptores; añade garantías de entrega según las necesidades del sistema.",
+        "hint": "Hay varios interesados en una notificación."
+      },
+      {
+        "id": "patrones-04",
+        "prompt": "Una clase con dos atributos requiere una instancia simple e inmutable. ¿Qué eliges?",
+        "options": [
+          "Abstract Factory",
+          "Decorator",
+          "Event Sourcing",
+          "Ningún patrón adicional"
+        ],
+        "correct": 3,
+        "why": "Un patrón complejo aquí introduce coste sin justificarlo. Elige el diseño más simple que cumpla los requisitos.",
+        "hint": "No todas las clases necesitan patrones GoF."
+      },
+      {
+        "id": "patrones-05",
+        "prompt": "Crear una familia coherente de objetos para proveedores cloud, sin acoplar al producto concreto.",
+        "options": [
+          "Abstract Factory",
+          "Observer",
+          "Strategy de ordenación",
+          "Decorator"
+        ],
+        "correct": 0,
+        "why": "Abstract Factory puede centralizar familias relacionadas de productos sin filtrar implementaciones.",
+        "hint": "Importa la familia de componentes compatibles."
+      },
+      {
+        "id": "patrones-06",
+        "prompt": "Agregar compresión y métricas sobre un stream sin modificar su implementación concreta.",
+        "options": [
+          "Singleton",
+          "Decorator",
+          "Memento",
+          "Ninguno"
+        ],
+        "correct": 1,
+        "why": "Decorator combina responsabilidades envolviendo una interfaz común y evita una explosión de subclases.",
+        "hint": "Añade comportamiento por composición."
+      }
+    ]
+  },
+  {
+    "id": "dominio",
+    "title": "Dominio Dividido",
+    "subtitle": "Modela responsabilidades de NexoShop en contextos acotados; el límite depende del lenguaje y del negocio.",
+    "icon": "⬡",
+    "tag": "DDD / CONTEXTOS",
+    "questions": [
+      {
+        "id": "dominio-01",
+        "prompt": "La operación «autorizar un cobro con el proveedor» pertenece principalmente a...",
+        "options": [
+          "Inventario",
+          "Pagos",
+          "Catálogo",
+          "Analítica"
+        ],
+        "correct": 1,
+        "why": "Pagos protege la semántica de autorizaciones, reintentos y conciliación con proveedores.",
+        "hint": "No es la misma operación que confirmar un pedido."
+      },
+      {
+        "id": "dominio-02",
+        "prompt": "«Reservar unidades disponibles» debe proteger invariantes de...",
+        "options": [
+          "Inventario",
+          "Facturación",
+          "Marketing",
+          "Identidad"
+        ],
+        "correct": 0,
+        "why": "Inventario maneja disponibilidad, reservas y concurrencia de stock.",
+        "hint": "La regla principal es evitar sobreventa."
+      },
+      {
+        "id": "dominio-03",
+        "prompt": "«Calcular campañas y cupones» cambia a diario por equipo de promociones.",
+        "options": [
+          "Pagos",
+          "Inventario",
+          "Promociones",
+          "Logística"
+        ],
+        "correct": 2,
+        "why": "Un contexto Promociones permite modelar el lenguaje de campañas separado de las garantías de cobro.",
+        "hint": "Piensa en motivos y ritmos de cambio."
+      },
+      {
+        "id": "dominio-04",
+        "prompt": "«Emitir comprobante tributario» necesita reglas legales propias.",
+        "options": [
+          "Catálogo",
+          "Facturación",
+          "Búsqueda",
+          "Inventario"
+        ],
+        "correct": 1,
+        "why": "Facturación gestiona documentos fiscales; puede consumir eventos del pedido y del pago mediante contratos publicados.",
+        "hint": "La responsabilidad está regida por normativa específica."
+      },
+      {
+        "id": "dominio-05",
+        "prompt": "¿Cuál es la forma más segura de compartir información de un pedido entre Ventas y Envíos?",
+        "options": [
+          "Una entidad mutable global",
+          "Acceso directo a tablas privadas",
+          "Contrato/evento de integración versionado",
+          "Copiar todo el esquema de Ventas"
+        ],
+        "correct": 2,
+        "why": "La integración explícita evita un modelo de datos único forzado y permite evolución independiente de contextos.",
+        "hint": "Cada contexto representa el pedido con necesidades diferentes."
+      },
+      {
+        "id": "dominio-06",
+        "prompt": "Un mismo término «Cliente» significa comprador para Ventas y sujeto de crédito para Finanzas. ¿Qué indica?",
+        "options": [
+          "Error que obliga a una entidad universal",
+          "Contextos con modelos propios y lenguaje explícito",
+          "Se debe usar el mismo ORM",
+          "Es un defecto de nomenclatura siempre"
+        ],
+        "correct": 1,
+        "why": "DDD acepta modelos distintos de una misma palabra en límites distintos; define traducciones y propiedad de datos.",
+        "hint": "El significado depende del contexto."
+      }
+    ]
+  },
+  {
+    "id": "incidente",
+    "title": "Incidente en 60 pasos",
+    "subtitle": "Seis puntos de decisión en una simulación temporal de 60 pasos didácticos; no representa telemetría real.",
+    "icon": "⚡",
+    "tag": "SRE / INCIDENTES",
+    "questions": [
+      {
+        "id": "incidente-01",
+        "prompt": "Pasos 1–10: alertas de latencia p99 y errores 5xx aumentan tras despliegue. ¿Qué haces primero?",
+        "options": [
+          "Borrar logs",
+          "Confirmar alcance e impacto con SLI y cambios recientes",
+          "Escalar capacidad sin medir",
+          "Desactivar monitorización"
+        ],
+        "correct": 1,
+        "why": "Primero determina alcance, impacto y correlación con el cambio; actúa de forma reversible.",
+        "hint": "Empieza por evidencia, no por una conjetura."
+      },
+      {
+        "id": "incidente-02",
+        "prompt": "Pasos 11–20: el cambio reciente coincide con el inicio del incidente. ¿Qué reduces primero?",
+        "options": [
+          "La trazabilidad",
+          "El tiempo de recuperación con rollback/feature flag seguro",
+          "El presupuesto de logs",
+          "Los tests del pipeline"
+        ],
+        "correct": 1,
+        "why": "Cuando hay evidencia y un camino seguro, un rollback acotado minimiza MTTR mientras investigas.",
+        "hint": "Prioriza contención reversible."
+      },
+      {
+        "id": "incidente-03",
+        "prompt": "Pasos 21–30: retries agresivos multiplican el tráfico al proveedor degradado.",
+        "options": [
+          "Reintentar sin límite",
+          "Duplicar workers sin límite",
+          "Backoff, jitter, circuit breaker y presupuesto de retries",
+          "Borrar la cola"
+        ],
+        "correct": 2,
+        "why": "Los reintentos sin control amplifican cascadas; la respuesta debe poner límites y observar su efecto.",
+        "hint": "Evita amplificar la falla."
+      },
+      {
+        "id": "incidente-04",
+        "prompt": "Pasos 31–40: hay mensajes repetidos después de un timeout. ¿Cómo evitas doble cobro?",
+        "options": [
+          "Deshabilitar conciliación",
+          "Idempotency-Key persistida y revisión de estados",
+          "Confirmar siempre dos cargos",
+          "Eliminar auditoría"
+        ],
+        "correct": 1,
+        "why": "Idempotencia y conciliación protegen invariantes aunque el transporte sea at-least-once.",
+        "hint": "Una respuesta duplicada no equivale a un cargo nuevo."
+      },
+      {
+        "id": "incidente-05",
+        "prompt": "Pasos 41–50: clientes siguen afectados. ¿Qué comunica el responsable del incidente?",
+        "options": [
+          "Estado, impacto conocido, mitigación y próxima actualización",
+          "Declarar causa raíz sin evidencia",
+          "Guardar silencio hasta mañana",
+          "Publicar datos privados de clientes"
+        ],
+        "correct": 0,
+        "why": "Una comunicación breve y verificada mantiene coordinación sin especular ni exponer datos.",
+        "hint": "Explica lo observado y lo que aún no sabes."
+      },
+      {
+        "id": "incidente-06",
+        "prompt": "Pasos 51–60: el servicio se estabiliza. ¿Cuál es el cierre técnico responsable?",
+        "options": [
+          "Borrar métricas y cerrar",
+          "Asignar culpas",
+          "Postmortem sin culpables, hipótesis, acciones y verificación",
+          "Cambiar proveedor inmediatamente"
+        ],
+        "correct": 2,
+        "why": "El aprendizaje necesita timeline, factores contribuyentes, dueños, seguimiento y pruebas de regresión.",
+        "hint": "Separar contención de prevención."
+      }
+    ]
+  }
+]

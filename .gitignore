@@ -1,0 +1,15 @@
+node_modules/
+.env
+.env.*
+!.env.example
+*.log
+*.pid
+ARQPIXEL_*.zip
+ARQPIXEL_*.zip.sha256
+.DS_Store
+coverage/
+.nyc_output/
+.tmp/
+playwright-report/
+test-results/
+ARQPIXEL_COMPLETO/

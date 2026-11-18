@@ -1,0 +1,90 @@
+{
+  "app": "ARQPIXEL",
+  "version": 2,
+  "progress": {
+    "done": ["B01", "I06", "A05", "A09"],
+    "answers": { "B01": 1, "I06": 0, "A05": 1, "A09": 0 },
+    "missions": {
+      "S09": {
+        "score": 100,
+        "seed": 3,
+        "choice": 0,
+        "adr": "ADR v2.0 con Outbox, Idempotencia, Fase 2 encadenada y dictamen experto separado.",
+        "completedAt": "2026-11-16T18:00:00.000Z",
+        "awarded": true
+      },
+      "S14": {
+        "score": 45,
+        "seed": 1,
+        "choice": 1,
+        "adr": "Intento preliminar aún no premiado.",
+        "completedAt": "2026-11-16T18:10:00.000Z",
+        "awarded": false
+      }
+    },
+    "notes": { "A09": "Burn rate multi-ventana >= 14.4x" },
+    "xp": 280,
+    "theme": "dark",
+    "seniorMode": true,
+    "lastVisit": "2026-11-16T18:15:00.000Z"
+  },
+  "seniorSuites": {
+    "S09-3": {
+      "diagnosis": 1,
+      "architecture": ["Idempotencia", "Cola de eventos", "Observabilidad"],
+      "relations": [
+        ["Idempotencia", "Cola de eventos"],
+        ["Cola de eventos", "Observabilidad"]
+      ],
+      "decision": "ADR completo de taller S09-3 con trazabilidad de reintentos y reconciliación.",
+      "incident": 0,
+      "capacity": 10800,
+      "reviewChoice": 2,
+      "impactChoice": 0,
+      "devsecopsControls": ["threat", "contracts"],
+      "threatChoice": 0,
+      "phase2Choice": 0,
+      "mentorReview": {
+        "reviewerName": "Elena Rojas",
+        "reviewerRole": "Staff Software Architect",
+        "reviewedAt": "2026-11-16T18:30:00.000Z",
+        "verdict": "APPROVED_WITH_EVIDENCE",
+        "criteriaComments": {
+          "adrQuality": "Explica claramente por qué se descarta dual-write directo.",
+          "tradeOffRealism": "Reconoce latencia eventual y coste de retención de claves.",
+          "failureModes": "Cubre caída post-commit y tormenta de webhooks repetidos.",
+          "verificationRigor": "Incluye prueba determinista de replay y alerta sobre DLQ."
+        },
+        "overallNotes": "Diseño sólido y proporcionado; dictamen independiente del score mecánico."
+      },
+      "updated": "2026-11-16T18:35:00.000Z"
+    }
+  },
+  "miniGames": {
+    "best": { "tetris": 6, "dominio": 6, "incidente": 6 },
+    "plays": { "tetris": 1, "dominio": 2, "incidente": 1 }
+  },
+  "projects": {
+    "CAP-R06": {
+      "architectureSummary": "Contenedores desacoplados con API Pedidos, PostgreSQL, Outbox Relay y consumidor idempotente de Pagos.",
+      "alternativesAnalysis": "Se descartó 2PC distribuido frente a Saga + Outbox por acoplamiento de disponibilidad y bloqueos.",
+      "adrDecision": "Adoptamos Outbox transaccional e idempotencia por evento para proteger órdenes bajo picos de red.",
+      "risksAndMitigations": "Riesgo de mensajes venenosos mitigado mediante DLQ, alertas de lag y runbook de reprocesamiento.",
+      "verificationPlan": "Pruebas de reentrega duplicada, corte de red tras commit y medición de SLI de convergencia.",
+      "checklist": {
+        "c4Included": true,
+        "adrCompleted": true,
+        "tradeOffsExplicit": true,
+        "verificationDefined": true,
+        "limitationsDeclared": true
+      },
+      "updatedAt": "2026-11-16T18:20:00.000Z"
+    }
+  },
+  "settings": {
+    "themeMode": "high-contrast",
+    "fontScale": "large",
+    "reducedMotion": true,
+    "classroomSidebarOpen": true
+  }
+}

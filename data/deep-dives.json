@@ -1,0 +1,254 @@
+[
+  {
+    "id": "B01",
+    "comparison": "Decisión arquitectónica vs elección cosmética",
+    "reason": "La estructura influye en capacidad de cambio, despliegue y fallos; el color de un botón casi nunca delimita el sistema.",
+    "metric": "Tiempo necesario para implementar una nueva capacidad sin cambiar módulos ajenos.",
+    "transfer": "Describe dos decisiones difíciles de revertir para una aplicación de reservas."
+  },
+  {
+    "id": "B02",
+    "comparison": "Deseo ambiguo vs escenario medible",
+    "reason": "“Rápido” no permite verificar nada; “p95 de búsqueda < 350 ms con 500 usuarios” sí.",
+    "metric": "p95, porcentaje de disponibilidad, tiempo de recuperación y carga observada.",
+    "transfer": "Convierte tres deseos ambiguos en estímulo, entorno, respuesta y medida."
+  },
+  {
+    "id": "B03",
+    "comparison": "Componentes cohesionados vs funciones dispersas",
+    "reason": "La misma regla de reserva no debería replicarse entre controlador, persistencia y frontend.",
+    "metric": "Cantidad de módulos editados por cambio de regla de negocio.",
+    "transfer": "Diseña responsabilidades para Reserva, Cobro y Notificaciones sin duplicar reglas."
+  },
+  {
+    "id": "B04",
+    "comparison": "Diagrama bonito vs vista con audiencia",
+    "reason": "C4 Contexto expone actores; Contenedores explica responsabilidades, interfaces y almacenamiento.",
+    "metric": "¿Un nuevo miembro puede reconocer los límites y flujos sin conocer el repositorio?",
+    "transfer": "Traza contexto y contenedores de un sistema de citas y explica sus diferencias."
+  },
+  {
+    "id": "B05",
+    "comparison": "Petición HTTP vs lógica de negocio",
+    "reason": "El cliente representa intención; el servidor valida autoridad y reglas; el almacenamiento es un detalle de infraestructura.",
+    "metric": "P95 de solicitud, errores por dependencia y uso de recursos.",
+    "transfer": "Define qué ocurre cuando una reserva se confirma pero el navegador pierde conexión."
+  },
+  {
+    "id": "B06",
+    "comparison": "Dependencias hacia dentro vs imports circulares",
+    "reason": "El dominio no debe importar controladores HTTP ni un ORM para calcular reglas de reserva.",
+    "metric": "Ciclos en el grafo de imports y pruebas aisladas del dominio.",
+    "transfer": "Dibuja dependencias permitidas y prohibidas entre presentación, aplicación, dominio e infraestructura."
+  },
+  {
+    "id": "B07",
+    "comparison": "MVC vs arquitectura completa",
+    "reason": "MVC ayuda a separar interacción, pero no decide cómo se protegen invariantes o bounded contexts.",
+    "metric": "Cantidad de responsabilidades ajenas presentes en controllers y views.",
+    "transfer": "Extrae del controller la regla “no permitir reservas superpuestas”."
+  },
+  {
+    "id": "B08",
+    "comparison": "Objeto con comportamiento vs bolsa de datos",
+    "reason": "Una entidad protegida expone métodos que preservan invariantes en vez de permitir modificaciones arbitrarias.",
+    "metric": "Número de estados inválidos posibles mediante API pública.",
+    "transfer": "Diseña una entidad Reserva con transición confirmar/cancelar y precondiciones."
+  },
+  {
+    "id": "B09",
+    "comparison": "Acoplamiento necesario vs accidental",
+    "reason": "Duplicar una dependencia global reduce testabilidad; módulos orientados a una sola responsabilidad cambian juntos.",
+    "metric": "Change coupling: archivos impactados y tiempo de integración.",
+    "transfer": "Identifica tres razones por las que el módulo Inventario dependería indebidamente de Pagos."
+  },
+  {
+    "id": "B10",
+    "comparison": "Abstracción útil vs sobreingeniería",
+    "reason": "SOLID guía el aislamiento del cambio; una interfaz sin una necesidad de variación puede introducir complejidad sin beneficio.",
+    "metric": "Número de cambios de proveedor que requieren modificar los casos de uso.",
+    "transfer": "Propón una interfaz pequeña para pagos y explica dónde no utilizarías una."
+  },
+  {
+    "id": "B11",
+    "comparison": "Patrón por problema vs patrón por moda",
+    "reason": "Strategy sirve si cambia el algoritmo; Adapter si una interfaz externa es incompatible; Decorator si añades comportamiento.",
+    "metric": "Cambios necesarios para integrar un nuevo proveedor.",
+    "transfer": "Clasifica tres problemas y defiende un patrón o una solución simple."
+  },
+  {
+    "id": "B12",
+    "comparison": "Aplicación de reservas monolítica vs módulos claros",
+    "reason": "Usuarios, disponibilidad, reservas y cobros deben tener responsables y reglas explícitas antes de escalar.",
+    "metric": "Conflictos de reservas, tiempo de despliegue y pruebas de integración.",
+    "transfer": "Presenta un C4 Contenedores, flujo de reserva y un ADR con riesgos."
+  },
+  {
+    "id": "I01",
+    "comparison": "DIP vs contenedor de dependencias",
+    "reason": "Inversión de dependencias es diseño de contratos, no simplemente registrar clases en un contenedor IoC.",
+    "metric": "Pruebas de casos de uso sin base de datos ni servicios HTTP.",
+    "transfer": "Refactoriza un servicio de descuento que consulta directamente el ORM."
+  },
+  {
+    "id": "I02",
+    "comparison": "Factory Method vs Builder",
+    "reason": "Factory decide el subtipo; Builder evita constructores ilegibles cuando un objeto tiene configuración compleja.",
+    "metric": "Complejidad del cliente que crea objetos y tests de invariantes.",
+    "transfer": "Decide cómo crear conectores distintos para proveedores con credenciales configurables."
+  },
+  {
+    "id": "I03",
+    "comparison": "Adapter vs Facade",
+    "reason": "Adapter convierte un contrato; Facade oculta la complejidad de un subsistema bajo una entrada más simple.",
+    "metric": "Cambios locales tras una actualización de SDK externo.",
+    "transfer": "Aísla un proveedor de mensajería legado de tu puerto de notificación."
+  },
+  {
+    "id": "I04",
+    "comparison": "Strategy vs Observer",
+    "reason": "Strategy intercambia algoritmos sin cambiar el cliente; Observer desacopla la publicación de eventos de consumidores.",
+    "metric": "Número de sitios tocados al agregar un descuento o un suscriptor.",
+    "transfer": "Explica cuándo un evento de dominio no debe desencadenar un cobro directamente."
+  },
+  {
+    "id": "I05",
+    "comparison": "Repository vs transacción",
+    "reason": "Repository abstrae persistencia; una unidad de trabajo coordinada controla commit de invariantes en un límite transaccional.",
+    "metric": "Fallos parciales y cantidad de escrituras atómicas probadas.",
+    "transfer": "Diseña una transacción que guarde Pedido y Outbox sin perder consistencia local."
+  },
+  {
+    "id": "I06",
+    "comparison": "Arquitectura limpia vs estructura de carpetas",
+    "reason": "Clean Architecture exige dependencias de código hacia el núcleo; renombrar carpetas no invierte dependencias.",
+    "metric": "Importaciones hacia infraestructura desde dominio (objetivo: cero).",
+    "transfer": "Extrae el puerto RepositorioPedidos y prueba un caso de uso aislado."
+  },
+  {
+    "id": "I07",
+    "comparison": "Puerto de entrada vs adaptador de salida",
+    "reason": "Un caso de uso habla su propio lenguaje; REST, CLI, SQL y colas son adaptadores intercambiables.",
+    "metric": "Pruebas de negocio ejecutables sin HTTP ni base real.",
+    "transfer": "Sustituye Postgres por un repositorio en memoria sin tocar el caso de uso."
+  },
+  {
+    "id": "I08",
+    "comparison": "Modelo compartido vs límites de lenguaje",
+    "reason": "DDD estratégico descubre subdominios y límites donde las palabras tienen significado diferente.",
+    "metric": "Conflictos de nombres compartidos y cambios coordinados entre equipos.",
+    "transfer": "Compara “producto” en Catálogo, Inventario y Facturación."
+  },
+  {
+    "id": "I09",
+    "comparison": "Integración pública vs acceso a tablas de otro equipo",
+    "reason": "Un context map define relaciones y traducciones; leer tablas externas genera acoplamiento oculto.",
+    "metric": "Número de esquemas externos usados directamente y versiones soportadas.",
+    "transfer": "Diseña un anti-corruption layer entre Ventas y Contabilidad."
+  },
+  {
+    "id": "I10",
+    "comparison": "Entidad vs Value Object vs Aggregate",
+    "reason": "Un Aggregate Root protege invariantes transaccionales; agrupar todo el dominio vuelve inmanejable la concurrencia.",
+    "metric": "Tasa de conflictos, estados inválidos y tamaño de transacción.",
+    "transfer": "Decide si la reserva de stock debe ser parte del agregado Pedido."
+  },
+  {
+    "id": "I11",
+    "comparison": "Contrato estable vs endpoints accidentales",
+    "reason": "Versiona cambios incompatibles, valida entradas y usa claves idempotentes para escrituras con reintentos.",
+    "metric": "Porcentaje de clientes compatibles; errores 4xx y operaciones duplicadas.",
+    "transfer": "Diseña POST /pagos con Idempotency-Key y respuesta ante reintento."
+  },
+  {
+    "id": "I12",
+    "comparison": "Monolito modular vs monolito caótico",
+    "reason": "Un proceso único puede tener límites de dominio verificables, despliegue sencillo y contratos internos estables.",
+    "metric": "Ciclos de paquetes, cobertura de pruebas por módulo y lead time.",
+    "transfer": "Entrega mapa de módulos de NexoShop y dos ADR que argumenten límites."
+  },
+  {
+    "id": "A01",
+    "comparison": "Estimación rápida vs capacidad medida",
+    "reason": "Dimensiona picos, tamaño de eventos, almacenamiento y ancho de banda con supuestos explícitos antes de elegir nodos.",
+    "metric": "RPS pico, throughput, CPU, p95, coste mensual y saturación.",
+    "transfer": "Calcula carga de 20.000 usuarios activos con hipótesis documentadas."
+  },
+  {
+    "id": "A02",
+    "comparison": "Servicios por equipos vs por tabla",
+    "reason": "Separar un servicio añade red, observabilidad, despliegues y consistencia; busca autonomía real.",
+    "metric": "Frecuencia de coordinación, tasa de incidentes y coste operativo.",
+    "transfer": "Define umbrales para extraer Pagos de un monolito modular."
+  },
+  {
+    "id": "A03",
+    "comparison": "Síncrono vs asíncrono",
+    "reason": "La llamada directa simplifica feedback inmediato; eventos desacoplan tiempos, pero requieren deduplicación y manejo de lag.",
+    "metric": "Latencia extremo a extremo, lag, reintentos y mensajes muertos.",
+    "transfer": "Elige HTTP, evento o ambos para confirmar pedido y notificar a usuario."
+  },
+  {
+    "id": "A04",
+    "comparison": "CQRS justificado vs complejidad gratuita",
+    "reason": "Separar lecturas/escrituras beneficia modelos divergentes; introduces sincronización y consistencia eventual.",
+    "metric": "Lag de proyección y reconciliaciones de lectura/escritura.",
+    "transfer": "Diseña una proyección de pedidos y su reconstrucción desde eventos."
+  },
+  {
+    "id": "A05",
+    "comparison": "Exactly-once aparente vs idempotencia observable",
+    "reason": "Retries y entregas at-least-once exigen procesadores idempotentes y outbox transaccional.",
+    "metric": "Pagos duplicados, lag de outbox y porcentaje de reintentos seguros.",
+    "transfer": "Diseña compensación de cobro fallido después de reservar inventario."
+  },
+  {
+    "id": "A06",
+    "comparison": "Caché con invalidación vs datos obsoletos",
+    "reason": "El caché reduce presión, pero exige TTL, claves, invalidación y entender datos que no pueden estar obsoletos.",
+    "metric": "Hit ratio, p95, staleness y errores de inventario.",
+    "transfer": "Diseña qué información de NexoShop puedes cachear y por cuánto tiempo."
+  },
+  {
+    "id": "A07",
+    "comparison": "Retries con límite vs tormenta de reintentos",
+    "reason": "Timeout, backoff, jitter, bulkheads y circuit breaker deben coordinarse para evitar amplificar fallos.",
+    "metric": "Error budget, tasa de timeout y reintentos por solicitud.",
+    "transfer": "Escribe política de retry bajo fallo parcial de pasarela de pago."
+  },
+  {
+    "id": "A08",
+    "comparison": "Autenticación vs autorización",
+    "reason": "Un usuario autenticado aún necesita permiso específico por recurso; define trust boundaries y protege secretos.",
+    "metric": "Accesos denegados legítimos, escalaciones detectadas y cobertura threat model.",
+    "transfer": "Construye threat model de acceso cruzado a pedidos de clientes."
+  },
+  {
+    "id": "A09",
+    "comparison": "Logs aislados vs señales correlacionadas",
+    "reason": "Métricas, traces y logs correlacionados permiten entender p95 y saturación; SLO identifica impacto al usuario.",
+    "metric": "SLI disponibilidad, latencia, saturación y error budget restante.",
+    "transfer": "Propón dashboard y runbook para latencia elevada de checkout."
+  },
+  {
+    "id": "A10",
+    "comparison": "Release grande vs despliegue progresivo",
+    "reason": "Canary y flags permiten detener fallos antes del 100 %; migraciones deben ser compatibles durante coexistencia.",
+    "metric": "Tasa de rollback, tiempo de recuperación y error rate del canary.",
+    "transfer": "Diseña una migración expand-contract sin downtime de columna usada por clientes."
+  },
+  {
+    "id": "A11",
+    "comparison": "Reescritura total vs strangler",
+    "reason": "Extraer capacidades gradualmente limita riesgo; el sistema legado necesita observación y rollback mientras migra.",
+    "metric": "Porcentaje tráfico migrado, fallos por fase y deuda retirada.",
+    "transfer": "Planifica seis hitos para modernizar el módulo Facturación."
+  },
+  {
+    "id": "A12",
+    "comparison": "Capstone de diagrama vs entrega operable",
+    "reason": "Una plataforma viable exige vistas, contratos, decisiones, métricas, pruebas, fallos y plan de evolución.",
+    "metric": "SLI de checkout, duplicados, coste, RTO/RPO y compatibilidad.",
+    "transfer": "Prepara dossier de NexoShop: C4, DDD, API, ADR, SLO y plan de incidentes."
+  }
+]

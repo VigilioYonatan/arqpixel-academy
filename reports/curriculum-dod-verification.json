@@ -1,0 +1,394 @@
+{
+  "schema_version": 1,
+  "ok": true,
+  "implementedModulesCount": 36,
+  "implementedMissionsCount": 18,
+  "unverifiedCount": 0,
+  "regressionSeeds": [
+    0,
+    42,
+    777
+  ],
+  "modules": [
+    {
+      "id": "B01",
+      "level": "Básico",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "B02",
+      "level": "Básico",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "B03",
+      "level": "Básico",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "B04",
+      "level": "Básico",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "B05",
+      "level": "Básico",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "B06",
+      "level": "Básico",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "B07",
+      "level": "Básico",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "B08",
+      "level": "Básico",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "B09",
+      "level": "Básico",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "B10",
+      "level": "Básico",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "B11",
+      "level": "Básico",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "B12",
+      "level": "Básico",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "I01",
+      "level": "Intermedio",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "I02",
+      "level": "Intermedio",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "I03",
+      "level": "Intermedio",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "I04",
+      "level": "Intermedio",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "I05",
+      "level": "Intermedio",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "I06",
+      "level": "Intermedio",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "I07",
+      "level": "Intermedio",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "I08",
+      "level": "Intermedio",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "I09",
+      "level": "Intermedio",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "I10",
+      "level": "Intermedio",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "I11",
+      "level": "Intermedio",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "I12",
+      "level": "Intermedio",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "A01",
+      "level": "Avanzado",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "A02",
+      "level": "Avanzado",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "A03",
+      "level": "Avanzado",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "A04",
+      "level": "Avanzado",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "A05",
+      "level": "Avanzado",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "A06",
+      "level": "Avanzado",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "A07",
+      "level": "Avanzado",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "A08",
+      "level": "Avanzado",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "A09",
+      "level": "Avanzado",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "A10",
+      "level": "Avanzado",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "A11",
+      "level": "Avanzado",
+      "status": "implemented",
+      "referencesCount": 2
+    },
+    {
+      "id": "A12",
+      "level": "Avanzado",
+      "status": "implemented",
+      "referencesCount": 2
+    }
+  ],
+  "missions": [
+    {
+      "id": "S01",
+      "status": "implemented",
+      "regressionSeedsVerified": [
+        0,
+        42,
+        777
+      ]
+    },
+    {
+      "id": "S02",
+      "status": "implemented",
+      "regressionSeedsVerified": [
+        0,
+        42,
+        777
+      ]
+    },
+    {
+      "id": "S03",
+      "status": "implemented",
+      "regressionSeedsVerified": [
+        0,
+        42,
+        777
+      ]
+    },
+    {
+      "id": "S04",
+      "status": "implemented",
+      "regressionSeedsVerified": [
+        0,
+        42,
+        777
+      ]
+    },
+    {
+      "id": "S05",
+      "status": "implemented",
+      "regressionSeedsVerified": [
+        0,
+        42,
+        777
+      ]
+    },
+    {
+      "id": "S06",
+      "status": "implemented",
+      "regressionSeedsVerified": [
+        0,
+        42,
+        777
+      ]
+    },
+    {
+      "id": "S07",
+      "status": "implemented",
+      "regressionSeedsVerified": [
+        0,
+        42,
+        777
+      ]
+    },
+    {
+      "id": "S08",
+      "status": "implemented",
+      "regressionSeedsVerified": [
+        0,
+        42,
+        777
+      ]
+    },
+    {
+      "id": "S09",
+      "status": "implemented",
+      "regressionSeedsVerified": [
+        0,
+        42,
+        777
+      ]
+    },
+    {
+      "id": "S10",
+      "status": "implemented",
+      "regressionSeedsVerified": [
+        0,
+        42,
+        777
+      ]
+    },
+    {
+      "id": "S11",
+      "status": "implemented",
+      "regressionSeedsVerified": [
+        0,
+        42,
+        777
+      ]
+    },
+    {
+      "id": "S12",
+      "status": "implemented",
+      "regressionSeedsVerified": [
+        0,
+        42,
+        777
+      ]
+    },
+    {
+      "id": "S13",
+      "status": "implemented",
+      "regressionSeedsVerified": [
+        0,
+        42,
+        777
+      ]
+    },
+    {
+      "id": "S14",
+      "status": "implemented",
+      "regressionSeedsVerified": [
+        0,
+        42,
+        777
+      ]
+    },
+    {
+      "id": "S15",
+      "status": "implemented",
+      "regressionSeedsVerified": [
+        0,
+        42,
+        777
+      ]
+    },
+    {
+      "id": "S16",
+      "status": "implemented",
+      "regressionSeedsVerified": [
+        0,
+        42,
+        777
+      ]
+    },
+    {
+      "id": "S17",
+      "status": "implemented",
+      "regressionSeedsVerified": [
+        0,
+        42,
+        777
+      ]
+    },
+    {
+      "id": "S18",
+      "status": "implemented",
+      "regressionSeedsVerified": [
+        0,
+        42,
+        777
+      ]
+    }
+  ]
+}

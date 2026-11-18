@@ -1,0 +1,148 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "version": 1,
+  "metadata": {
+    "component": {
+      "type": "application",
+      "name": "arqpixel-academy",
+      "version": "1.7.0",
+      "bomRef": "pkg:npm/arqpixel-academy@1.7.0"
+    },
+    "properties": [
+      {
+        "name": "arqpixel:limitations",
+        "value": "Offline component inventory only; no CVE/SCA analysis, no signed provenance"
+      }
+    ]
+  },
+  "components": [
+    {
+      "type": "library",
+      "name": "typescript",
+      "version": "5.8.3",
+      "purl": "pkg:npm/typescript@5.8.3",
+      "scope": "required",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "2cffde0b8c6760dfb0b5b0382bbb7e00ba6a8b2d981b9205b256a700a481d983"
+        }
+      ],
+      "properties": [
+        {
+          "name": "arqpixel:distribution",
+          "value": "vendored-build-tool"
+        },
+        {
+          "name": "arqpixel:runtime",
+          "value": "not-used-by-browser"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@axe-core/playwright",
+      "version": "4.12.1",
+      "purl": "pkg:npm/%40axe-core/playwright@4.12.1",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "arqpixel:distribution",
+          "value": "declared-not-bundled"
+        },
+        {
+          "name": "arqpixel:verification",
+          "value": "no-vulnerability-lookup-performed"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@biomejs/biome",
+      "version": "2.6.3",
+      "purl": "pkg:npm/%40biomejs/biome@2.6.3",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "arqpixel:distribution",
+          "value": "declared-not-bundled"
+        },
+        {
+          "name": "arqpixel:verification",
+          "value": "no-vulnerability-lookup-performed"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "@playwright/test",
+      "version": "1.64.1",
+      "purl": "pkg:npm/%40playwright/test@1.64.1",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "arqpixel:distribution",
+          "value": "declared-not-bundled"
+        },
+        {
+          "name": "arqpixel:verification",
+          "value": "no-vulnerability-lookup-performed"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "three",
+      "version": "0.187.0",
+      "purl": "pkg:npm/three@0.187.0",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "104f56145899722094556490d787aae0617cc2fc3382f31df02d724ea1aee341"
+        },
+        {
+          "alg": "SHA-256",
+          "content": "613e370f76638fdef83926642bf256dc9615684922de1ce1f63a8583e5d78578"
+        }
+      ],
+      "properties": [
+        {
+          "name": "arqpixel:distribution",
+          "value": "vendored-lazy-3d-minigames-only"
+        },
+        {
+          "name": "arqpixel:verification",
+          "value": "no-vulnerability-lookup-performed"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "pkg:npm/arqpixel-academy@1.7.0",
+      "dependsOn": [
+        "pkg:npm/typescript@5.8.3",
+        "pkg:npm/%40axe-core/playwright@4.12.1",
+        "pkg:npm/%40biomejs/biome@2.6.3",
+        "pkg:npm/%40playwright/test@1.64.1",
+        "pkg:npm/three@0.187.0"
+      ]
+    }
+  ]
+}

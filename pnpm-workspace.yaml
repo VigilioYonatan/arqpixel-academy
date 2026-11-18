@@ -1,0 +1,18 @@
+packages:
+  - '.'
+
+engineStrict: true
+autoInstallPeers: false
+preferFrozenLockfile: true
+verifyStoreIntegrity: true
+strictStorePkgContentCheck: true
+strictDepBuilds: true
+dangerouslyAllowAllBuilds: false
+blockExoticSubdeps: true
+trustPolicy: no-downgrade
+trustLockfile: false
+registries:
+  default: https://registry.npmjs.org/
+allowBuilds:
+  '@biomejs/biome': true
+  esbuild: true

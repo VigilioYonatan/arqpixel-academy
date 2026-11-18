@@ -1,0 +1,38 @@
+{
+  "app": "ARQPIXEL",
+  "version": 1,
+  "progress": {
+    "done": ["B01", "A08"],
+    "answers": { "B01": 1, "A08": 1 },
+    "missions": {
+      "S12": {
+        "score": 100,
+        "seed": 1,
+        "choice": 2,
+        "adr": "ADR v1.6 incluyendo matriz RBAC/ABAC y fronteras de confianza.",
+        "completedAt": "2026-07-08T18:00:00.000Z",
+        "awarded": true
+      }
+    },
+    "notes": {},
+    "xp": 180,
+    "theme": "dark",
+    "seniorMode": true,
+    "lastVisit": "2026-07-08T18:30:00.000Z"
+  },
+  "seniorSuites": {
+    "S12-1": {
+      "diagnosis": 1,
+      "architecture": ["Autorización", "Observabilidad"],
+      "relations": [["Autorización", "Observabilidad"]],
+      "decision": "Borrador v1.6 con controles DevSecOps y STRIDE.",
+      "incident": 0,
+      "capacity": 10800,
+      "reviewChoice": 2,
+      "impactChoice": 0,
+      "devsecopsControls": ["threat", "secrets"],
+      "threatChoice": 1,
+      "updated": "2026-07-08T18:20:00.000Z"
+    }
+  }
+}

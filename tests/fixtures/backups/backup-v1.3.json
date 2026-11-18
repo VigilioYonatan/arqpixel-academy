@@ -1,0 +1,32 @@
+{
+  "app": "ARQPIXEL",
+  "version": 1,
+  "progress": {
+    "done": ["B01", "I06"],
+    "answers": { "B01": 1, "I06": 0 },
+    "missions": {
+      "S01": {
+        "score": 100,
+        "seed": 2,
+        "choice": 1,
+        "adr": "ADR histórico v1.3 con alternativas y estrategia de verificación.",
+        "completedAt": "2026-03-10T12:00:00.000Z"
+      }
+    },
+    "notes": { "I06": "Dependencias hacia reglas de negocio" },
+    "xp": 180,
+    "theme": "light",
+    "seniorMode": true,
+    "lastVisit": "2026-03-10T12:10:00.000Z"
+  },
+  "seniorSuites": {
+    "S01-2": {
+      "diagnosis": 0,
+      "architecture": ["Dominio aislado", "Observabilidad"],
+      "decision": "Borrador v1.3 previo a relaciones dirigidas y code review.",
+      "incident": 0,
+      "capacity": 1200,
+      "updated": "2026-03-10T12:08:00.000Z"
+    }
+  }
+}

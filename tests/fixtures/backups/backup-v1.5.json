@@ -1,0 +1,36 @@
+{
+  "app": "ARQPIXEL",
+  "version": 1,
+  "progress": {
+    "done": ["B01", "I06", "I07"],
+    "answers": { "B01": 1, "I06": 0, "I07": 1 },
+    "missions": {
+      "S04": {
+        "score": 100,
+        "seed": 4,
+        "choice": 0,
+        "adr": "ADR v1.5 con puertos y adaptadores verificados.",
+        "completedAt": "2026-05-20T09:00:00.000Z",
+        "awarded": true
+      }
+    },
+    "notes": {},
+    "xp": 230,
+    "theme": "dark",
+    "seniorMode": true,
+    "lastVisit": "2026-05-20T09:15:00.000Z"
+  },
+  "seniorSuites": {
+    "S04-4": {
+      "diagnosis": 1,
+      "architecture": ["Dominio aislado", "Base de datos"],
+      "relations": [["Dominio aislado", "Base de datos"]],
+      "decision": "Borrador v1.5 con grafo dirigido, code review e impacto.",
+      "incident": 0,
+      "capacity": 10800,
+      "reviewChoice": 0,
+      "impactChoice": 1,
+      "updated": "2026-05-20T09:12:00.000Z"
+    }
+  }
+}

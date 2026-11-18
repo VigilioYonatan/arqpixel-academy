@@ -1,0 +1,128 @@
+[
+  {
+    "id": "S01",
+    "title": "Auditoría de monolito legado",
+    "brief": "App de ventas con despliegues frágiles",
+    "decision": "Modularizar sin reescribir todo",
+    "evidence": "Mapa dependencias, hotspots, plan incremental, ADR"
+  },
+  {
+    "id": "S02",
+    "title": "SOLID bajo presión",
+    "brief": "Servicio de descuentos que cambia semanalmente",
+    "decision": "Abstracción adecuada vs sobreingeniería",
+    "evidence": "Review, tests de regresión, justificación"
+  },
+  {
+    "id": "S03",
+    "title": "Selección de patrones GoF",
+    "brief": "Integración con múltiples proveedores",
+    "decision": "Strategy/Adapter/Factory o simplicidad",
+    "evidence": "Refactor estructural, comparación de mantenimiento"
+  },
+  {
+    "id": "S04",
+    "title": "Clean vs Hexagonal",
+    "brief": "Backend acoplado a ORM y HTTP",
+    "decision": "Puertos, casos de uso, límites de dominio",
+    "evidence": "Grafo de imports, tests aislables, ADR"
+  },
+  {
+    "id": "S05",
+    "title": "DDD estratégico",
+    "brief": "Marketplace con equipos en conflicto",
+    "decision": "Bounded contexts, ownership y lenguaje",
+    "evidence": "Context map, glosario, políticas de integración"
+  },
+  {
+    "id": "S06",
+    "title": "Diseño de agregados",
+    "brief": "Sobreventa y estados inválidos",
+    "decision": "Invariantes, consistencia y tamaño agregado",
+    "evidence": "State machine, reglas, casos negativos"
+  },
+  {
+    "id": "S07",
+    "title": "API pública evolutiva",
+    "brief": "Clientes móviles antiguos siguen activos",
+    "decision": "Versionado y compatibilidad",
+    "evidence": "Contrato diff, ejemplos, plan de deprecación"
+  },
+  {
+    "id": "S08",
+    "title": "Monolito o microservicios",
+    "brief": "Crecimiento y nuevos equipos",
+    "decision": "Coste operacional vs autonomía",
+    "evidence": "Árbol de decisión, split proposal y ADR"
+  },
+  {
+    "id": "S09",
+    "title": "Pedido y pago distribuido",
+    "brief": "Reintentos y duplicados",
+    "decision": "Outbox, idempotencia, saga o transacción",
+    "evidence": "Timeline, invariantes, deduplicación"
+  },
+  {
+    "id": "S10",
+    "title": "Datos y consistencia",
+    "brief": "Lecturas desfasadas de inventario",
+    "decision": "Modelo de consistencia y UX",
+    "evidence": "Secuencia, ventanas de inconsistencia y mitigación"
+  },
+  {
+    "id": "S11",
+    "title": "Escalabilidad de plataforma",
+    "brief": "20× tráfico y latencia variable",
+    "decision": "Caché/colas/escalado y límites",
+    "evidence": "Capacity worksheet, escenarios y supuestos"
+  },
+  {
+    "id": "S12",
+    "title": "Seguridad por diseño",
+    "brief": "Exposición de PII y permisos amplios",
+    "decision": "Threat model y trust boundaries",
+    "evidence": "Mapa amenazas, autorización y mitigaciones"
+  },
+  {
+    "id": "S13",
+    "title": "Resiliencia de dependencias",
+    "brief": "Proveedor externo falla de forma intermitente",
+    "decision": "Retry/jitter/timeout/circuit breaker",
+    "evidence": "Simulación de fallos, presupuesto de retries"
+  },
+  {
+    "id": "S14",
+    "title": "Observabilidad y SLO",
+    "brief": "P95 aumenta sin errores visibles",
+    "decision": "SLIs, traces, señales e hipótesis",
+    "evidence": "Diagnóstico, dashboard propuesto y runbook"
+  },
+  {
+    "id": "S15",
+    "title": "Estrategia de despliegue",
+    "brief": "Release rompe contratos",
+    "decision": "Canary, flags, rollback y migraciones",
+    "evidence": "Secuencia, precondiciones y plan de reversión"
+  },
+  {
+    "id": "S16",
+    "title": "Modernización sin downtime",
+    "brief": "Migración de BD/API con legado activo",
+    "decision": "Strangler, dual read/write, corte seguro",
+    "evidence": "Plan por fases, invariantes, rollback"
+  },
+  {
+    "id": "S17",
+    "title": "Costos y gobierno técnico",
+    "brief": "Infraestructura crece sin control",
+    "decision": "SLO vs costo vs complejidad",
+    "evidence": "Estimación explícita, riesgos y decisiones"
+  },
+  {
+    "id": "S18",
+    "title": "Consejo de arquitectura / capstone",
+    "brief": "Crisis multi-equipo con metas incompatibles",
+    "decision": "Priorizar decisión, comunicar, operar y evolucionar",
+    "evidence": "Paquete ADR, C4, plan, evidencia, postmortem"
+  }
+]

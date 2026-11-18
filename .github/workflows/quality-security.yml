@@ -1,0 +1,144 @@
+name: ARQPIXEL DevSecOps
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: devsecops-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '24.22.2'
+  PNPM_VERSION: '12.14.0'
+
+jobs:
+  static-and-tests:
+    name: TypeScript, Biome 2.6.3, Bundle Budget, Security & Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+          run_install: false
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+      - name: Validate offline-first build & tests (zero external runtime dependency)
+        run: npm run devsecops:offline
+      - name: Validate reference NestJS laboratory offline
+        run: npm --prefix examples/nexoshop-reference-nestjs test
+      - name: Install frozen lockfile (dev toolchain only)
+        run: pnpm install --frozen-lockfile
+      - name: Biome 2.6.3 static analysis
+        run: pnpm run biome:check
+      - name: Publish immutable dist artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: arqpixel-dist
+          path: dist/
+          retention-days: 14
+          if-no-files-found: error
+      - name: Publish CycloneDX 1.5 SBOM
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: arqpixel-sbom
+          path: security/sbom.cdx.json
+          retention-days: 30
+          if-no-files-found: error
+
+  supply-chain-and-secrets:
+    name: Secret Scan & Trivy SBOM / Filesystem CVE Gate
+    needs: static-and-tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+      - name: Heuristic offline secret & symlink scan
+        run: node scripts/security-scan.mjs
+      - name: Gitleaks repository scan
+        uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7 # v2.3.9
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Trivy vulnerability scan on CycloneDX SBOM & filesystem
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: '1'
+
+  e2e-http-and-wcag:
+    name: Playwright 1.64.1 HTTP Real Headers + WCAG 2.2 AA (axe-core)
+    needs: static-and-tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+          run_install: false
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+      - name: Download validated dist artifact (no rebuild)
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: arqpixel-dist
+          path: dist/
+      - name: Install frozen lockfile, Chromium & WebKit
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm exec playwright install --with-deps chromium webkit
+      - name: Execute HTTP E2E + CSP + 5 Viewports + axe-core WCAG 2.2 AA
+        run: pnpm run test:e2e
+      - name: Upload sanitized Playwright failure traces
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: arqpixel-playwright-traces
+          path: test-results/
+          retention-days: 7
+
+  required-ci-gate:
+    name: Required CI Gate
+    if: always()
+    needs: [static-and-tests, supply-chain-and-secrets, e2e-http-and-wcag]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - name: Enforce all upstream DevSecOps & E2E jobs passed
+        run: |
+          if [[ "${{ needs.static-and-tests.result }}" != "success" ]] || \
+             [[ "${{ needs.supply-chain-and-secrets.result }}" != "success" ]] || \
+             [[ "${{ needs.e2e-http-and-wcag.result }}" != "success" ]]; then
+            echo "Required CI Gate FAILED"
+            exit 1
+          fi
+          echo "Required CI Gate PASS"

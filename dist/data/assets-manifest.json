@@ -1,0 +1,211 @@
+[
+  {
+    "id": "legacy-arquibot",
+    "src": "./assets/arquibot.png",
+    "alt": "ArquiBot oficial blanco y azul con visor cian",
+    "width": 1050,
+    "height": 1050,
+    "transparentRgba": true,
+    "pixelArt": false,
+    "theme": "both",
+    "usage": "Ilustración base 3D de portada, barra lateral y tarjetas principales"
+  },
+  {
+    "id": "legacy-arquibot-lab",
+    "src": "./assets/arquibot-lab.png",
+    "alt": "ArquiBot junto a un modelo holográfico de arquitectura en el laboratorio",
+    "width": 1536,
+    "height": 1024,
+    "transparentRgba": false,
+    "pixelArt": false,
+    "theme": "dark",
+    "usage": "Cabecera visual del catálogo de laboratorios interactivos"
+  },
+  {
+    "id": "legacy-hero-reference",
+    "src": "./assets/hero-reference.png",
+    "alt": "Referencia visual aprobada de identidad ArquiBot azul y cian frente a capas de arquitectura",
+    "width": 1536,
+    "height": 1024,
+    "transparentRgba": false,
+    "pixelArt": false,
+    "theme": "dark",
+    "usage": "Referencia visual histórica de dirección de arte preservada"
+  },
+  {
+    "id": "arquibot-hero",
+    "src": "./assets/arquibot/arquibot-hero.png",
+    "alt": "Sprite Modern Pixel de ArquiBot señalando capas UI, Aplicación, Dominio y Datos",
+    "width": 512,
+    "height": 512,
+    "transparentRgba": true,
+    "pixelArt": true,
+    "theme": "both",
+    "usage": "Portada hero y presentación de capas arquitectónicas"
+  },
+  {
+    "id": "arquibot-idle",
+    "src": "./assets/arquibot/arquibot-idle.png",
+    "alt": "ArquiBot en postura atenta lista para acompañar tu diseño",
+    "width": 512,
+    "height": 512,
+    "transparentRgba": true,
+    "pixelArt": true,
+    "theme": "both",
+    "usage": "Estado neutro en paneles laterales y vistas sin actividad en curso"
+  },
+  {
+    "id": "arquibot-saludo",
+    "src": "./assets/arquibot/arquibot-saludo.png",
+    "alt": "ArquiBot saludando alegremente con el brazo levantado",
+    "width": 512,
+    "height": 512,
+    "transparentRgba": true,
+    "pixelArt": true,
+    "theme": "both",
+    "usage": "Bienvenida en inicio, onboarding y página Sobre ARQPIXEL"
+  },
+  {
+    "id": "arquibot-pensando",
+    "src": "./assets/arquibot/arquibot-pensando.png",
+    "alt": "ArquiBot reflexionando sobre restricciones e hipótesis pendientes",
+    "width": 512,
+    "height": 512,
+    "transparentRgba": true,
+    "pixelArt": true,
+    "theme": "both",
+    "usage": "Cajón de pistas progresivas (HintDrawer) y análisis de trade-offs"
+  },
+  {
+    "id": "arquibot-explicando",
+    "src": "./assets/arquibot/arquibot-explicando.png",
+    "alt": "ArquiBot explicando una comparativa de arquitectura en pizarra holográfica",
+    "width": 512,
+    "height": 512,
+    "transparentRgba": true,
+    "pixelArt": true,
+    "theme": "both",
+    "usage": "Comparación con solución de referencia (SolutionReveal) y aula"
+  },
+  {
+    "id": "arquibot-diagrama",
+    "src": "./assets/arquibot/arquibot-diagrama.png",
+    "alt": "ArquiBot proyectando un grafo C4 de contenedores conectados",
+    "width": 512,
+    "height": 512,
+    "transparentRgba": true,
+    "pixelArt": true,
+    "theme": "both",
+    "usage": "Mapa curricular de 54 nodos y laboratorio C4 Studio"
+  },
+  {
+    "id": "arquibot-codigo",
+    "src": "./assets/arquibot/arquibot-codigo.png",
+    "alt": "ArquiBot mostrando código limpio con puertos y contratos tipados",
+    "width": 512,
+    "height": 512,
+    "transparentRgba": true,
+    "pixelArt": true,
+    "theme": "both",
+    "usage": "Fichas de patrones TypeScript y revisiones de contratos API"
+  },
+  {
+    "id": "arquibot-libro",
+    "src": "./assets/arquibot/arquibot-libro.png",
+    "alt": "ArquiBot sosteniendo un registro de decisión arquitectónica ADR",
+    "width": 512,
+    "height": 512,
+    "transparentRgba": true,
+    "pixelArt": true,
+    "theme": "both",
+    "usage": "Biblioteca de recursos, plantillas ADR y cuaderno de reflexiones"
+  },
+  {
+    "id": "arquibot-laboratorio",
+    "src": "./assets/arquibot/arquibot-laboratorio.png",
+    "alt": "ArquiBot con gafas de laboratorio cian y simulador de sistemas",
+    "width": 512,
+    "height": 512,
+    "transparentRgba": true,
+    "pixelArt": true,
+    "theme": "both",
+    "usage": "Ocho laboratorios interactivos y simuladores reproducibles"
+  },
+  {
+    "id": "arquibot-error",
+    "src": "./assets/arquibot/arquibot-error.png",
+    "alt": "ArquiBot advirtiendo una violación de límites o riesgo arquitectónico",
+    "width": 512,
+    "height": 512,
+    "transparentRgba": true,
+    "pixelArt": true,
+    "theme": "both",
+    "usage": "Retroalimentación de error estructural, ciclos detectados y rutas 404"
+  },
+  {
+    "id": "arquibot-exito",
+    "src": "./assets/arquibot/arquibot-exito.png",
+    "alt": "ArquiBot celebrando una decisión arquitectónica bien fundamentada",
+    "width": 512,
+    "height": 512,
+    "transparentRgba": true,
+    "pixelArt": true,
+    "theme": "both",
+    "usage": "Confirmación de respuesta defendible, minijuegos completados y checks PASS"
+  },
+  {
+    "id": "arquibot-idea",
+    "src": "./assets/arquibot/arquibot-idea.png",
+    "alt": "ArquiBot con destello de idea sobre la antena",
+    "width": 512,
+    "height": 512,
+    "transparentRgba": true,
+    "pixelArt": true,
+    "theme": "both",
+    "usage": "Sugerencias contextuales, buscador global Ctrl+K y retos de transferencia"
+  },
+  {
+    "id": "arquibot-debug",
+    "src": "./assets/arquibot/arquibot-debug.png",
+    "alt": "ArquiBot inspeccionando trazas y cuellos de botella con lupa cian",
+    "width": 512,
+    "height": 512,
+    "transparentRgba": true,
+    "pixelArt": true,
+    "theme": "both",
+    "usage": "Laboratorios de incidentes, SLO burn rate y sistemas distribuidos"
+  },
+  {
+    "id": "arquibot-senior",
+    "src": "./assets/arquibot/arquibot-senior.png",
+    "alt": "ArquiBot con corona Senior evaluando restricciones de producción",
+    "width": 512,
+    "height": 512,
+    "transparentRgba": true,
+    "pixelArt": true,
+    "theme": "both",
+    "usage": "Senior Mode Dashboard, las 18 misiones y talleres de producción"
+  },
+  {
+    "id": "arquibot-graduado",
+    "src": "./assets/arquibot/arquibot-graduado.png",
+    "alt": "ArquiBot con birrete tecnológico celebrando avances de portafolio",
+    "width": 512,
+    "height": 512,
+    "transparentRgba": true,
+    "pixelArt": true,
+    "theme": "both",
+    "usage": "Colección de insignias, especializaciones completadas y proyectos Capstone"
+  },
+  {
+    "id": "arquibot-spritesheet",
+    "src": "./assets/arquibot/arquibot-spritesheet.png",
+    "alt": "Atlas 4x4 RGBA con las poses contextuales de ArquiBot",
+    "width": 1024,
+    "height": 1024,
+    "transparentRgba": true,
+    "pixelArt": true,
+    "theme": "both",
+    "usage": "Atlas consolidado de 16 celdas para precarga o inspección de diseño"
+  }
+]

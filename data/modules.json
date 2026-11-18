@@ -1,0 +1,650 @@
+[
+  {
+    "id": "B01",
+    "title": "¿Qué es arquitectura de software?",
+    "concept": "Estructura, decisiones, atributos de calidad, restricciones",
+    "activity": "Identificar decisiones en una app",
+    "level": "Básico",
+    "lesson": "Una arquitectura es un conjunto de decisiones estructurales que afectan los atributos de calidad y la evolución del sistema. No es solamente un diagrama.",
+    "example": "Para NexoShop, decide qué responsabilidades pertenecen al frontend, API y dominio; documenta al menos un trade-off.",
+    "question": "¿Qué representa mejor una decisión arquitectónica?",
+    "options": [
+      "Elegir el color de un botón",
+      "Definir límites entre módulos y sus dependencias",
+      "Cambiar el nombre de una variable"
+    ],
+    "correct": 1,
+    "explanation": "Los límites condicionan evolución, pruebas y equipos; el estilo de un botón rara vez afecta la arquitectura.",
+    "readingMinutes": 9
+  },
+  {
+    "id": "B02",
+    "title": "Requisitos funcionales y no funcionales",
+    "concept": "Casos de uso, escenarios de calidad, stakeholders",
+    "activity": "Separar RF/RNF y priorizar",
+    "level": "Básico",
+    "lesson": "Los requisitos funcionales describen comportamientos; los atributos de calidad imponen restricciones medibles como latencia, resiliencia y seguridad.",
+    "example": "Convierte “que sea rápido” en “p95 de checkout por debajo de 350 ms con 500 usuarios concurrentes”.",
+    "question": "¿Cuál es un requisito no funcional medible?",
+    "options": [
+      "Permitir crear pedidos",
+      "Mostrar la lista de productos",
+      "El 95 % de consultas termina en menos de 300 ms"
+    ],
+    "correct": 2,
+    "explanation": "Un SLO expresado como percentil y umbral es verificable.",
+    "readingMinutes": 9
+  },
+  {
+    "id": "B03",
+    "title": "Componentes, módulos y responsabilidades",
+    "concept": "Cohesión, acoplamiento, límites",
+    "activity": "Organizar un ecommerce simple",
+    "level": "Básico",
+    "lesson": "La cohesión reúne responsabilidades que cambian juntas; un acoplamiento excesivo aumenta el impacto de cada modificación.",
+    "example": "Separa Catálogo, Pedido y Pagos sin forzar dependencias circulares.",
+    "question": "¿Cuál separación mejora la cohesión?",
+    "options": [
+      "Una clase que maneja pagos, UI y SQL",
+      "Módulos con responsabilidades y contratos explícitos",
+      "Una carpeta para todo el código"
+    ],
+    "correct": 1,
+    "explanation": "Responsabilidades agrupadas por cambio reducen acoplamiento.",
+    "readingMinutes": 9
+  },
+  {
+    "id": "B04",
+    "title": "Diagramas de arquitectura",
+    "concept": "C4 L1/L2, flujo y secuencia intro",
+    "activity": "Dibujar contexto y contenedores",
+    "level": "Básico",
+    "lesson": "C4 muestra el sistema en niveles: contexto, contenedores, componentes y código. Cada vista responde una pregunta distinta.",
+    "example": "Modela al cliente, NexoShop, pasarela de pagos y proveedor de correo.",
+    "question": "¿En qué nivel C4 se muestran usuarios y sistemas externos?",
+    "options": [
+      "Contexto",
+      "Código",
+      "Componentes"
+    ],
+    "correct": 0,
+    "explanation": "Contexto se concentra en actores, sistema y sistemas vecinos.",
+    "readingMinutes": 9
+  },
+  {
+    "id": "B05",
+    "title": "Cliente-servidor y web moderna",
+    "concept": "UI, API, datos, redes",
+    "activity": "Seguir flujo de una compra",
+    "level": "Básico",
+    "lesson": "En una petición web intervienen navegador, DNS/TLS, API, lógica de negocio y persistencia. Cada frontera tiene fallos posibles.",
+    "example": "Sigue una solicitud POST /pedidos desde el navegador hasta el registro del pedido.",
+    "question": "¿Quién debe aplicar invariantes del pedido?",
+    "options": [
+      "Solo el CSS",
+      "El backend y dominio",
+      "El navegador únicamente"
+    ],
+    "correct": 1,
+    "explanation": "No confíes reglas de negocio críticas a un cliente controlado por terceros.",
+    "readingMinutes": 9
+  },
+  {
+    "id": "B06",
+    "title": "Arquitectura en capas",
+    "concept": "Presentación, aplicación, dominio, infraestructura",
+    "activity": "Armar diagrama de dependencias",
+    "level": "Básico",
+    "lesson": "En una arquitectura por capas, presentación, aplicación, dominio e infraestructura tienen roles específicos. Las dependencias deben respetar límites.",
+    "example": "Evita que el dominio importe el controlador HTTP o un ORM.",
+    "question": "¿Qué dependencia es más segura en Clean/Hexagonal?",
+    "options": [
+      "Dominio → ORM",
+      "Infraestructura → Dominio",
+      "Dominio → Controlador HTTP"
+    ],
+    "correct": 1,
+    "explanation": "Los detalles externos dependen del núcleo, no al revés.",
+    "readingMinutes": 9
+  },
+  {
+    "id": "B07",
+    "title": "MVC y separación de concerns",
+    "concept": "Modelo/vista/controlador y límites",
+    "activity": "Refactorizar responsabilidades",
+    "level": "Básico",
+    "lesson": "MVC organiza control de entrada, vista y modelo; no sustituye por sí solo una arquitectura completa de dominio.",
+    "example": "Identifica qué ocurre si el controlador ejecuta SQL y aplica descuentos.",
+    "question": "¿Cuál es un olor arquitectónico en MVC?",
+    "options": [
+      "Controlador orquesta un caso de uso",
+      "Controlador crea consultas SQL y contiene reglas críticas",
+      "Vista presenta el resultado"
+    ],
+    "correct": 1,
+    "explanation": "La mezcla de persistencia y reglas dificulta mantenimiento.",
+    "readingMinutes": 9
+  },
+  {
+    "id": "B08",
+    "title": "POO para arquitectos",
+    "concept": "Encapsulación, composición, interfaces",
+    "activity": "Detectar clases con demasiadas tareas",
+    "level": "Básico",
+    "lesson": "La composición y la encapsulación permiten expresar contratos estables; evita herencias profundas que acoplan comportamientos.",
+    "example": "Aísla una política de impuestos detrás de una interfaz.",
+    "question": "¿Qué ayuda a reemplazar un proveedor de impuestos?",
+    "options": [
+      "Una abstracción y composición",
+      "Herencia de veinte niveles",
+      "Variables globales"
+    ],
+    "correct": 0,
+    "explanation": "Inyectar política facilita tests y cambios.",
+    "readingMinutes": 9
+  },
+  {
+    "id": "B09",
+    "title": "Cohesión, acoplamiento y modularidad",
+    "concept": "Cambios locales, módulos estables",
+    "activity": "Comparar dos diseños",
+    "level": "Básico",
+    "lesson": "Los módulos bien diseñados protegen invariantes, publican contratos y limitan efectos en cadena.",
+    "example": "Evalúa un cambio de descuentos y cuántos módulos quedarían afectados.",
+    "question": "¿Qué mejora una frontera modular?",
+    "options": [
+      "Publicar todos los detalles internos",
+      "Exponer un contrato mínimo estable",
+      "Introducir dependencias circulares"
+    ],
+    "correct": 1,
+    "explanation": "Un contrato pequeño limita propagación de cambios.",
+    "readingMinutes": 9
+  },
+  {
+    "id": "B10",
+    "title": "Introducción a SOLID",
+    "concept": "Cinco principios, aplicación contextual",
+    "activity": "Detectar violaciones básicas",
+    "level": "Básico",
+    "lesson": "SOLID ayuda a gestionar cambios, pero requiere criterio. SRP trata de motivos de cambio, DIP de dirección de dependencias.",
+    "example": "Sustituye un repositorio concreto por una abstracción en el caso de uso.",
+    "question": "¿Qué principio apunta a invertir dependencias?",
+    "options": [
+      "DIP",
+      "SRP",
+      "LSP"
+    ],
+    "correct": 0,
+    "explanation": "DIP hace que políticas de alto nivel dependan de abstracciones.",
+    "readingMinutes": 9
+  },
+  {
+    "id": "B11",
+    "title": "Introducción a patrones",
+    "concept": "Problema recurrente, patrón vs antipatrón",
+    "activity": "Elegir Strategy, Factory o Observer",
+    "level": "Básico",
+    "lesson": "Un patrón es una solución recurrente con costes y contexto; no una plantilla para aplicarla siempre.",
+    "example": "Usa Strategy al existir métodos de cálculo intercambiables.",
+    "question": "¿Cuándo aplicarías Strategy?",
+    "options": [
+      "Cuando algoritmos varían por contexto",
+      "Para cada clase del sistema",
+      "Para reemplazar la base de datos por CSS"
+    ],
+    "correct": 0,
+    "explanation": "Strategy intercambia comportamientos manteniendo contrato.",
+    "readingMinutes": 9
+  },
+  {
+    "id": "B12",
+    "title": "Proyecto básico: App de reservas",
+    "concept": "Requisitos, C4, capas, ADR simple",
+    "activity": "Entregar diseño defendible",
+    "level": "Básico",
+    "lesson": "El diseño defendible incluye contexto, requisitos, decisiones y riesgos explícitos.",
+    "example": "Presenta un C4 de reservas, un contrato de API y un ADR sobre persistencia.",
+    "question": "¿Qué decisión refleja mejor el concepto?",
+    "options": [
+      "Separar responsabilidades y declarar trade-offs",
+      "Mezclar todas las responsabilidades",
+      "Omitir pruebas"
+    ],
+    "correct": 0,
+    "explanation": "Las fronteras explícitas facilitan cambios.",
+    "readingMinutes": 9
+  },
+  {
+    "id": "I01",
+    "title": "SOLID aplicado",
+    "concept": "DIP, ISP, OCP, SRP, LSP con límites",
+    "activity": "Reparar dependencias y tests",
+    "level": "Intermedio",
+    "lesson": "Aplica SOLID para lograr variantes, pruebas y sustitución sin capas artificiales.",
+    "example": "Detecta una violación de ISP en una interfaz de notificaciones.",
+    "question": "¿Qué sugiere una interfaz con métodos que muchos clientes no usan?",
+    "options": [
+      "ISP",
+      "DRY exclusivamente",
+      "Singleton"
+    ],
+    "correct": 0,
+    "explanation": "ISP favorece contratos enfocados por cliente.",
+    "readingMinutes": 14
+  },
+  {
+    "id": "I02",
+    "title": "Patrones creacionales",
+    "concept": "Factory Method, Abstract Factory, Builder",
+    "activity": "Elegir según variación",
+    "level": "Intermedio",
+    "lesson": "Factory Method y Abstract Factory encapsulan familias de creación; Builder facilita construir objetos complejos válidos.",
+    "example": "Separa la creación de conectores de pago de su utilización.",
+    "question": "¿Para qué es útil Builder?",
+    "options": [
+      "Ensamblar objetos con muchas opciones y validación",
+      "Resolver concurrencia",
+      "Trazar solicitudes"
+    ],
+    "correct": 0,
+    "explanation": "Builder ayuda a crear objetos complejos progresivamente.",
+    "readingMinutes": 14
+  },
+  {
+    "id": "I03",
+    "title": "Patrones estructurales",
+    "concept": "Adapter, Facade, Decorator, Composite",
+    "activity": "Integrar API legado",
+    "level": "Intermedio",
+    "lesson": "Adapter traduce interfaces; Facade simplifica subsistemas; Decorator añade responsabilidades sin alterar el objeto original.",
+    "example": "Integra un API legado de facturación mediante Adapter.",
+    "question": "¿Qué patrón adapta un servicio legado a un contrato moderno?",
+    "options": [
+      "Adapter",
+      "Observer",
+      "State"
+    ],
+    "correct": 0,
+    "explanation": "Adapter traduce interfaces sin modificar consumidor.",
+    "readingMinutes": 14
+  },
+  {
+    "id": "I04",
+    "title": "Patrones de comportamiento",
+    "concept": "Strategy, Observer, Command, State",
+    "activity": "Flujo de pagos extensible",
+    "level": "Intermedio",
+    "lesson": "Strategy encapsula algoritmos, Observer distribuye notificaciones, Command trata acciones como objetos y State expresa transiciones.",
+    "example": "Usa Strategy para métodos de pago sin un switch gigante.",
+    "question": "¿Qué patrón permite métodos de pago intercambiables?",
+    "options": [
+      "Strategy",
+      "Singleton",
+      "Composite"
+    ],
+    "correct": 0,
+    "explanation": "Strategy implementa una familia de algoritmos intercambiables.",
+    "readingMinutes": 14
+  },
+  {
+    "id": "I05",
+    "title": "Repository, Unit of Work y transacciones",
+    "concept": "Persistencia vs dominio",
+    "activity": "Separar capa de acceso a datos",
+    "level": "Intermedio",
+    "lesson": "Repository oculta mecanismos de persistencia; Unit of Work coordina transacciones cuando el contexto realmente lo necesita.",
+    "example": "Evita que las entidades conozcan Entity Framework o Hibernate.",
+    "question": "¿Qué responsabilidad corresponde a un Repository?",
+    "options": [
+      "Abstraer acceso al agregado persistente",
+      "Renderizar HTML",
+      "Administrar rutas del navegador"
+    ],
+    "correct": 0,
+    "explanation": "Repository separa dominio de mecanismos de almacenamiento.",
+    "readingMinutes": 14
+  },
+  {
+    "id": "I06",
+    "title": "Clean Architecture",
+    "concept": "Dependencias hacia reglas de negocio",
+    "activity": "Reordenar imports/capas",
+    "level": "Intermedio",
+    "lesson": "Clean Architecture orienta dependencias hacia las políticas de negocio. Los detalles pueden sustituirse sin alterar casos de uso.",
+    "example": "Verifica que dominio no dependa de infraestructura.",
+    "question": "¿Cuál dependencia debe evitarse?",
+    "options": [
+      "Infraestructura → Dominio",
+      "UI → Caso de uso",
+      "Dominio → ORM concreto"
+    ],
+    "correct": 2,
+    "explanation": "Las entidades no deben importar detalles de persistencia.",
+    "readingMinutes": 14
+  },
+  {
+    "id": "I07",
+    "title": "Arquitectura hexagonal",
+    "concept": "Puertos, adaptadores, test doubles",
+    "activity": "Sustituir proveedor de pagos",
+    "level": "Intermedio",
+    "lesson": "Puertos definen contratos del núcleo y adaptadores implementan entradas/salidas: HTTP, DB o proveedores externos.",
+    "example": "Reemplaza Stripe por un fake en tests sin cambiar el caso de uso.",
+    "question": "¿Qué describe un puerto en arquitectura hexagonal?",
+    "options": [
+      "Interfaz del núcleo hacia el exterior",
+      "Un número de TCP fijo",
+      "Un servicio cloud obligatorio"
+    ],
+    "correct": 0,
+    "explanation": "Puertos son contratos, adaptadores los implementan.",
+    "readingMinutes": 14
+  },
+  {
+    "id": "I08",
+    "title": "DDD estratégico",
+    "concept": "Dominio, subdominios, lenguaje ubicuo",
+    "activity": "Event storming básico",
+    "level": "Intermedio",
+    "lesson": "DDD estratégico busca lenguaje ubicuo, dominios centrales y límites organizativos coherentes.",
+    "example": "Define vocabulario compartido en Ventas e Inventario.",
+    "question": "¿Qué prioriza DDD estratégico?",
+    "options": [
+      "Bounded contexts y lenguaje ubicuo",
+      "Un ORM particular",
+      "Patrón Singleton"
+    ],
+    "correct": 0,
+    "explanation": "Los límites del modelo y su lenguaje son el centro del diseño.",
+    "readingMinutes": 14
+  },
+  {
+    "id": "I09",
+    "title": "Bounded Contexts y context mapping",
+    "concept": "Upstream/downstream, anticorruption layer",
+    "activity": "Dividir ventas/inventario",
+    "level": "Intermedio",
+    "lesson": "Un Bounded Context delimita un modelo semántico; el mismo término puede significar cosas distintas entre contextos.",
+    "example": "Traza relaciones entre Ventas, Catálogo, Inventario y Cobros.",
+    "question": "¿Qué evita un Bounded Context?",
+    "options": [
+      "Confundir modelos semánticos distintos",
+      "Toda duplicación de código",
+      "Todos los eventos"
+    ],
+    "correct": 0,
+    "explanation": "Cada contexto puede tener su modelo propio.",
+    "readingMinutes": 14
+  },
+  {
+    "id": "I10",
+    "title": "DDD táctico",
+    "concept": "Entidades, VO, agregados, domain services/events",
+    "activity": "Diseñar agregado Pedido",
+    "level": "Intermedio",
+    "lesson": "Las entidades tienen identidad; Value Objects se comparan por valor; los agregados protegen invariantes transaccionales.",
+    "example": "Diseña Pedido para impedir transiciones de estado inválidas.",
+    "question": "¿Quién protege invariantes dentro de un agregado?",
+    "options": [
+      "Aggregate root",
+      "CSS",
+      "Controlador de rutas"
+    ],
+    "correct": 0,
+    "explanation": "La raíz centraliza mutaciones válidas.",
+    "readingMinutes": 14
+  },
+  {
+    "id": "I11",
+    "title": "Diseño de APIs y contratos",
+    "concept": "REST, HTTP, errores, versionado, OpenAPI",
+    "activity": "Revisar API de reservas",
+    "level": "Intermedio",
+    "lesson": "Un contrato API necesita semántica HTTP, errores consistentes, versionado y compatibilidad observable.",
+    "example": "Diseña POST /pedidos con idempotency-key.",
+    "question": "¿Qué ayuda a tolerar reintentos de POST de cobro?",
+    "options": [
+      "Clave de idempotencia",
+      "Cambiar la URL en cada petición",
+      "Usar solo GET para cobrar"
+    ],
+    "correct": 0,
+    "explanation": "La clave permite reconocer operaciones repetidas.",
+    "readingMinutes": 14
+  },
+  {
+    "id": "I12",
+    "title": "Proyecto intermedio: Monolito modular",
+    "concept": "DDD + Clean/Hexagonal + ADR",
+    "activity": "Diseño modular con pruebas",
+    "level": "Intermedio",
+    "lesson": "El monolito modular ofrece límites claros sin multiplicar despliegues ni operaciones distribuidas.",
+    "example": "Construye el mapa de módulos de NexoShop y define propietarios.",
+    "question": "¿Qué decisión refleja mejor el concepto?",
+    "options": [
+      "Separar responsabilidades y declarar trade-offs",
+      "Mezclar todas las responsabilidades",
+      "Omitir pruebas"
+    ],
+    "correct": 0,
+    "explanation": "Las fronteras explícitas facilitan cambios.",
+    "readingMinutes": 14
+  },
+  {
+    "id": "A01",
+    "title": "System Design y estimación",
+    "concept": "Carga, throughput, storage, latencia, presupuestos",
+    "activity": "Capacity planner de URLs",
+    "level": "Avanzado",
+    "lesson": "System Design parte de números, límites y prioridades: tráfico, tamaño, crecimiento, p95 y objetivos.",
+    "example": "Estima peticiones por segundo para 3 millones de visitas diarias.",
+    "question": "¿Por qué documentar supuestos de capacidad?",
+    "options": [
+      "Porque las estimaciones dependen de volumen y patrones",
+      "Para evitar medir latencia",
+      "Para eliminar costes"
+    ],
+    "correct": 0,
+    "explanation": "Una cifra sin hipótesis no es reproducible.",
+    "readingMinutes": 19
+  },
+  {
+    "id": "A02",
+    "title": "Monolito modular vs microservicios",
+    "concept": "Límites, ownership, despliegue, costos",
+    "activity": "Árbol de decisión por contexto",
+    "level": "Avanzado",
+    "lesson": "Microservicios agregan latencia de red, operabilidad y consistencia. No son una mejora automática sobre un monolito.",
+    "example": "Justifica modularidad antes de fragmentar un equipo pequeño.",
+    "question": "¿Qué suele ser razonable para un equipo pequeño?",
+    "options": [
+      "Empezar con límites modulares claros",
+      "Separar todos los métodos en microservicios",
+      "Eliminar tests"
+    ],
+    "correct": 0,
+    "explanation": "La complejidad distribuida debe justificarse.",
+    "readingMinutes": 19
+  },
+  {
+    "id": "A03",
+    "title": "Comunicación síncrona y asíncrona",
+    "concept": "HTTP/gRPC, mensajería, colas",
+    "activity": "Elegir protocolo para un flujo",
+    "level": "Avanzado",
+    "lesson": "Síncrono facilita respuestas inmediatas; asíncrono desacopla tiempos y introduce garantías de entrega y duplicados.",
+    "example": "Elige mensajería para enviar confirmación sin bloquear checkout.",
+    "question": "¿Qué introduce mensajería asíncrona?",
+    "options": [
+      "Duplicados y consistencia eventual posibles",
+      "Transacciones globales gratuitas",
+      "Ausencia total de fallos"
+    ],
+    "correct": 0,
+    "explanation": "Los consumidores deben considerar al menos duplicados.",
+    "readingMinutes": 19
+  },
+  {
+    "id": "A04",
+    "title": "CQRS y Event-Driven",
+    "concept": "Modelos de lectura/escritura, proyecciones",
+    "activity": "Diseñar read model",
+    "level": "Avanzado",
+    "lesson": "CQRS separa modelos cuando existen motivos reales; eventos exigen versionado, idempotencia y observabilidad.",
+    "example": "Diseña proyección de lectura de historial de pedidos.",
+    "question": "¿Cuándo justifica CQRS su complejidad?",
+    "options": [
+      "Cuando lectura y escritura tienen necesidades significativamente diferentes",
+      "Para toda aplicación CRUD",
+      "Para eliminar la auditoría"
+    ],
+    "correct": 0,
+    "explanation": "CQRS es una decisión contextual.",
+    "readingMinutes": 19
+  },
+  {
+    "id": "A05",
+    "title": "Consistencia y transacciones distribuidas",
+    "concept": "Eventual consistency, outbox, saga, idempotencia",
+    "activity": "Resolver doble cobro",
+    "level": "Avanzado",
+    "lesson": "En sistemas distribuidos debes asumir reintentos y mensajes duplicados; outbox, idempotencia y saga reducen inconsistencias.",
+    "example": "Impide doble cobro frente a reintentos concurrentes.",
+    "question": "¿Cómo reduces un doble cobro por reintento?",
+    "options": [
+      "Idempotencia con deduplicación persistente",
+      "Retries infinitos",
+      "Una cola sin identificadores"
+    ],
+    "correct": 0,
+    "explanation": "La deduplicación debe cubrir operaciones concurrentes.",
+    "readingMinutes": 19
+  },
+  {
+    "id": "A06",
+    "title": "Datos, caché y escalabilidad",
+    "concept": "SQL/NoSQL, índices, partición, caché",
+    "activity": "Elegir almacenamiento y TTL",
+    "level": "Avanzado",
+    "lesson": "Las opciones de almacenamiento y caché dependen de acceso, consistencia, tolerancia a fallos y coste.",
+    "example": "Decide TTL y estrategia de invalidación para catálogo.",
+    "question": "¿Qué problema debe resolver una caché?",
+    "options": [
+      "Invalidación y frescura de datos",
+      "Todos los requisitos de seguridad",
+      "Eliminar el origen de datos"
+    ],
+    "correct": 0,
+    "explanation": "La caché exige políticas de caducidad.",
+    "readingMinutes": 19
+  },
+  {
+    "id": "A07",
+    "title": "Resiliencia",
+    "concept": "Timeouts, retries, jitter, circuit breaker, backpressure",
+    "activity": "Simular fallos parciales",
+    "level": "Avanzado",
+    "lesson": "Timeouts, retries con jitter, circuit breakers y límites de carga son defensas complementarias; demasiados retries amplifican fallas.",
+    "example": "Proyecta qué ocurre si el proveedor de pagos demora 20 segundos.",
+    "question": "¿Qué reduce una tormenta de reintentos?",
+    "options": [
+      "Backoff exponencial con jitter y límites",
+      "Reintentar inmediatamente para siempre",
+      "Aumentar timeouts ilimitadamente"
+    ],
+    "correct": 0,
+    "explanation": "Jitter distribuye presión, límites evitan amplificación.",
+    "readingMinutes": 19
+  },
+  {
+    "id": "A08",
+    "title": "Seguridad de arquitectura",
+    "concept": "Threat modeling, authn/authz, secretos, confianza",
+    "activity": "Corregir flujos inseguros",
+    "level": "Avanzado",
+    "lesson": "Threat modeling identifica activos, trust boundaries, amenazas y mitigaciones medibles.",
+    "example": "Evita acceso cruzado entre cuentas mediante autorización por recurso.",
+    "question": "¿Qué requiere una API multiusuario?",
+    "options": [
+      "Autorización por recurso y ámbito",
+      "Solo ocultar botones",
+      "Confiar en IDs del cliente"
+    ],
+    "correct": 0,
+    "explanation": "La API comprueba pertenencia, no solo autenticación.",
+    "readingMinutes": 19
+  },
+  {
+    "id": "A09",
+    "title": "Observabilidad y SLO",
+    "concept": "Logs, métricas, trazas, SLIs, error budget",
+    "activity": "Investigar degradación",
+    "level": "Avanzado",
+    "lesson": "Los SLI miden comportamientos observables; los SLO fijan objetivos. Logs, métricas y trazas responden preguntas distintas.",
+    "example": "Investiga p95 elevado con errores 200.",
+    "question": "¿Qué métrica revela una degradación sin errores HTTP?",
+    "options": [
+      "Latencia p95",
+      "Número de colores CSS",
+      "Cantidad de iconos"
+    ],
+    "correct": 0,
+    "explanation": "Una API 200 puede estar demasiado lenta.",
+    "readingMinutes": 19
+  },
+  {
+    "id": "A10",
+    "title": "Despliegue y arquitectura cloud",
+    "concept": "Contenedores, CI/CD, infraestructura y rollback",
+    "activity": "Diseñar pipeline seguro",
+    "level": "Avanzado",
+    "lesson": "Una estrategia de despliegue necesita pipelines, reversibilidad, migraciones compatibles y gestión de secretos.",
+    "example": "Diseña canary y rollback de una API pública.",
+    "question": "¿Qué facilita una reversión segura?",
+    "options": [
+      "Cambios de esquema compatibles y canary",
+      "Eliminar respaldos",
+      "Deploy sin métricas"
+    ],
+    "correct": 0,
+    "explanation": "Compatibilidad hacia atrás conserva opciones de rollback.",
+    "readingMinutes": 19
+  },
+  {
+    "id": "A11",
+    "title": "Evolución y modernización",
+    "concept": "Strangler, migraciones, compatibilidad",
+    "activity": "Planear salida de monolito legado",
+    "level": "Avanzado",
+    "lesson": "Strangler permite migrar capacidades gradualmente; dual-write y compatibilidad introducen riesgos que deben controlarse.",
+    "example": "Planea migración sin downtime de un módulo legado.",
+    "question": "¿Qué permite el patrón Strangler?",
+    "options": [
+      "Migración incremental alrededor del legado",
+      "Reescritura total instantánea",
+      "Compartir siempre la misma BD"
+    ],
+    "correct": 0,
+    "explanation": "Permite sustituir capacidades en etapas.",
+    "readingMinutes": 19
+  },
+  {
+    "id": "A12",
+    "title": "Proyecto avanzado: Plataforma de pedidos",
+    "concept": "Diseño end-to-end con trade-offs",
+    "activity": "Arquitectura + ADR + pruebas",
+    "level": "Avanzado",
+    "lesson": "Integra requisitos, calidad, C4, datos, seguridad, operación y decisiones evolutivas en un diseño completo.",
+    "example": "Defiende arquitectura de pedidos ante una revisión técnica.",
+    "question": "¿Qué debe contener una revisión arquitectónica?",
+    "options": [
+      "Requisitos, alternativas, trade-offs y operaciones",
+      "Solo capturas bonitas",
+      "Solo el framework elegido"
+    ],
+    "correct": 0,
+    "explanation": "La defensa vincula diseño con objetivos y riesgos.",
+    "readingMinutes": 19
+  }
+]
