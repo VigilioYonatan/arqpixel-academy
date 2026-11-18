@@ -9,6 +9,9 @@ if (existsSync('public/fonts')) {
 if (existsSync('public/vendor')) {
   cpSync('public/vendor', 'dist/vendor', { recursive: true });
 }
+if (existsSync('public/audio')) {
+  cpSync('public/audio', 'dist/audio', { recursive: true });
+}
 cpSync('data', 'dist/data', { recursive: true });
 copyFileSync('src/styles.css', 'dist/styles.css');
 copyFileSync('public/_headers', 'dist/_headers');

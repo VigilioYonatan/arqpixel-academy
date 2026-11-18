@@ -387,8 +387,10 @@ export function renderSeniorDashboardHtml(options: {
   readonly tierFilter: SeniorTierFilter;
   readonly searchQuery: string;
   readonly heroSpriteHtml: string;
+  readonly cinemaHtml?: string;
 }): string {
-  const { missions, playbooks, savedMissions, tierFilter, searchQuery, heroSpriteHtml } = options;
+  const { missions, playbooks, savedMissions, tierFilter, searchQuery, heroSpriteHtml, cinemaHtml } =
+    options;
   const filtered = filterSeniorMissions(missions, playbooks, tierFilter, searchQuery);
   const attempted_count = Object.keys(savedMissions).length;
   const awarded_count = Object.values(savedMissions).filter((m) => m.awarded).length;
@@ -415,6 +417,8 @@ export function renderSeniorDashboardHtml(options: {
     </div>
     ${heroSpriteHtml}
   </div>
+
+  ${cinemaHtml ? `<div class="cinema-senior-slot">${cinemaHtml}</div>` : ''}
 
   <section class="live-blueprint-shell mt-22" aria-label="Telemetría y filtro de las 18 misiones Senior">
     <div class="live-blueprint-topbar">
@@ -519,6 +523,7 @@ export function renderMissionBriefWorkspaceHtml(options: {
   readonly hintDrawerHtml: string;
   readonly sideSpriteHtml: string;
   readonly workshopCtaLabel: string;
+  readonly cinemaHtml?: string;
 }): string {
   const {
     mission,
@@ -532,6 +537,7 @@ export function renderMissionBriefWorkspaceHtml(options: {
     hintDrawerHtml,
     sideSpriteHtml,
     workshopCtaLabel,
+    cinemaHtml,
   } = options;
 
   return `<div class="backline"><a href="#/senior">← Volver a Senior Mode</a><span>MISIÓN ${esc(mission.id)} / ${totalMissionsCount}</span></div>
@@ -543,6 +549,7 @@ export function renderMissionBriefWorkspaceHtml(options: {
     savedSeed,
     criteriaFingerprint,
   })}
+  ${cinemaHtml ? `<div class="cinema-mission-slot">${cinemaHtml}</div>` : ''}
   <div class="mission-layout">
     <div>
       <div class="mission-brief">

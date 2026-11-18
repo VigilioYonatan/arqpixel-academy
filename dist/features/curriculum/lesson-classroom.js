@@ -1,4 +1,6 @@
 import { lessonSeniorScenario } from '../../lesson-senior.js';
+import { renderArquiBotCinemaHtml } from '../cinema/arquibot-player.js';
+import { buildModuleCinemaDeck } from '../cinema/arquibot-storyboards.js';
 import { LESSON_XP_REWARD } from '../shared/constants/app.constants.js';
 import { renderArquiBotSprite, } from '../shared/schemas/assets-manifest.schema.js';
 import { deriveLessonHints, renderHintDrawerHtml, renderSolutionRevealHtml, } from '../shared/ui/interactive-components.js';
@@ -162,12 +164,20 @@ export function renderLessonClassroomHtml(options) {
       ${renderLessonExecutiveDigestHtml(mod, answer !== undefined, Boolean(workbenchEvaluated && workbenchChoices.length === 2), done)}
 
       <nav class="section-jump-bar" aria-label="Navegación rápida de secciones de la lección">
+        <button type="button" class="jump-pill" data-scroll-target="sec-cinema">▶ Video resumen</button>
         <button type="button" class="jump-pill" data-scroll-target="sec-comprende">01 · Idea clave</button>
         ${enrichment ? '<button type="button" class="jump-pill" data-scroll-target="sec-diagrama">⬡ Diagrama y Código</button>' : ''}
         <button type="button" class="jump-pill" data-scroll-target="sec-workbench">02 · Taller 2/4</button>
         <button type="button" class="jump-pill" data-scroll-target="sec-aplica">03 · Decisión</button>
         <button type="button" class="jump-pill" data-scroll-target="sec-reflexiona">04 · Cuaderno</button>
       </nav>
+
+      <div id="sec-cinema" class="cinema-lesson-slot">
+        ${renderArquiBotCinemaHtml(buildModuleCinemaDeck(mod, options.audioManifest), {
+        compact: true,
+        manifestLookup,
+    })}
+      </div>
 
       <article id="sec-comprende" class="lesson-card">
         <span class="overline">01 / COMPRENDE</span>

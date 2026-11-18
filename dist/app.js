@@ -1,6 +1,9 @@
 import { analyzeC4Semantics, C4_CONTEXTUAL_SCENARIOS, C4_LEVEL_METADATA, C4_LEVEL_PRESETS, C4_LEVEL_TYPES, C4_LEVELS, C4_TYPES, c4Mermaid, c4Svg, downloadC4ModelPng, evaluateC4ContextualScenario, moveC4ContainerOrder, renderC4AccessibleSummaryHtml, resolveC4Level, validateC4, } from './c4-studio.js';
 import { evaluateDddAggregateDesign, evaluateUbiquitousLanguageAssignments, exportDddContextMapMermaid, exportDddContextMapSvg, exportDddWorkshopMarkdown, INITIAL_DDD_CONTEXT_MAP, renderDddWorkshopHtml, } from './ddd-workshop.js';
 import { evaluateMission, missionChoices, sanitizeProgress, scenarioFromSeed, } from './engine.js';
+import { bindCinemaPlayersInDom, disposeActiveCinemaPlayers, renderArquiBotCinemaHtml, } from './features/cinema/arquibot-player.js';
+import { buildHomeIntroDeck, buildSeniorMissionCinemaDeck, buildSeniorOverviewDeck, } from './features/cinema/arquibot-storyboards.js';
+import { audioManifestCatalogSchema, } from './features/cinema/schemas/cinema.schema.js';
 import { buildCurriculumMapModel, filterCurriculumMapNodes, nextMapFocusIndex, renderCurriculumMapHtml, } from './features/curriculum/learning-path-map.js';
 import { renderLessonClassroomHtml } from './features/curriculum/lesson-classroom.js';
 import { evaluateLessonWorkbench } from './features/curriculum/lesson-workbench.js';
@@ -116,6 +119,7 @@ let paths = [];
 let miniGames = [];
 let labCases = { patterns: [], api: [], incident: [] };
 let assetsManifestLookup = new Map();
+let audioManifest = {};
 let globalSearchIndex = [];
 let route = '';
 let currentSeed = 0;
@@ -446,6 +450,7 @@ function openShortcutsModal() {
 }
 function shell(content, is_not_found = false) {
     disposeActiveThreeStage();
+    disposeActiveCinemaPlayers();
     const trail = resolveBreadcrumbsTrail(route, breadcrumbContext(), is_not_found);
     const sys_banners_html = renderSystemResilienceBannersHtml({
         isOffline: isOfflineMode,
@@ -556,6 +561,7 @@ function shell(content, is_not_found = false) {
         el.onclick = () => goto(el.dataset.go || '');
     });
     updateGlobalHeader();
+    bindCinemaPlayersInDom(assetsManifestLookup);
     if (searchCommandOpen)
         mountSearchCommandOverlay(false);
     if (shortcutsModalOpen)
@@ -604,6 +610,11 @@ function homePage() {
   </section>
   ${renderResumeLastActivityBarHtml(last_visited)}
   ${is_fresh_visitor ? renderFirstVisitOnboardingHtml() : ''}
+  <div class="cinema-home-showcase">
+    ${renderArquiBotCinemaHtml(buildHomeIntroDeck(audioManifest), {
+        manifestLookup: assetsManifestLookup,
+    })}
+  </div>
   ${renderHomeEditorialShowcaseHtml({
         modules,
         paths,
@@ -843,6 +854,7 @@ function modulePage(module_id, force_senior = false, route_prefix = 'modulo') {
         workbenchChoices: lessonWorkbenchChoices[canonical_id] ?? [],
         workbenchEvaluated: Boolean(lessonWorkbenchEvaluated[canonical_id]),
         manifestLookup: assetsManifestLookup,
+        audioManifest,
     }));
     const toggle_index = document.querySelector('#toggle-classroom-index');
     if (toggle_index) {
@@ -2129,6 +2141,10 @@ function seniorDashboardPage() {
         tierFilter: seniorTierFilter,
         searchQuery: seniorSearchQuery,
         heroSpriteHtml: renderArquiBotSprite('arquibot-senior', 148, '', assetsManifestLookup),
+        cinemaHtml: renderArquiBotCinemaHtml(buildSeniorOverviewDeck(audioManifest), {
+            compact: true,
+            manifestLookup: assetsManifestLookup,
+        }),
     }));
     document.querySelectorAll('[data-senior-tier]').forEach((btn) => {
         btn.onclick = () => {
@@ -2212,6 +2228,10 @@ function missionPage(mission_id, explicit_seed) {
         }),
         sideSpriteHtml: renderArquiBotSprite('arquibot-senior', 124, '', assetsManifestLookup),
         workshopCtaLabel: 'Abrir taller Senior (6 actividades + bonus) ↗',
+        cinemaHtml: renderArquiBotCinemaHtml(buildSeniorMissionCinemaDeck(mission, playbook, audioManifest), {
+            compact: true,
+            manifestLookup: assetsManifestLookup,
+        }),
     }));
     const hasUnsavedAdrChanges = () => {
         const current_adr = document.querySelector('#senior-adr')?.value.trim() || '';
@@ -2689,7 +2709,11 @@ function render() {
         const normalized_suite_id = (second || 'S01').trim().toUpperCase();
         const mission = missions.find((x) => x.id === normalized_suite_id);
         if (mission) {
-            shell('<div id="senior-suite"></div>');
+            const suite_cinema_html = renderArquiBotCinemaHtml(buildSeniorMissionCinemaDeck(mission, SENIOR_PLAYBOOKS[mission.id], audioManifest), {
+                compact: true,
+                manifestLookup: assetsManifestLookup,
+            });
+            shell(`<div class="cinema-suite-slot">${suite_cinema_html}</div><div id="senior-suite"></div>`);
             const saved = state.missions[mission.id];
             const active_seed = params.has('seed')
                 ? sanitizeSeniorSeed(params.get('seed'), 0)
@@ -2806,7 +2830,7 @@ function render() {
 async function boot() {
     try {
         applyDocumentPreferences();
-        const [mRes, sRes, dRes, lRes, pRes, gRes, aRes] = await Promise.all([
+        const [mRes, sRes, dRes, lRes, pRes, gRes, aRes, audioRes] = await Promise.all([
             fetch('./data/modules.json'),
             fetch('./data/senior.json'),
             fetch('./data/deep-dives.json'),
@@ -2814,11 +2838,19 @@ async function boot() {
             fetch('./data/paths.json'),
             fetch('./data/mini-games.json'),
             fetch('./data/assets-manifest.json'),
+            fetch('./data/audio-manifest.json'),
         ]);
-        if (!mRes.ok || !sRes.ok || !dRes.ok || !lRes.ok || !pRes.ok || !gRes.ok || !aRes.ok) {
+        if (!mRes.ok ||
+            !sRes.ok ||
+            !dRes.ok ||
+            !lRes.ok ||
+            !pRes.ok ||
+            !gRes.ok ||
+            !aRes.ok ||
+            !audioRes.ok) {
             throw new Error('Faltan catálogos');
         }
-        const [rawModules, rawSenior, rawDeep, rawLabs, rawPaths, rawGames, rawAssets] = await Promise.all([
+        const [rawModules, rawSenior, rawDeep, rawLabs, rawPaths, rawGames, rawAssets, rawAudioManifest,] = await Promise.all([
             mRes.json(),
             sRes.json(),
             dRes.json(),
@@ -2826,6 +2858,7 @@ async function boot() {
             pRes.json(),
             gRes.json(),
             aRes.json(),
+            audioRes.json(),
         ]);
         modules = mergeValidatedCurriculum(rawModules, rawDeep);
         missions = missionsCatalogSchema.parse(rawSenior, 'senior.json');
@@ -2834,6 +2867,7 @@ async function boot() {
         miniGames = validateMiniCatalog(rawGames);
         const validated_assets = assetsManifestCatalogSchema.parse(rawAssets, 'assets-manifest.json');
         assetsManifestLookup = new Map(validated_assets.map((item) => [item.id, item]));
+        audioManifest = audioManifestCatalogSchema.parse(rawAudioManifest, 'audio-manifest.json');
         globalSearchIndex = buildGlobalSearchIndex({
             modules,
             missions,

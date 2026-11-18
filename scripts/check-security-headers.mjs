@@ -7,6 +7,7 @@ export function checkHeaders(html, headers) {
     "script-src 'self'",
     "style-src 'self'",
     "font-src 'self'",
+    "media-src 'self' data:",
     "connect-src 'self'",
     "object-src 'none'",
     "base-uri 'none'",

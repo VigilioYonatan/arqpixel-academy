@@ -253,7 +253,7 @@ export function filterSeniorMissions(missions, playbooks, tier, query) {
  * criteria per mission (`L2609`), saved seed badges (`L2610`), and minimalist live telemetry.
  */
 export function renderSeniorDashboardHtml(options) {
-    const { missions, playbooks, savedMissions, tierFilter, searchQuery, heroSpriteHtml } = options;
+    const { missions, playbooks, savedMissions, tierFilter, searchQuery, heroSpriteHtml, cinemaHtml } = options;
     const filtered = filterSeniorMissions(missions, playbooks, tierFilter, searchQuery);
     const attempted_count = Object.keys(savedMissions).length;
     const awarded_count = Object.values(savedMissions).filter((m) => m.awarded).length;
@@ -279,6 +279,8 @@ export function renderSeniorDashboardHtml(options) {
     </div>
     ${heroSpriteHtml}
   </div>
+
+  ${cinemaHtml ? `<div class="cinema-senior-slot">${cinemaHtml}</div>` : ''}
 
   <section class="live-blueprint-shell mt-22" aria-label="Telemetría y filtro de las 18 misiones Senior">
     <div class="live-blueprint-topbar">
@@ -355,7 +357,7 @@ export function renderSeniorDashboardHtml(options) {
         </div>`}`;
 }
 export function renderMissionBriefWorkspaceHtml(options) {
-    const { mission, totalMissionsCount, activeSeed, savedSeed, savedAdr, criteriaFingerprint, scenario, choices, hintDrawerHtml, sideSpriteHtml, workshopCtaLabel, } = options;
+    const { mission, totalMissionsCount, activeSeed, savedSeed, savedAdr, criteriaFingerprint, scenario, choices, hintDrawerHtml, sideSpriteHtml, workshopCtaLabel, cinemaHtml, } = options;
     return `<div class="backline"><a href="#/senior">← Volver a Senior Mode</a><span>MISIÓN ${esc(mission.id)} / ${totalMissionsCount}</span></div>
   <div class="page-title"><span class="eyebrow crown-color">♛ MISIÓN SENIOR · ESCENARIO REPRODUCIBLE</span><h1>${esc(mission.title)}</h1><p>${esc(mission.brief)}</p></div>
   ${renderSeedReproducerBarHtml({
@@ -365,6 +367,7 @@ export function renderMissionBriefWorkspaceHtml(options) {
         savedSeed,
         criteriaFingerprint,
     })}
+  ${cinemaHtml ? `<div class="cinema-mission-slot">${cinemaHtml}</div>` : ''}
   <div class="mission-layout">
     <div>
       <div class="mission-brief">

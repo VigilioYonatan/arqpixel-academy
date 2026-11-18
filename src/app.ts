@@ -42,6 +42,20 @@ import {
   sanitizeProgress,
   scenarioFromSeed,
 } from './engine.js';
+import {
+  bindCinemaPlayersInDom,
+  disposeActiveCinemaPlayers,
+  renderArquiBotCinemaHtml,
+} from './features/cinema/arquibot-player.js';
+import {
+  buildHomeIntroDeck,
+  buildSeniorMissionCinemaDeck,
+  buildSeniorOverviewDeck,
+} from './features/cinema/arquibot-storyboards.js';
+import {
+  type AudioManifestCatalogSchema,
+  audioManifestCatalogSchema,
+} from './features/cinema/schemas/cinema.schema.js';
 import type { MapStageFilter, MapStatusFilter } from './features/curriculum/constants/curriculum.constants.js';
 import {
   buildCurriculumMapModel,
@@ -394,6 +408,7 @@ let paths: LearningPathSchema[] = [];
 let miniGames: MiniGame[] = [];
 let labCases: LabCasesCatalogSchema = { patterns: [], api: [], incident: [] };
 let assetsManifestLookup: Map<string, AssetManifestItemSchema> = new Map();
+let audioManifest: AudioManifestCatalogSchema = {};
 let globalSearchIndex: SearchIndexItem[] = [];
 
 let route = '';
@@ -757,6 +772,7 @@ function openShortcutsModal(): void {
 
 function shell(content: string, is_not_found = false): void {
   disposeActiveThreeStage();
+  disposeActiveCinemaPlayers();
   const trail = resolveBreadcrumbsTrail(route, breadcrumbContext(), is_not_found);
   const sys_banners_html = renderSystemResilienceBannersHtml({
     isOffline: isOfflineMode,
@@ -872,6 +888,7 @@ function shell(content: string, is_not_found = false): void {
     (el as HTMLElement).onclick = () => goto((el as HTMLElement).dataset.go || '');
   });
   updateGlobalHeader();
+  bindCinemaPlayersInDom(assetsManifestLookup);
   if (searchCommandOpen) mountSearchCommandOverlay(false);
   if (shortcutsModalOpen) mountShortcutsModal(false);
 }
@@ -921,6 +938,11 @@ function homePage(): void {
   </section>
   ${renderResumeLastActivityBarHtml(last_visited)}
   ${is_fresh_visitor ? renderFirstVisitOnboardingHtml() : ''}
+  <div class="cinema-home-showcase">
+    ${renderArquiBotCinemaHtml(buildHomeIntroDeck(audioManifest), {
+      manifestLookup: assetsManifestLookup,
+    })}
+  </div>
   ${renderHomeEditorialShowcaseHtml({
     modules,
     paths,
@@ -1189,6 +1211,7 @@ function modulePage(
       workbenchChoices: lessonWorkbenchChoices[canonical_id] ?? [],
       workbenchEvaluated: Boolean(lessonWorkbenchEvaluated[canonical_id]),
       manifestLookup: assetsManifestLookup,
+      audioManifest,
     }),
   );
 
@@ -2631,6 +2654,10 @@ function seniorDashboardPage(): void {
       tierFilter: seniorTierFilter,
       searchQuery: seniorSearchQuery,
       heroSpriteHtml: renderArquiBotSprite('arquibot-senior', 148, '', assetsManifestLookup),
+      cinemaHtml: renderArquiBotCinemaHtml(buildSeniorOverviewDeck(audioManifest), {
+        compact: true,
+        manifestLookup: assetsManifestLookup,
+      }),
     }),
   );
 
@@ -2718,6 +2745,13 @@ function missionPage(mission_id: string, explicit_seed?: number): void {
       }),
       sideSpriteHtml: renderArquiBotSprite('arquibot-senior', 124, '', assetsManifestLookup),
       workshopCtaLabel: 'Abrir taller Senior (6 actividades + bonus) ↗',
+      cinemaHtml: renderArquiBotCinemaHtml(
+        buildSeniorMissionCinemaDeck(mission, playbook, audioManifest),
+        {
+          compact: true,
+          manifestLookup: assetsManifestLookup,
+        },
+      ),
     }),
   );
 
@@ -3222,7 +3256,14 @@ function render(): void {
     const normalized_suite_id = (second || 'S01').trim().toUpperCase();
     const mission = missions.find((x) => x.id === normalized_suite_id);
     if (mission) {
-      shell('<div id="senior-suite"></div>');
+      const suite_cinema_html = renderArquiBotCinemaHtml(
+        buildSeniorMissionCinemaDeck(mission, SENIOR_PLAYBOOKS[mission.id], audioManifest),
+        {
+          compact: true,
+          manifestLookup: assetsManifestLookup,
+        },
+      );
+      shell(`<div class="cinema-suite-slot">${suite_cinema_html}</div><div id="senior-suite"></div>`);
       const saved = state.missions[mission.id];
       const active_seed = params.has('seed')
         ? sanitizeSeniorSeed(params.get('seed'), 0)
@@ -3330,7 +3371,7 @@ function render(): void {
 async function boot(): Promise<void> {
   try {
     applyDocumentPreferences();
-    const [mRes, sRes, dRes, lRes, pRes, gRes, aRes] = await Promise.all([
+    const [mRes, sRes, dRes, lRes, pRes, gRes, aRes, audioRes] = await Promise.all([
       fetch('./data/modules.json'),
       fetch('./data/senior.json'),
       fetch('./data/deep-dives.json'),
@@ -3338,12 +3379,31 @@ async function boot(): Promise<void> {
       fetch('./data/paths.json'),
       fetch('./data/mini-games.json'),
       fetch('./data/assets-manifest.json'),
+      fetch('./data/audio-manifest.json'),
     ]);
-    if (!mRes.ok || !sRes.ok || !dRes.ok || !lRes.ok || !pRes.ok || !gRes.ok || !aRes.ok) {
+    if (
+      !mRes.ok ||
+      !sRes.ok ||
+      !dRes.ok ||
+      !lRes.ok ||
+      !pRes.ok ||
+      !gRes.ok ||
+      !aRes.ok ||
+      !audioRes.ok
+    ) {
       throw new Error('Faltan catálogos');
     }
 
-    const [rawModules, rawSenior, rawDeep, rawLabs, rawPaths, rawGames, rawAssets] = await Promise.all([
+    const [
+      rawModules,
+      rawSenior,
+      rawDeep,
+      rawLabs,
+      rawPaths,
+      rawGames,
+      rawAssets,
+      rawAudioManifest,
+    ] = await Promise.all([
       mRes.json(),
       sRes.json(),
       dRes.json(),
@@ -3351,6 +3411,7 @@ async function boot(): Promise<void> {
       pRes.json(),
       gRes.json(),
       aRes.json(),
+      audioRes.json(),
     ]);
 
     modules = mergeValidatedCurriculum(rawModules, rawDeep);
@@ -3361,6 +3422,7 @@ async function boot(): Promise<void> {
 
     const validated_assets = assetsManifestCatalogSchema.parse(rawAssets, 'assets-manifest.json');
     assetsManifestLookup = new Map(validated_assets.map((item) => [item.id, item]));
+    audioManifest = audioManifestCatalogSchema.parse(rawAudioManifest, 'audio-manifest.json');
 
     globalSearchIndex = buildGlobalSearchIndex({
       modules,

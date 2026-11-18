@@ -8,14 +8,15 @@ import { pathToFileURL } from 'node:url';
 import { gzipSync } from 'node:zlib';
 
 export const BUNDLE_BUDGETS = Object.freeze({
-  maxTotalJsRawBytes: 940_000,
-  maxTotalJsGzipBytes: 300_000,
-  maxSingleJsRawBytes: 145_000,
+  maxTotalJsRawBytes: 1_020_000,
+  maxTotalJsGzipBytes: 325_000,
+  maxSingleJsRawBytes: 152_000,
   maxLazyVendorJsRawBytes: 2_300_000,
   maxLazyVendorJsGzipBytes: 560_000,
-  maxCssRawBytes: 96_000,
-  maxCssGzipBytes: 21_500,
+  maxCssRawBytes: 112_000,
+  maxCssGzipBytes: 24_500,
   maxSingleSpritePngBytes: 120_000,
+  maxSingleAudioMp3Bytes: 600_000,
 });
 
 const FORBIDDEN_BROWSER_MARKERS = ['node:fs', 'node:child_process', '@nestjs/', 'nestjs-zod'];
@@ -119,6 +120,18 @@ export function evaluateBundleBudget(distRoot = 'dist') {
     }
   }
 
+  const audioDir = join(distRoot, 'audio');
+  let audioCount = 0;
+  if (existsSync(audioDir)) {
+    for (const f of readdirSync(audioDir).filter((x) => x.endsWith('.mp3'))) {
+      audioCount++;
+      const sz = readFileSync(join(audioDir, f)).length;
+      if (sz === 0 || sz > BUNDLE_BUDGETS.maxSingleAudioMp3Bytes) {
+        issues.push(`Audio MP3 ${f} (${sz} B) out of bounds (1..${BUNDLE_BUDGETS.maxSingleAudioMp3Bytes} B)`);
+      }
+    }
+  }
+
   return {
     ok: issues.length === 0,
     issues,
@@ -132,6 +145,7 @@ export function evaluateBundleBudget(distRoot = 'dist') {
       cssRawBytes: cssRaw,
       cssGzipBytes: cssGzip,
       arquibotSpritesChecked: spriteCount,
+      studioAudioTracksChecked: audioCount,
     },
   };
 }

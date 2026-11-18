@@ -24,24 +24,25 @@
     "manual_nvda_voiceover_assistive_session": "NOT_RUN"
   },
   "bundle_metrics": {
-    "jsModuleCount": 53,
-    "totalJsRawBytes": 918467,
-    "totalJsGzipBytes": 285121,
+    "jsModuleCount": 57,
+    "totalJsRawBytes": 984516,
+    "totalJsGzipBytes": 302413,
     "lazyVendorRawBytes": 2133699,
     "lazyVendorGzipBytes": 421591,
     "largestJsChunk": {
       "file": "app.js",
-      "bytes": 144140
+      "bytes": 145788
     },
-    "cssRawBytes": 91426,
-    "cssGzipBytes": 19638,
-    "arquibotSpritesChecked": 16
+    "cssRawBytes": 105243,
+    "cssGzipBytes": 22424,
+    "arquibotSpritesChecked": 16,
+    "studioAudioTracksChecked": 5
   },
   "artifact_sha256": {
-    "dist/index.html": "4be9f3fe4ea21552fd7374a7aec717a9d3a097e79089df58fad1ebc64c894409",
-    "dist/app.js": "1d866fcf3d8cb8a7b7a681f9f40e4a5a72f106fabf0afe37a4e1d08a5691395d",
-    "dist/styles.css": "5b8a2d3a839eea199886013e02ddfa918202572a546b0b9b374d2b3c87610790",
-    "dist/_headers": "283e01a6b3d20a6154265735d874e2c73c5a73701ea656706d4ab2c96662dc70",
+    "dist/index.html": "b5f7d1bd33574f39f90ba4fd32fa17e791fcd27c3a130a23cd9c9d501e7e45d0",
+    "dist/app.js": "37179f6522347c27c20b0e9cc12cb6df6dba74b444af540af90a80328b1b681a",
+    "dist/styles.css": "dfd5449c46415570a73586f612441880f7b8c8d3af0bcf1db23a671aa9d7bbf7",
+    "dist/_headers": "f5ee20f8f645701cc953aaa38828da1a1eb29c0332e924b29863c7b7f31e3ae3",
     "security/sbom.cdx.json": "0ccd8716593494a82bb525ba2d5f4e004c70d530c1dfa3b807476ba9f6070035",
     "compatibility.json": "88f29955f4ca3343c84cf323d9c53f7d707894bc114ffe21276b5299df88e40c"
   },

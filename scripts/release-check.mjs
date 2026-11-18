@@ -14,7 +14,7 @@ for(const f of ['dist/index.html','dist/app.js','dist/engine.js','dist/senior-su
 
 if(games.length!==5||games.some(g=>g.questions?.length!==6)||modules.length!==36||missions.length!==18||paths.length!==8||deep.length!==36||missing.length||Object.values(lab).some(a=>a.length!==4))throw Error('Catálogo incorrecto');
 
-for(const f of ['modules.json','senior.json','deep-dives.json','lab-cases.json','paths.json','mini-games.json','assets-manifest.json'])if(readFileSync(`data/${f}`,'utf8')!==readFileSync(`dist/data/${f}`,'utf8'))throw Error('Dist desincronizado: '+f);
+for(const f of ['modules.json','senior.json','deep-dives.json','lab-cases.json','paths.json','mini-games.json','assets-manifest.json','audio-manifest.json'])if(readFileSync(`data/${f}`,'utf8')!==readFileSync(`dist/data/${f}`,'utf8'))throw Error('Dist desincronizado: '+f);
 
 // Verify all 16 official ArquiBot RGBA PNG sprites in dist/assets/arquibot/
 const arquibotSprites=assetsManifest.filter(item=>item.src.startsWith('./assets/arquibot/'));
