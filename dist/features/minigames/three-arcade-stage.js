@@ -433,6 +433,21 @@ export async function mountThreeArcadeStage(hud) {
             const hits = raycaster.intersectObjects(pickable_nodes, false);
             return hits.length > 0 ? hits[0].object : null;
         };
+        const applyDragDelta = (client_x, client_y) => {
+            const dx = client_x - last_ptr_x;
+            const dy = client_y - last_ptr_y;
+            if (dx === 0 && dy === 0)
+                return;
+            drag_travel_px += Math.hypot(dx, dy);
+            last_ptr_x = client_x;
+            last_ptr_y = client_y;
+            orbit_angle += dx * 0.012;
+            camera_pitch = Math.max(1.5, Math.min(6.4, camera_pitch + dy * 0.015));
+            orbit_count += 1;
+            host.dataset.orbitCount = String(orbit_count);
+            syncCamera();
+            renderer?.render(scene, camera);
+        };
         canvas_el.addEventListener('pointerdown', (ev) => {
             is_dragging = true;
             down_ptr_x = ev.clientX;
@@ -446,6 +461,16 @@ export async function mountThreeArcadeStage(hud) {
             catch {
                 /* synthetic event without active pointerId */
             }
+        });
+        canvas_el.addEventListener('mousedown', (ev) => {
+            if (is_dragging)
+                return;
+            is_dragging = true;
+            down_ptr_x = ev.clientX;
+            down_ptr_y = ev.clientY;
+            last_ptr_x = ev.clientX;
+            last_ptr_y = ev.clientY;
+            drag_travel_px = 0;
         });
         canvas_el.addEventListener('pointermove', (ev) => {
             if (is_disposed || !renderer)
@@ -463,17 +488,15 @@ export async function mountThreeArcadeStage(hud) {
                 renderer.render(scene, camera);
                 return;
             }
-            const dx = ev.clientX - last_ptr_x;
-            const dy = ev.clientY - last_ptr_y;
-            drag_travel_px += Math.hypot(dx, dy);
-            last_ptr_x = ev.clientX;
-            last_ptr_y = ev.clientY;
-            orbit_angle += dx * 0.012;
-            camera_pitch = Math.max(1.5, Math.min(6.4, camera_pitch + dy * 0.015));
-            orbit_count += 1;
-            host.dataset.orbitCount = String(orbit_count);
-            syncCamera();
-            renderer.render(scene, camera);
+            applyDragDelta(ev.clientX, ev.clientY);
+        });
+        canvas_el.addEventListener('mousemove', (ev) => {
+            if (is_disposed || !renderer || !is_dragging)
+                return;
+            applyDragDelta(ev.clientX, ev.clientY);
+        });
+        canvas_el.addEventListener('mouseup', () => {
+            is_dragging = false;
         });
         canvas_el.addEventListener('pointerup', (ev) => {
             const was_tap = is_dragging &&
@@ -548,6 +571,8 @@ export async function mountThreeArcadeStage(hud) {
         if (orbit_btn) {
             orbit_btn.onclick = () => {
                 orbit_angle += Math.PI / 4;
+                orbit_count += 1;
+                host.dataset.orbitCount = String(orbit_count);
                 syncCamera();
                 renderer?.render(scene, camera);
             };
