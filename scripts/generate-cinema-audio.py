@@ -101,11 +101,24 @@ def clean_for_speech(text: str) -> str:
         ("YAGNI", "yagni"),
         ("SDKs", "ese de kas"),
         ("SDK", "ese de ka"),
+        ("API Gateway", "a pe i Guéitwei"),
         ("Factory Method", "Fáctori Mézod"),
         ("Abstract Factory", "Ábstract Fáctori"),
+        ("Unit of Work", "Yúnit of Uork"),
+        ("Aggregate Root", "Ágregueit Rut"),
+        ("Bounded Contexts", "Báunded Cóntexts"),
+        ("Bounded Context", "Báunded Cóntext"),
+        ("Context Map", "Cóntext Map"),
+        ("Anti-Corruption Layer", "capa anticorrupción"),
         ("NotImplemented", "no implementado"),
         ("IoC", "inversión de control"),
         ("Express", "Exprés"),
+        ("Outbox", "Áutbox"),
+        ("Facade", "Fasád"),
+        ("Composite", "Cómposit"),
+        ("Command", "Cómand"),
+        ("patrón State", "patrón Estéit"),
+        ("Repository", "Repósitori"),
         ("Strategy", "Estráteyi"),
         ("Adapter", "Adápter"),
         ("Factory", "Fáctori"),
@@ -142,6 +155,7 @@ def clean_for_speech(text: str) -> str:
         ("timeouts", "taim auts"),
         ("timeout", "taim aut"),
         ("setters", "séters"),
+        ("mappers", "mápers"),
         ("checkout", "chekaut"),
         ("Frontend", "Fróntend"),
         ("Strangler", "Estrángler"),
@@ -844,6 +858,123 @@ def build_batch_4_scripts() -> dict[str, tuple[str, list[dict]]]:
     return decks
 
 
+def build_batch_5_scripts() -> dict[str, tuple[str, list[dict]]]:
+    """Next 5 studio-mastered 2-voice HD capsules (Videos 21–25): CLASS-I03, CLASS-I04, CLASS-I05, CLASS-I06 & SENIOR-S05."""
+    decks: dict[str, tuple[str, list[dict]]] = {}
+
+    # 21. CLASS-I03 — Module I03: Patrones estructurales
+    decks["CLASS-I03"] = (
+        "class-i03.mp3",
+        [
+            {
+                "speaker": "host",
+                "rate": "+5%",
+                "spoken": "Integramos un servicio legado de facturación y ahora treinta archivos de NexoShop importan cabeceras y códigos crudos de ese SDK externo. Si el proveedor actualiza su versión, ¿cómo evitamos editar medio sistema?",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Aislando fronteras con patrones estructurales. Adapter traduce un contrato externo incompatible al puerto limpio de tu dominio, Facade ofrece una entrada simple sobre un subsistema complejo y Decorator envuelve métricas o tiempos sin tocar la regla central.",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Úsalos con mesura: evita apilar siete Decorators anidados que oculten reintentos o mutaciones de estado y vuelvan imposible depurar una traza en producción.",
+            },
+        ],
+    )
+
+    # 22. CLASS-I04 — Module I04: Patrones de comportamiento
+    decks["CLASS-I04"] = (
+        "class-i04.mp3",
+        [
+            {
+                "speaker": "host",
+                "rate": "+5%",
+                "spoken": "En la tabla de pedidos tenemos tres booleanos sueltos: pagado, cancelado y enviado, y ayer apareció en producción un pedido marcado como pagado y cancelado al mismo tiempo. ¿Cómo cerramos esa brecha?",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Reemplaza booleanos sueltos por una máquina de estados explícita o patrón State donde cada transición valida sus precondiciones. Combínalo con Strategy para métodos de pago intercambiables y Observer para notificar sin acoplar al emisor.",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Distingue siempre comando de evento: Strategy ejecuta el algoritmo elegido hoy, mientras un evento notifica algo que ya ocurrió sin esconder cobros críticos en efectos secundarios invisibles.",
+            },
+        ],
+    )
+
+    # 23. CLASS-I05 — Module I05: Repository, Unit of Work y transacciones
+    decks["CLASS-I05"] = (
+        "class-i05.mp3",
+        [
+            {
+                "speaker": "host",
+                "rate": "+5%",
+                "spoken": "Creamos un repositorio genérico por cada tabla de base de datos, y alguien insertó líneas de pedido directamente saltándose el recálculo del total y el límite máximo de unidades. ¿Por qué falló esa abstracción?",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Porque un Repository se define por Aggregate Root, nunca por tabla hija suelta. El repositorio guarda la raíz completa y Unit of Work coordina una única transacción atómica entre el pedido, sus líneas y el registro Outbox.",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Reserva la hidratación completa del agregado para comandos que mutan invariantes; para listados y paneles paginados usa proyecciones ligeras de solo lectura.",
+            },
+        ],
+    )
+
+    # 24. CLASS-I06 — Module I06: Clean Architecture
+    decks["CLASS-I06"] = (
+        "class-i06.mp3",
+        [
+            {
+                "speaker": "host",
+                "rate": "+5%",
+                "spoken": "Renombramos nuestras carpetas a entidades, casos de uso y adaptadores, pero el caso de uso de aprobación devuelve códigos HTTP cuatrocientos veintidós y cabeceras de sesión. ¿Por qué no podemos reutilizarlo desde una cola?",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Porque renombrar carpetas no invierte dependencias. En Clean Architecture el caso de uso expresa verbos semánticos del negocio y devuelve resultados tipados del dominio, dejando que el controlador web o el consumidor de cola traduzcan su transporte.",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Verifica que el dominio tenga cero importaciones hacia infraestructura, pero evita duplicar cuatro mappers manuales idénticos en consultas simples donde una proyección tipada es suficiente.",
+            },
+        ],
+    )
+
+    # 25. SENIOR-S05 — Production Incident S05: DDD estratégico
+    decks["SENIOR-S05"] = (
+        "senior-s05.mp3",
+        [
+            {
+                "speaker": "host",
+                "rate": "+5%",
+                "spoken": "Misión Senior S05: Conflicto en el marketplace. Catálogo, Inventario y Facturación comparten y mutan una misma entidad global llamada Producto, provocando bloqueos entre equipos y cálculos fiscales corruptos.",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "La palabra producto significa cosas distintas en cada subdominio. Separa Bounded Contexts con propietario claro, expón contratos explícitos tras API Gateway y protege la integración mediante una Anti-Corruption Layer.",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "En el taller modela Dominio aislado y API Gateway sin tablas globales compartidas, valida contratos entre contextos y documenta tu Context Map en el ADR para revisión humana REQUIRES_REVIEW.",
+            },
+        ],
+    )
+
+    return decks
+
+
 async def main() -> None:
     force_regen = "--force" in sys.argv
     AUDIO_OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -860,6 +991,7 @@ async def main() -> None:
         **build_batch_2_scripts(),
         **build_batch_3_scripts(),
         **build_batch_4_scripts(),
+        **build_batch_5_scripts(),
     }
     print(f"🎙️ Verificando/generando {len(decks)} pistas de audio neuronal HD + mastering DSP con {FFMPEG}...")
     sem = asyncio.Semaphore(3)
