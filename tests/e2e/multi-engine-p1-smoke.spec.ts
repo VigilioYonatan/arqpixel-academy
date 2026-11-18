@@ -8,7 +8,7 @@ async function attachZeroErrorGuards(page: Page, browserName = 'chromium') {
     const win = window as unknown as { __cspViolations?: string[] };
     win.__cspViolations = [];
     window.addEventListener('securitypolicyviolation', (ev) => {
-      win.__cspViolations?.push(`${ev.violatedDirective}:${ev.blockedURI}`);
+      win.__cspViolations?.push(`${ev.violatedDirective}:${ev.blockedURI}:${ev.sourceFile || ''}`);
     });
   });
 
@@ -34,10 +34,16 @@ async function attachZeroErrorGuards(page: Page, browserName = 'chromium') {
     async assertClean() {
       expect(pageErrors, 'Zero uncaught pageerror exceptions').toEqual([]);
       expect(consoleErrors, 'Zero console.error logs').toEqual([]);
-      const csp = await page.evaluate(() => {
+      const inlineDomCount = await page.evaluate(
+        () => document.querySelectorAll('[style], style').length,
+      );
+      expect(inlineDomCount, 'Zero [style] attributes or <style> elements in DOM').toBe(0);
+      const csp = await page.evaluate((engine) => {
         const win = window as unknown as { __cspViolations?: string[] };
-        return win.__cspViolations ?? [];
-      });
+        const raw = win.__cspViolations ?? [];
+        // WebKit Bug #247829 fires style-src-attr:inline on native <progress> UA shadow-DOM bars (sourceFile === '')
+        return engine === 'webkit' ? raw.filter((v) => v !== 'style-src-attr:inline:') : raw;
+      }, browserName);
       expect(csp, 'Zero CSP violations under style-src self').toEqual([]);
     },
   };
