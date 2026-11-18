@@ -959,6 +959,299 @@ const CUSTOM_MODULE_DECKS: Readonly<Record<string, Omit<CinemaDeck, 'audio'>>> =
       },
     ],
   },
+  B11: {
+    id: 'CLASS-B11',
+    kicker: 'CLASE INTERACTIVA HD · B11',
+    heading: 'B11 · Introducción a patrones: solución contextual vs moda',
+    ctaLabel: 'Ir al taller 2/4',
+    ctaScrollTarget: 'sec-workbench',
+    scenes: [
+      {
+        chapter: '01 · Patrón por Moda',
+        title: 'Cuando un Singleton mutable rompe pruebas y filtra carritos',
+        durationSec: 11,
+        spriteId: 'arquibot-error',
+        aura: 'amber',
+        speaker: 'host',
+        speech:
+          'Un compañero leyó un libro de patrones GoF y metió un Singleton global mutable para el carrito de compras, y ahora las pruebas fallan al azar y se cruzan datos entre usuarios. ¿Qué salió mal?',
+        visual: {
+          kind: 'c4-topology',
+          mode: 'incident',
+          nodes: [
+            { label: 'GLOBAL_CART', sub: 'Singleton mutable', state: 'hot' },
+            { label: 'Petición Ana', sub: 'Pisa estado', state: 'hot' },
+            { label: 'Petición Luis', sub: 'Lee carrito ajeno', state: 'hot' },
+          ],
+          metricLabel: 'Aislamiento entre peticiones y tests',
+          metricBefore: '100% determinista',
+          metricAfter: 'Fuga cruzada ⚠',
+        },
+      },
+      {
+        chapter: '02 · Fuerzas y Coste',
+        title: 'Strategy, Adapter y Observer responden a fuerzas distintas',
+        durationSec: 13,
+        spriteId: 'arquibot-codigo',
+        aura: 'sky',
+        speaker: 'mentor',
+        speech:
+          'Aplicó un patrón sin diagnosticar las fuerzas del problema. Un patrón nunca es un adorno obligatorio: Strategy intercambia algoritmos, Adapter traduce contratos incompatibles y Observer desacopla notificaciones, siempre pagando una capa extra.',
+        visual: {
+          kind: 'arch-code-diff',
+          file: 'pattern-forces.ts',
+          before: [
+            'export const GLOBAL_MUTABLE_CART = { items: [] }; // estado global',
+          ],
+          after: [
+            'mapVendorCodeToStatus(code): "AUTHORIZED" | "DECLINED" // Adapter',
+            'calculateFee(order, activeFeeStrategy) // Strategy explícita',
+          ],
+          callout: 'Cada patrón exige justificar el problema real y su coste de indirección',
+        },
+      },
+      {
+        chapter: '03 · Regla de Adopción',
+        title: 'Nombrar dolor, coste asumido y alternativa simple descartada',
+        durationSec: 10,
+        spriteId: 'arquibot-exito',
+        aura: 'emerald',
+        speaker: 'mentor',
+        speech:
+          'Antes de introducir cualquier patrón nombra qué dolor real resuelve, qué coste operativo añade y qué alternativa directa descartaste. Si una función simple basta, elige siempre la claridad.',
+        visual: {
+          kind: 'adr-radar',
+          title: 'Filtro de Adopción de Patrones · B11',
+          lines: [
+            { prompt: '01', text: '¿Qué fuerza recurrente existe hoy (variación, SDK ajeno, evento)?', tone: 'ok' },
+            { prompt: '02', text: '¿Compensa la capa extra frente a una función pura directa?', tone: 'cmd' },
+            { prompt: '03', text: 'Prohibido usar Singleton mutable para estado de sesión/negocio', tone: 'warn' },
+          ],
+        },
+      },
+    ],
+  },
+  B12: {
+    id: 'CLASS-B12',
+    kicker: 'PROYECTO INTEGRADOR HD · B12',
+    heading: 'B12 · Proyecto Básico: App de reservas defendible de extremo a extremo',
+    ctaLabel: 'Ir al taller 2/4',
+    ctaScrollTarget: 'sec-workbench',
+    scenes: [
+      {
+        chapter: '01 · Doble Reserva',
+        title: 'Deshabilitar un botón en UI no impide colisiones concurrentes',
+        durationSec: 11,
+        spriteId: 'arquibot-error',
+        aura: 'amber',
+        speaker: 'host',
+        speech:
+          'Llegamos al proyecto integrador básico: una aplicación de reservas médicas. Si solo deshabilitamos el botón en el navegador, dos pacientes que pulsan al mismo segundo reservan el mismo consultorio. ¿Cómo lo blindamos?',
+        visual: {
+          kind: 'c4-topology',
+          mode: 'incident',
+          nodes: [
+            { label: 'Paciente A y B', sub: 'Clic simultáneo', state: 'hot' },
+            { label: 'Solo check UI', sub: 'Condición carrera', state: 'hot' },
+            { label: 'Consultorio 04', sub: 'Doble cita 10:00', state: 'hot' },
+          ],
+          metricLabel: 'Conflictos de agenda bajo concurrencia',
+          metricBefore: '0 solapamientos',
+          metricAfter: 'Doble reserva ⚠',
+        },
+      },
+      {
+        chapter: '02 · Defensa en Capas',
+        title: 'C4 Contenedores + Regla pura en Dominio + Constraint en BD',
+        durationSec: 12,
+        spriteId: 'arquibot-diagrama',
+        aura: 'sky',
+        speaker: 'mentor',
+        speech:
+          'Integrando todo lo aprendido en el nivel Básico: modelas contenedores C2 claros, validas la regla pura de solapamiento horario en el Dominio y respaldas la escritura con una restricción atómica en PostgreSQL.',
+        visual: {
+          kind: 'event-lanes',
+          mode: 'resilient',
+          statusBadge: 'ARQUITECTURA DE RESERVAS · CIERRE NIVEL BÁSICO (12/12)',
+          laneA: {
+            name: 'Diseño C2 + Dominio',
+            steps: ['Web Agenda → API', 'ReserveSlotUseCase', 'slotsOverlap() puro'],
+          },
+          laneB: {
+            name: 'Garantía Atómica',
+            steps: ['TX ACID PostgreSQL', 'Constraint único horario', '0 doble reserva ✓'],
+          },
+        },
+      },
+      {
+        chapter: '03 · Cierre con ADR',
+        title: 'Requisitos medibles, fronteras claras y riesgos explícitos',
+        durationSec: 11,
+        spriteId: 'arquibot-graduado',
+        aura: 'gold',
+        speaker: 'mentor',
+        speech:
+          'Un diseño básico completo cierra con un ADR honesto donde declaras tus requisitos medibles, límites de módulos, riesgos de concurrencia y cómo verificarás que nunca ocurran reservas duplicadas.',
+        visual: {
+          kind: 'adr-radar',
+          title: 'Entregable Integrador Básico · B12',
+          lines: [
+            { prompt: '✓', text: 'Escenario medible: p95 < 300 ms y 0 colisiones concurrentes', tone: 'ok' },
+            { prompt: '✓', text: 'Diagrama C4 (C1/C2) + capas con Dominio libre de SQL', tone: 'cmd' },
+            { prompt: '♛', text: 'ADR documentando trade-offs y prueba de concurrencia real', tone: 'warn' },
+          ],
+        },
+      },
+    ],
+  },
+  I01: {
+    id: 'CLASS-I01',
+    kicker: 'CLASE INTERACTIVA HD · I01',
+    heading: 'I01 · SOLID aplicado: ISP, LSP y contratos sin sorpresas',
+    ctaLabel: 'Ir al taller 2/4',
+    ctaScrollTarget: 'sec-workbench',
+    scenes: [
+      {
+        chapter: '01 · Interfaz Gigante',
+        title: 'Réplicas de lectura forzadas a lanzar errores NotImplemented',
+        durationSec: 12,
+        spriteId: 'arquibot-error',
+        aura: 'amber',
+        speaker: 'host',
+        speech:
+          'Abrimos el nivel Intermedio con un fallo real en producción: creamos un único repositorio gigante de pedidos, y cuando la réplica de solo lectura intenta implementarlo lanza errores de método NotImplemented. ¿Qué principio rompimos?',
+        visual: {
+          kind: 'dependency-rings',
+          mode: 'violation',
+          outerLayer: 'Contrato obeso que fuerza métodos ilegales',
+          coreItems: [
+            { name: 'OrderGiantRepo', rule: 'read + save + purgeAll()', state: 'leak' },
+            { name: 'ReadOnlyReplica', rule: 'throw NotImplemented!', state: 'leak' },
+          ],
+          infraTitle: 'Crash en runtime al sustituir implementación',
+          infraNote: 'Obligar a implementar métodos no soportados rompe ISP y LSP.',
+          badgeLabel: 'VIOLACIÓN ISP + LSP · 500 RUNTIME ⚠',
+        },
+      },
+      {
+        chapter: '02 · ISP + LSP',
+        title: 'Segregar puertos de lectura y escritura por consumidor',
+        durationSec: 12,
+        spriteId: 'arquibot-codigo',
+        aura: 'sky',
+        speaker: 'mentor',
+        speech:
+          'Rompiste ISP y LSP a la vez. Segrega contratos pequeños enfocados en cada consumidor, separando puertos de consulta y puertos de escritura para que cualquier implementación cumpla su promesa sin lanzar sorpresas en ejecución.',
+        visual: {
+          kind: 'arch-code-diff',
+          file: 'ports/order-segregated.ports.ts',
+          before: [
+            'class ReadOnlyReplica { deleteAll() { throw Error("NotImplemented") } }',
+          ],
+          after: [
+            'interface OrderReadPort { findById(id: string): Promise<OrderView | null> }',
+            'interface OrderWritePort { save(order: Order): Promise<void> }',
+          ],
+          callout: 'Cada consumidor depende únicamente de las operaciones que utiliza',
+        },
+      },
+      {
+        chapter: '03 · DIP Real',
+        title: 'Contratos del dominio frente a contenedores IoC cosméticos',
+        durationSec: 11,
+        spriteId: 'arquibot-exito',
+        aura: 'violet',
+        speaker: 'mentor',
+        speech:
+          'Recuerda además que invertir dependencias con DIP es diseñar contratos propiedad del dominio, no simplemente registrar veinte clases concretas en un contenedor IoC manteniendo acoplado el ORM.',
+        visual: {
+          kind: 'adr-radar',
+          title: 'Auditoría SOLID Nivel Intermedio · I01',
+          lines: [
+            { prompt: '✓', text: 'ISP: puertos cohesivos separados por rol (lectura vs comando)', tone: 'ok' },
+            { prompt: '✓', text: 'LSP: todo subtipo respeta precondiciones y postcondiciones', tone: 'cmd' },
+            { prompt: '⚠', text: 'DIP ≠ IoC mágico: el contrato pertenece al negocio, no al ORM', tone: 'warn' },
+          ],
+        },
+      },
+    ],
+  },
+  I02: {
+    id: 'CLASS-I02',
+    kicker: 'CLASE INTERACTIVA HD · I02',
+    heading: 'I02 · Patrones creacionales: Factory Method y Builder con invariantes',
+    ctaLabel: 'Ir al taller 2/4',
+    ctaScrollTarget: 'sec-workbench',
+    scenes: [
+      {
+        chapter: '01 · Objeto a Medias',
+        title: 'Pedidos con importe negativo creados por setters sueltos',
+        durationSec: 12,
+        spriteId: 'arquibot-error',
+        aura: 'amber',
+        speaker: 'host',
+        speech:
+          'En NexoShop creamos cupones y pedidos con constructores vacíos seguidos de ocho setters opcionales, y a mitad del flujo circulan pedidos con importe negativo y sin líneas. ¿Cómo garantizamos que nazcan válidos?',
+        visual: {
+          kind: 'c4-topology',
+          mode: 'incident',
+          nodes: [
+            { label: 'new Order()', sub: 'Estado vacío', state: 'hot' },
+            { label: '8 setters sueltos', sub: 'total = -50', state: 'hot' },
+            { label: 'Facturación', sub: 'Falla tarde', state: 'hot' },
+          ],
+          metricLabel: 'Entidades corruptas circulando en memoria',
+          metricBefore: '0 posibles',
+          metricAfter: 'Estados inválidos ⚠',
+        },
+      },
+      {
+        chapter: '02 · Factory vs Builder',
+        title: 'Fábricas para variantes válidas · Builder para ensamblaje complejo',
+        durationSec: 12,
+        spriteId: 'arquibot-codigo',
+        aura: 'sky',
+        speaker: 'mentor',
+        speech:
+          'Encapsulando su nacimiento. Usa una fábrica de dominio o Factory Method cuando debas elegir e inicializar variantes válidas, y aplica Builder cuando ensambles configuraciones complejas paso a paso validando todo al construir.',
+        visual: {
+          kind: 'arch-code-diff',
+          file: 'domain/coupon-factory.ts',
+          before: [
+            'const halfBaked = { id: "", discountPct: 140 }; // sin invariante',
+          ],
+          after: [
+            'createVerifiedCoupon(code, pct) // exige 0 < pct <= 80 al nacer',
+            'ConnectorBuilder.withTls(cert).withTimeout(2000).build()',
+          ],
+          callout: 'Si la creación retorna éxito, el objeto ya cumple todas sus invariantes',
+        },
+      },
+      {
+        chapter: '03 · Sin Excesos',
+        title: 'Proporcionalidad: no escribas 100 líneas para 3 campos planos',
+        durationSec: 11,
+        spriteId: 'arquibot-exito',
+        aura: 'emerald',
+        speaker: 'mentor',
+        speech:
+          'Si un objeto solo tiene tres datos obligatorios, un constructor tipado o función factoría pura supera a un Builder ceremonioso de cien líneas. Ninguna entidad del dominio debe existir jamás en estado corrupto.',
+        visual: {
+          kind: 'event-lanes',
+          mode: 'resilient',
+          statusBadge: 'GUÍA DE SELECCIÓN CREACIONAL · PROPORCIONALIDAD',
+          laneA: {
+            name: 'Caso Simple',
+            steps: ['3 campos fijos', 'Función factoría pura', 'Inmutable al nacer ✓'],
+          },
+          laneB: {
+            name: 'Caso Complejo',
+            steps: ['Familia conectores → Factory', '12 opciones → Builder', 'Valida en build() ✓'],
+          },
+        },
+      },
+    ],
+  },
 };
 
 const CUSTOM_SENIOR_DECKS: Readonly<Record<string, Omit<CinemaDeck, 'audio'>>> = {
@@ -1175,6 +1468,78 @@ const CUSTOM_SENIOR_DECKS: Readonly<Record<string, Omit<CinemaDeck, 'audio'>>> =
             { prompt: '01', text: 'Grafo Fase 1: Dominio aislado + Observabilidad sin acoplar SDKs', tone: 'ok' },
             { prompt: '02', text: 'Contract Tests: validar mapeo de respuesta, timeout y fallback', tone: 'cmd' },
             { prompt: '03', text: 'ADR: justificar Adapter/Strategy frente a coste extra (REQUIRES_REVIEW)', tone: 'warn' },
+          ],
+        },
+      },
+    ],
+  },
+  S04: {
+    id: 'SENIOR-S04',
+    kicker: 'BRIEFING TÁCTICO HD · S04',
+    heading: 'S04 · Clean vs Hexagonal: desacoplar ORM y HTTP del Dominio',
+    ctaLabel: 'Resolver los 6 retos',
+    ctaScrollTarget: 'senior-suite',
+    scenes: [
+      {
+        chapter: '01 · Incidente',
+        title: 'Express y Prisma incrustados dentro de las entidades del negocio',
+        durationSec: 12,
+        spriteId: 'arquibot-error',
+        aura: 'amber',
+        speaker: 'host',
+        speech:
+          'Misión Senior S04: Clean versus Hexagonal. El núcleo de clientes importa directamente objetos Request de Express e instancia el cliente de Prisma dentro del dominio, haciendo imposible probar reglas sin levantar servidor y base de datos.',
+        visual: {
+          kind: 'dependency-rings',
+          mode: 'violation',
+          outerLayer: 'Dominio secuestrado por Framework Web y ORM',
+          coreItems: [
+            { name: 'domain/customer.ts', rule: 'import { Request } from express', state: 'leak' },
+            { name: 'registerCustomer()', rule: 'new PrismaClient().create()', state: 'leak' },
+          ],
+          infraTitle: 'Tests lentos y frágiles acoplados a red/BD',
+          infraNote: 'Actualizar Express o Prisma rompe las reglas centrales del negocio.',
+          badgeLabel: 'ACOPLAMIENTO DIRECTO A ORM/HTTP ⚠',
+        },
+      },
+      {
+        chapter: '02 · Puertos y Casos',
+        title: 'Caso de uso explícito, puerto propio y adaptadores externos',
+        durationSec: 12,
+        spriteId: 'arquibot-diagrama',
+        aura: 'sky',
+        speaker: 'mentor',
+        speech:
+          'Limpia la dirección de dependencias: extrae un caso de uso que reciba un comando validado, define un puerto de repositorio en el dominio e implementa Prisma y Express afuera como adaptadores reemplazables.',
+        visual: {
+          kind: 'dependency-rings',
+          mode: 'clean',
+          outerLayer: 'Adaptadores Express & Prisma → Núcleo Hexagonal',
+          coreItems: [
+            { name: 'RegisterCustomerUseCase', rule: 'Depende de CustomerPort', state: 'port' },
+            { name: 'Customer Entity', rule: '0 imports de Express/Prisma', state: 'ok' },
+          ],
+          infraTitle: 'PrismaCustomerRepo implements CustomerPort',
+          infraNote: 'Componentes clave en S04: Dominio aislado + Base de datos tras puerto.',
+          badgeLabel: 'ARQUITECTURA HEXAGONAL · Ce = 0 ✓',
+        },
+      },
+      {
+        chapter: '03 · Entregable',
+        title: 'Grafo sin fugas, tests en memoria y ADR bajo revisión humana',
+        durationSec: 11,
+        spriteId: 'arquibot-senior',
+        aura: 'gold',
+        speaker: 'mentor',
+        speech:
+          'En el taller conecta Dominio aislado y Base de datos respetando fronteras limpias, demuestra pruebas unitarias sin infraestructura y documenta tus trade-offs en el ADR bajo revisión humana REQUIRES_REVIEW.',
+        visual: {
+          kind: 'adr-radar',
+          title: 'Evidencia Exigida · Misión S04',
+          lines: [
+            { prompt: '01', text: 'Grafo Fase 1: Dominio aislado + Base de datos con dirección limpia', tone: 'ok' },
+            { prompt: '02', text: 'Code Review: eliminar Express/Prisma del dominio e inyectar puerto', tone: 'cmd' },
+            { prompt: '03', text: 'ADR: defender límites Clean/Hexagonal sin sobre-capas (REQUIRES_REVIEW)', tone: 'warn' },
           ],
         },
       },

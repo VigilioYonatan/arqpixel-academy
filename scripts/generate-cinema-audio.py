@@ -101,9 +101,17 @@ def clean_for_speech(text: str) -> str:
         ("YAGNI", "yagni"),
         ("SDKs", "ese de kas"),
         ("SDK", "ese de ka"),
+        ("Factory Method", "Fáctori Mézod"),
+        ("Abstract Factory", "Ábstract Fáctori"),
+        ("NotImplemented", "no implementado"),
+        ("IoC", "inversión de control"),
+        ("Express", "Exprés"),
         ("Strategy", "Estráteyi"),
         ("Adapter", "Adápter"),
         ("Factory", "Fáctori"),
+        ("Builder", "Bílder"),
+        ("Observer", "Obsérver"),
+        ("Decorator", "Decoréitor"),
         ("Singleton", "Síngleton"),
         ("CQRS", "ce cu erre ese"),
         ("ACID", "ácid"),
@@ -719,6 +727,123 @@ def build_batch_3_scripts() -> dict[str, tuple[str, list[dict]]]:
     return decks
 
 
+def build_batch_4_scripts() -> dict[str, tuple[str, list[dict]]]:
+    """Next 5 studio-mastered 2-voice HD capsules (Videos 16–20): CLASS-B11, CLASS-B12, CLASS-I01, CLASS-I02 & SENIOR-S04."""
+    decks: dict[str, tuple[str, list[dict]]] = {}
+
+    # 16. CLASS-B11 — Module B11: Introducción a patrones
+    decks["CLASS-B11"] = (
+        "class-b11.mp3",
+        [
+            {
+                "speaker": "host",
+                "rate": "+5%",
+                "spoken": "Un compañero leyó un libro de patrones GoF y metió un Singleton global mutable para el carrito de compras, y ahora las pruebas fallan al azar y se cruzan datos entre usuarios. ¿Qué salió mal?",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Aplicó un patrón sin diagnosticar las fuerzas del problema. Un patrón nunca es un adorno obligatorio: Strategy intercambia algoritmos, Adapter traduce contratos incompatibles y Observer desacopla notificaciones, siempre pagando una capa extra.",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Antes de introducir cualquier patrón nombra qué dolor real resuelve, qué coste operativo añade y qué alternativa directa descartaste. Si una función simple basta, elige siempre la claridad.",
+            },
+        ],
+    )
+
+    # 17. CLASS-B12 — Module B12: Proyecto básico: App de reservas
+    decks["CLASS-B12"] = (
+        "class-b12.mp3",
+        [
+            {
+                "speaker": "host",
+                "rate": "+5%",
+                "spoken": "Llegamos al proyecto integrador básico: una aplicación de reservas médicas. Si solo deshabilitamos el botón en el navegador, dos pacientes que pulsan al mismo segundo reservan el mismo consultorio. ¿Cómo lo blindamos?",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Integrando todo lo aprendido en el nivel Básico: modelas contenedores C2 claros, validas la regla pura de solapamiento horario en el Dominio y respaldas la escritura con una restricción atómica en PostgreSQL.",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Un diseño básico completo cierra con un ADR honesto donde declaras tus requisitos medibles, límites de módulos, riesgos de concurrencia y cómo verificarás que nunca ocurran reservas duplicadas.",
+            },
+        ],
+    )
+
+    # 18. CLASS-I01 — Module I01: SOLID aplicado
+    decks["CLASS-I01"] = (
+        "class-i01.mp3",
+        [
+            {
+                "speaker": "host",
+                "rate": "+5%",
+                "spoken": "Abrimos el nivel Intermedio con un fallo real en producción: creamos un único repositorio gigante de pedidos, y cuando la réplica de solo lectura intenta implementarlo lanza errores de método NotImplemented. ¿Qué principio rompimos?",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Rompiste ISP y LSP a la vez. Segrega contratos pequeños enfocados en cada consumidor, separando puertos de consulta y puertos de escritura para que cualquier implementación cumpla su promesa sin lanzar sorpresas en ejecución.",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Recuerda además que invertir dependencias con DIP es diseñar contratos propiedad del dominio, no simplemente registrar veinte clases concretas en un contenedor IoC manteniendo acoplado el ORM.",
+            },
+        ],
+    )
+
+    # 19. CLASS-I02 — Module I02: Patrones creacionales
+    decks["CLASS-I02"] = (
+        "class-i02.mp3",
+        [
+            {
+                "speaker": "host",
+                "rate": "+5%",
+                "spoken": "En NexoShop creamos cupones y pedidos con constructores vacíos seguidos de ocho setters opcionales, y a mitad del flujo circulan pedidos con importe negativo y sin líneas. ¿Cómo garantizamos que nazcan válidos?",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Encapsulando su nacimiento. Usa una fábrica de dominio o Factory Method cuando debas elegir e inicializar variantes válidas, y aplica Builder cuando ensambles configuraciones complejas paso a paso validando todo al construir.",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Si un objeto solo tiene tres datos obligatorios, un constructor tipado o función factoría pura supera a un Builder ceremonioso de cien líneas. Ninguna entidad del dominio debe existir jamás en estado corrupto.",
+            },
+        ],
+    )
+
+    # 20. SENIOR-S04 — Production Incident S04: Clean vs Hexagonal
+    decks["SENIOR-S04"] = (
+        "senior-s04.mp3",
+        [
+            {
+                "speaker": "host",
+                "rate": "+5%",
+                "spoken": "Misión Senior S04: Clean versus Hexagonal. El núcleo de clientes importa directamente objetos Request de Express e instancia el cliente de Prisma dentro del dominio, haciendo imposible probar reglas sin levantar servidor y base de datos.",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Limpia la dirección de dependencias: extrae un caso de uso que reciba un comando validado, define un puerto de repositorio en el dominio e implementa Prisma y Express afuera como adaptadores reemplazables.",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "En el taller conecta Dominio aislado y Base de datos respetando fronteras limpias, demuestra pruebas unitarias sin infraestructura y documenta tus trade-offs en el ADR bajo revisión humana REQUIRES_REVIEW.",
+            },
+        ],
+    )
+
+    return decks
+
+
 async def main() -> None:
     force_regen = "--force" in sys.argv
     AUDIO_OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -730,7 +855,12 @@ async def main() -> None:
         except Exception:
             existing_manifest = {}
 
-    decks = {**build_batch_1_scripts(), **build_batch_2_scripts(), **build_batch_3_scripts()}
+    decks = {
+        **build_batch_1_scripts(),
+        **build_batch_2_scripts(),
+        **build_batch_3_scripts(),
+        **build_batch_4_scripts(),
+    }
     print(f"🎙️ Verificando/generando {len(decks)} pistas de audio neuronal HD + mastering DSP con {FFMPEG}...")
     sem = asyncio.Semaphore(3)
 

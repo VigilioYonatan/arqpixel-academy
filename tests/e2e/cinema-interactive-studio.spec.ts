@@ -2,13 +2,13 @@ import { mkdirSync } from 'node:fs';
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-test('ADR-0007: Interactive Cinema & Studio Audio HD — 15 videos HD, transición Play/Pause, capítulos, CC, móvil sin overflow y WCAG 2.2 AA', async ({
+test('ADR-0007: Interactive Cinema & Studio Audio HD — 20 videos HD, transición Play/Pause, capítulos, CC, móvil sin overflow y WCAG 2.2 AA', async ({
   page,
   request,
 }) => {
   mkdirSync('reports/screenshots', { recursive: true });
 
-  // 1. Verify all 15 Studio HD MP3 files are served over HTTP with audio/mpeg and 200 OK
+  // 1. Verify all 20 Studio HD MP3 files are served over HTTP with audio/mpeg and 200 OK
   for (const mp3 of [
     '/audio/home-intro.mp3',
     '/audio/senior-overview.mp3',
@@ -22,9 +22,14 @@ test('ADR-0007: Interactive Cinema & Studio Audio HD — 15 videos HD, transici�
     '/audio/class-b08.mp3',
     '/audio/class-b09.mp3',
     '/audio/class-b10.mp3',
+    '/audio/class-b11.mp3',
+    '/audio/class-b12.mp3',
+    '/audio/class-i01.mp3',
+    '/audio/class-i02.mp3',
     '/audio/senior-s01.mp3',
     '/audio/senior-s02.mp3',
     '/audio/senior-s03.mp3',
+    '/audio/senior-s04.mp3',
   ]) {
     const res = await request.get(mp3);
     expect(res.status(), `HTTP status for ${mp3}`).toBe(200);
@@ -82,7 +87,7 @@ test('ADR-0007: Interactive Cinema & Studio Audio HD — 15 videos HD, transici�
   await ccBtn.click();
   await expect(homeCinema.locator('.cinema-subtitles')).toBeVisible();
 
-  // 3. Verify CLASS-B01..B10, SENIOR-OVERVIEW, and SENIOR-S01..S03 mount cleanly and tear down on route change
+  // 3. Verify CLASS-B01..B12, CLASS-I01..I02, SENIOR-OVERVIEW, and SENIOR-S01..S04 mount cleanly and tear down on route change
   const expectedRouteDecks = [
     ['/#/aprender/B01', 'CLASS-B01', './audio/class-b01.mp3'],
     ['/#/aprender/B02', 'CLASS-B02', './audio/class-b02.mp3'],
@@ -94,10 +99,15 @@ test('ADR-0007: Interactive Cinema & Studio Audio HD — 15 videos HD, transici�
     ['/#/aprender/B08', 'CLASS-B08', './audio/class-b08.mp3'],
     ['/#/aprender/B09', 'CLASS-B09', './audio/class-b09.mp3'],
     ['/#/aprender/B10', 'CLASS-B10', './audio/class-b10.mp3'],
+    ['/#/aprender/B11', 'CLASS-B11', './audio/class-b11.mp3'],
+    ['/#/aprender/B12', 'CLASS-B12', './audio/class-b12.mp3'],
+    ['/#/aprender/I01', 'CLASS-I01', './audio/class-i01.mp3'],
+    ['/#/aprender/I02', 'CLASS-I02', './audio/class-i02.mp3'],
     ['/#/senior', 'SENIOR-OVERVIEW', './audio/senior-overview.mp3'],
     ['/#/taller-senior/S01', 'SENIOR-S01', './audio/senior-s01.mp3'],
     ['/#/taller-senior/S02', 'SENIOR-S02', './audio/senior-s02.mp3'],
     ['/#/taller-senior/S03', 'SENIOR-S03', './audio/senior-s03.mp3'],
+    ['/#/taller-senior/S04', 'SENIOR-S04', './audio/senior-s04.mp3'],
   ] as const;
 
   for (const [routeHash, deckId, expectedSrc] of expectedRouteDecks) {
@@ -137,12 +147,12 @@ test('ADR-0007: Interactive Cinema & Studio Audio HD — 15 videos HD, transici�
     axeB06.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious'),
   ).toEqual([]);
 
-  // Also verify deterministic non-MP3 module storyboard (e.g. B11) works with resilient internal clock
-  await page.goto('/#/aprender/B11');
-  const b11Host = page.locator('[data-cinema-deck="CLASS-B11"]');
-  await expect(b11Host).toBeVisible();
-  await b11Host.locator('[data-cinema-play-poster]').click();
-  await expect(b11Host).toHaveClass(/is-playing/);
+  // Also verify deterministic non-MP3 module storyboard (e.g. I03) works with resilient internal clock
+  await page.goto('/#/aprender/I03');
+  const i03Host = page.locator('[data-cinema-deck="CLASS-I03"]');
+  await expect(i03Host).toBeVisible();
+  await i03Host.locator('[data-cinema-play-poster]').click();
+  await expect(i03Host).toHaveClass(/is-playing/);
 
   // 4. Mobile 375x812 — zero horizontal overflow + >= 44px touch targets
   await page.setViewportSize({ width: 375, height: 812 });
