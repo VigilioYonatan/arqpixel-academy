@@ -25,8 +25,8 @@
   },
   "bundle_metrics": {
     "jsModuleCount": 53,
-    "totalJsRawBytes": 915815,
-    "totalJsGzipBytes": 284494,
+    "totalJsRawBytes": 915869,
+    "totalJsGzipBytes": 284505,
     "lazyVendorRawBytes": 2133699,
     "lazyVendorGzipBytes": 421591,
     "largestJsChunk": {

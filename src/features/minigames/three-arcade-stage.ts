@@ -578,6 +578,7 @@ export async function mountThreeArcadeStage(hud: MinigameHudState): Promise<void
       scene.add(outcome_ring);
     }
 
+    renderer.domElement.removeAttribute('style');
     host.innerHTML = '';
     host.appendChild(renderer.domElement);
     host.dataset.rendererMode = 'webgl-threejs';

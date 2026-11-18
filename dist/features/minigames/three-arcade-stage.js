@@ -407,6 +407,7 @@ export async function mountThreeArcadeStage(hud) {
             outcome_ring.position.set(0, -1.48, 0);
             scene.add(outcome_ring);
         }
+        renderer.domElement.removeAttribute('style');
         host.innerHTML = '';
         host.appendChild(renderer.domElement);
         host.dataset.rendererMode = 'webgl-threejs';
