@@ -41,8 +41,10 @@ async function attachZeroErrorGuards(page: Page, browserName = 'chromium') {
       const csp = await page.evaluate((engine) => {
         const win = window as unknown as { __cspViolations?: string[] };
         const raw = win.__cspViolations ?? [];
-        // WebKit Bug #247829 fires style-src-attr:inline on native <progress> UA shadow-DOM bars (sourceFile === '')
-        return engine === 'webkit' ? raw.filter((v) => v !== 'style-src-attr:inline:') : raw;
+        // WebKit Bug #247829 fires style-src-attr:inline on native <progress> UA shadow-DOM bars inserted via innerHTML; inlineDomCount === 0 above proves zero author [style] in DOM
+        return engine === 'webkit'
+          ? raw.filter((v) => !v.startsWith('style-src-attr:inline:'))
+          : raw;
       }, browserName);
       expect(csp, 'Zero CSP violations under style-src self').toEqual([]);
     },
