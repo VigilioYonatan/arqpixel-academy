@@ -1059,7 +1059,25 @@ function tracksPage(): void {
     'Evalúa sistemas distribuidos, escalabilidad y operación.',
   ];
 
-  shell(`<div class="page-title"><span class="eyebrow">◈ CAMINO DEL ARQUITECTO</span><h1>Rutas de aprendizaje</h1><p>Domina los fundamentos, diseña dominios y aprende a defender arquitecturas de producción. Cada módulo tiene teoría, ejemplo y evaluación interactiva.</p></div>
+  const level_dots: Record<(typeof groups)[number], string> = {
+    Básico: 'basico',
+    Intermedio: 'intermedio',
+    Avanzado: 'avanzado',
+  };
+  const level_glyphs: Record<(typeof groups)[number], string> = {
+    Básico: '⬡',
+    Intermedio: '◈',
+    Avanzado: '⚡',
+  };
+
+  shell(`<div class="page-intro-row">
+    <div class="page-title m-0"><span class="eyebrow">◈ CAMINO DEL ARQUITECTO</span><h1>Rutas de <span>aprendizaje</span></h1><p>Domina los fundamentos, diseña dominios y aprende a defender arquitecturas de producción. Cada módulo integra teoría visual, caso real y evaluación interactiva.</p></div>
+    <div class="intro-stat-card" aria-label="Progreso en rutas">
+      <span>PROGRESO CURRICULAR</span>
+      <strong>${state.done.length}<small>/${EXPECTED_MODULES_COUNT}</small></strong>
+      <small>lecciones completadas</small>
+    </div>
+  </div>
   <section class="arq-stats-strip stats-strip" aria-label="Indicadores de rutas de aprendizaje">
     <div class="intro-stat"><strong>${state.done.length}/${EXPECTED_MODULES_COUNT}</strong><small>LECCIONES</small></div>
     <div class="intro-stat"><strong>3</strong><small>NIVELES PROGRESIVOS</small></div>
@@ -1086,10 +1104,27 @@ function tracksPage(): void {
             .map((m) => {
               const readiness = resolveModuleContentReadiness(m, state.done);
               const is_done = readiness === 'completed';
-              return `<a class="module-tile ${is_done ? 'complete' : ''}" href="#/aprender/${m.id}">
-                <span class="tile-number">${m.id}</span>
-                <div><h3>${esc(m.title)}</h3><p>${esc(m.concept)}</p><small>◷ ${m.readingMinutes} min · ${readiness === 'coming_soon' ? 'Próximamente' : esc(m.activity)}</small></div>
-                <span class="tile-arrow">${readiness === 'coming_soon' ? '◌' : is_done ? '✓' : '↗'}</span>
+              const dot_cls = level_dots[group];
+              const glyph = level_glyphs[group];
+              return `<a class="module-tile module-card-edu ${is_done ? 'complete' : ''}" href="#/aprender/${m.id}">
+                <div class="module-card-head">
+                  <span class="tile-number">${glyph}</span>
+                  <span class="module-num">#${m.id}${is_done ? ' · ✓ HECHO' : ''}</span>
+                </div>
+                <div class="module-level-row">
+                  <span class="level-dot ${dot_cls}" aria-hidden="true"></span>
+                  <span>${group.toUpperCase()} · ${m.readingMinutes} MIN</span>
+                </div>
+                <h3>${esc(m.title)}</h3>
+                <p>${esc(m.concept)}</p>
+                <div class="module-tags">
+                  <span class="tag">${readiness === 'coming_soon' ? 'Próximamente' : esc(m.activity)}</span>
+                  <span class="tag tag-accent">${m.id}</span>
+                </div>
+                <div class="module-card-footer">
+                  <span>${is_done ? 'Repasar módulo' : 'Empezar módulo'}</span>
+                  <span class="tile-arrow" aria-hidden="true">${readiness === 'coming_soon' ? '◌' : is_done ? '✓' : '→'}</span>
+                </div>
               </a>`;
             })
             .join('')}
@@ -1536,7 +1571,14 @@ function labsPage(): void {
   const filtered_labs = filterLabStudios(LAB_STUDIOS, labsCatalogFilter);
   const all_tags = [...new Set(LAB_STUDIOS.map((l) => l.tag))];
 
-  shell(`<div class="page-title"><span class="eyebrow">⌘ TALLER PRÁCTICO</span><h1>Laboratorios de arquitectura</h1><p>Experimenta con reglas reales y modelos simplificados. Todos los ejercicios se realizan localmente; ningún laboratorio despliega infraestructura.</p></div>
+  shell(`<div class="page-intro-row">
+    <div class="page-title m-0"><span class="eyebrow">⌘ TALLER PRÁCTICO</span><h1>Laboratorios de <span>arquitectura</span></h1><p>Experimenta con reglas reales y modelos simplificados. Todos los ejercicios se realizan localmente; ningún laboratorio despliega infraestructura.</p></div>
+    <div class="intro-stat-card" aria-label="Total de laboratorios">
+      <span>ESTUDIOS LOCALES</span>
+      <strong>${LAB_STUDIOS.length}<small>/${LAB_STUDIOS.length}</small></strong>
+      <small>100 % reproducibles</small>
+    </div>
+  </div>
   <section class="arq-stats-strip stats-strip" aria-label="Indicadores de laboratorios interactivos">
     <div class="intro-stat"><strong>${LAB_STUDIOS.length}</strong><small>ESTUDIOS ACTIVOS</small></div>
     <div class="intro-stat"><strong>C1–C3</strong><small>C4 + MERMAID + PNG</small></div>
@@ -1581,7 +1623,13 @@ function labsPage(): void {
                 <span class="mini-tag mt-10">${lab.tag}</span>
                 <h3>${lab.title}</h3>
                 <p>${lab.subtitle}</p>
-                <span class="tile-link">Abrir laboratorio ↗</span>
+                <div class="module-tags mb-10">
+                  <span class="tag tag-accent">local/${esc(lab.id)}</span>
+                </div>
+                <div class="module-card-footer">
+                  <span class="tile-link">Abrir laboratorio</span>
+                  <span aria-hidden="true">→</span>
+                </div>
               </a>`,
             )
             .join('')}

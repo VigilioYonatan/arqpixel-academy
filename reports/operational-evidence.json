@@ -16,8 +16,8 @@
     "secret_and_symlink_scan": "PASS",
     "sbom_cyclonedx_1_5": "PASS",
     "curriculum_and_senior_dod_manifest": "PASS",
-    "biome_2_6_3_ci": "PASS",
-    "playwright_1_64_1_http_e2e_and_axe_wcag": "PASS",
+    "biome_2_6_3_ci": "NOT_RUN",
+    "playwright_1_64_1_http_e2e_and_axe_wcag": "NOT_RUN",
     "python_legacy_browser_e2e_runner": "BLOCKED",
     "external_github_hosted_runner_slsa": "NOT_RUN",
     "external_cloud_cdn_tls_deployment": "NOT_RUN",
@@ -25,22 +25,22 @@
   },
   "bundle_metrics": {
     "jsModuleCount": 53,
-    "totalJsRawBytes": 915869,
-    "totalJsGzipBytes": 284505,
+    "totalJsRawBytes": 918467,
+    "totalJsGzipBytes": 285121,
     "lazyVendorRawBytes": 2133699,
     "lazyVendorGzipBytes": 421591,
     "largestJsChunk": {
       "file": "app.js",
-      "bytes": 142222
+      "bytes": 144140
     },
-    "cssRawBytes": 81595,
-    "cssGzipBytes": 18620,
+    "cssRawBytes": 91426,
+    "cssGzipBytes": 19638,
     "arquibotSpritesChecked": 16
   },
   "artifact_sha256": {
-    "dist/index.html": "02e3b2026f2ae364f045af66d1d37fc7ac33e9c2756b14a76dafd981b8a00704",
-    "dist/app.js": "8d8f706e9d25b4eaf0a6fecf622257a5980897e1cb643d3a13ba8c93bf4e0958",
-    "dist/styles.css": "8d195d643bd09fc59bb1e80227e117a49287f0abde5488bf025da129202e347c",
+    "dist/index.html": "4be9f3fe4ea21552fd7374a7aec717a9d3a097e79089df58fad1ebc64c894409",
+    "dist/app.js": "1d866fcf3d8cb8a7b7a681f9f40e4a5a72f106fabf0afe37a4e1d08a5691395d",
+    "dist/styles.css": "5b8a2d3a839eea199886013e02ddfa918202572a546b0b9b374d2b3c87610790",
     "dist/_headers": "283e01a6b3d20a6154265735d874e2c73c5a73701ea656706d4ab2c96662dc70",
     "security/sbom.cdx.json": "0ccd8716593494a82bb525ba2d5f4e004c70d530c1dfa3b807476ba9f6070035",
     "compatibility.json": "88f29955f4ca3343c84cf323d9c53f7d707894bc114ffe21276b5299df88e40c"

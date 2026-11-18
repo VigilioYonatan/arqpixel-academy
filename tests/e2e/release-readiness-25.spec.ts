@@ -20,13 +20,19 @@ test('§25 L2730: light, dark, mobile responsive, 3D Three.js and Senior S09 ver
 
   const font_audit = await page.evaluate(() => {
     const kpi = document.querySelector('.arq-stats-strip strong');
+    const ghost = document.querySelector('.arq-level-ghost');
+    const pill = document.querySelector('.hero-pill');
     const prose = document.querySelector('.hero-copy p');
     return {
       kpiFont: kpi ? getComputedStyle(kpi).fontFamily : '',
+      ghostFont: ghost ? getComputedStyle(ghost).fontFamily : '',
+      pillFont: pill ? getComputedStyle(pill).fontFamily : '',
       proseFont: prose ? getComputedStyle(prose).fontFamily : '',
     };
   });
-  expect(font_audit.kpiFont.toLowerCase()).toContain('silkscreen');
+  expect(font_audit.kpiFont.toLowerCase()).toContain('space grotesk');
+  expect(font_audit.ghostFont.toLowerCase()).toContain('silkscreen');
+  expect(font_audit.pillFont.toLowerCase()).toContain('jetbrains mono');
   expect(font_audit.proseFont.toLowerCase()).toContain('dm sans');
   expect(font_audit.proseFont.toLowerCase()).not.toContain('silkscreen');
 

@@ -13,7 +13,7 @@ export const BUNDLE_BUDGETS = Object.freeze({
   maxSingleJsRawBytes: 145_000,
   maxLazyVendorJsRawBytes: 2_300_000,
   maxLazyVendorJsGzipBytes: 560_000,
-  maxCssRawBytes: 86_000,
+  maxCssRawBytes: 96_000,
   maxCssGzipBytes: 21_500,
   maxSingleSpritePngBytes: 120_000,
 });

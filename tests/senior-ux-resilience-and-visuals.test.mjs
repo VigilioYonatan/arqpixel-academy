@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 import { renderLabTelemetryHeaderHtml } from '../dist/features/labs/lab-visual-diagnostics.js';
 import { renderMinigamesCatalogHtml } from '../dist/features/minigames/three-arcade-stage.js';
@@ -166,5 +167,27 @@ describe('Feature: Senior UX Resilience, Storage Quarantine, Onboarding, Draft P
     for (const html of fragments) {
       assert.equal(/\bstyle\s*=\s*["']/.test(html), false);
     }
+  });
+
+  it('Scenario: Given principal boot HTML and CloudEngineerPixel educational design tokens, When inspected, Then centered RouteLoadingState card, font/module preloads, Slate+Amber tokens and 4-font hierarchy are active without inline styles', () => {
+    const html = readFileSync('dist/index.html', 'utf8');
+    const css = readFileSync('dist/styles.css', 'utf8');
+
+    assert.ok(html.includes('class="boot-stage"'));
+    assert.ok(html.includes('class="route-loading-card"'));
+    assert.ok(html.includes('Cargando entorno de arquitectura…'));
+    assert.ok(html.includes('rel="preload"'));
+    assert.ok(html.includes('./fonts/dm-sans-latin.woff2'));
+    assert.ok(html.includes('./fonts/space-grotesk-latin.woff2'));
+    assert.ok(html.includes('rel="modulepreload" href="./app.js"'));
+    assert.equal(html.includes('Iniciando ARQPIXEL'), false);
+    assert.equal(/\bstyle\s*=\s*["']/.test(html), false);
+
+    assert.ok(css.includes('--bg:#090f1c'));
+    assert.ok(css.includes('--panel:#101a2b'));
+    assert.ok(css.includes('--accent:#ff9900'));
+    assert.ok(css.includes('--accent:#9a3412'));
+    assert.ok(css.includes('.module-card-edu'));
+    assert.ok(css.includes('.senior-terminal-box'));
   });
 });

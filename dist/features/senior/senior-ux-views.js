@@ -129,9 +129,9 @@ export function renderSeedReproducerBarHtml(options) {
 export function renderSeniorBuilderGraphSvgHtml(selected, relations, required) {
     if (selected.length === 0) {
         return `<svg class="senior-pipeline-svg" viewBox="0 0 680 94" role="img" aria-label="Grafo Senior vacío">
-      <rect width="680" height="94" rx="12" fill="#071628" stroke="#1b3f5c"/>
-      <text x="340" y="44" text-anchor="middle" fill="#9beeff" font-size="12" font-weight="bold" font-family="sans-serif">Marca entre 2 y 4 componentes arriba para visualizar tu topología en vivo</text>
-      <text x="340" y="66" text-anchor="middle" fill="#8bb0c9" font-size="10.5" font-family="monospace">Esenciales sugeridos en esta misión: ${esc(required.join(' + '))}</text>
+      <rect width="680" height="94" rx="12" fill="#0b1322" stroke="#2b3e57"/>
+      <text x="340" y="44" text-anchor="middle" fill="#f0f5ff" font-size="12" font-weight="bold" font-family="sans-serif">Marca entre 2 y 4 componentes arriba para visualizar tu topología en vivo</text>
+      <text x="340" y="66" text-anchor="middle" fill="#ffb340" font-size="10.5" font-family="monospace">Esenciales sugeridos en esta misión: ${esc(required.join(' + '))}</text>
     </svg>`;
     }
     const coords = new Map();
@@ -153,7 +153,7 @@ export function renderSeniorBuilderGraphSvgHtml(selected, relations, required) {
             return '';
         const mid_x = Math.round((a.x + b.x) / 2);
         const curve_y = Math.max(14, Math.min(a.y, b.y) - 34 - (idx % 2) * 10);
-        return `<path d="M ${a.x} ${a.y - 20} Q ${mid_x} ${curve_y} ${b.x} ${b.y - 20}" class="arch-flow-edge" fill="none" stroke="#16e1ee" stroke-width="2.1" marker-end="url(#sr-graph-arrow)"/>`;
+        return `<path d="M ${a.x} ${a.y - 20} Q ${mid_x} ${curve_y} ${b.x} ${b.y - 20}" class="arch-flow-edge" fill="none" stroke="#ffb340" stroke-width="2.1" marker-end="url(#sr-graph-arrow)"/>`;
     })
         .join('');
     const nodes_svg = selected
@@ -161,16 +161,16 @@ export function renderSeniorBuilderGraphSvgHtml(selected, relations, required) {
         const pt = coords.get(comp);
         const is_req = required.includes(comp);
         return `<g>
-        <rect x="${pt.x - 72}" y="${pt.y - 22}" width="144" height="44" rx="10" fill="${is_req ? '#0d3648' : '#0b2239'}" stroke="${is_req ? '#53e2ba' : '#18e1ee'}" stroke-width="1.6"/>
-        <text x="${pt.x}" y="${pt.y - 2}" text-anchor="middle" fill="#f2fbff" font-size="11" font-weight="bold" font-family="sans-serif">${esc(comp.slice(0, 20))}</text>
-        <text x="${pt.x}" y="${pt.y + 13}" text-anchor="middle" fill="#8fd8f2" font-size="9" font-family="monospace">${is_req ? '★ Esencial misión' : 'Componente activo'}</text>
+        <rect x="${pt.x - 72}" y="${pt.y - 22}" width="144" height="44" rx="10" fill="${is_req ? '#122a27' : '#132036'}" stroke="${is_req ? '#4dd8a1' : '#67aaff'}" stroke-width="1.6"/>
+        <text x="${pt.x}" y="${pt.y - 2}" text-anchor="middle" fill="#f0f5ff" font-size="11" font-weight="bold" font-family="sans-serif">${esc(comp.slice(0, 20))}</text>
+        <text x="${pt.x}" y="${pt.y + 13}" text-anchor="middle" fill="${is_req ? '#4dd8a1' : '#a6b7ce'}" font-size="9" font-family="monospace">${is_req ? '★ Esencial misión' : 'Componente activo'}</text>
       </g>`;
     })
         .join('');
     return `<svg class="senior-pipeline-svg" viewBox="0 0 680 ${svg_h}" role="img" aria-label="Diagrama en vivo de ${selected.length} componentes seleccionados y ${relations.length} relaciones">
     <defs>
       <marker id="sr-graph-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
-        <path d="M0,0 L8,4 L0,8 z" fill="#16e1ee"/>
+        <path d="M0,0 L8,4 L0,8 z" fill="#ffb340"/>
       </marker>
     </defs>
     <rect width="680" height="${svg_h}" rx="12" fill="#071628"/>
@@ -257,15 +257,22 @@ export function renderSeniorDashboardHtml(options) {
     const filtered = filterSeniorMissions(missions, playbooks, tierFilter, searchQuery);
     const attempted_count = Object.keys(savedMissions).length;
     const awarded_count = Object.values(savedMissions).filter((m) => m.awarded).length;
-    return `<div class="page-title">
-    <span class="eyebrow crown-color">${renderPixelNavIconSvg('senior', 14)} EL CAMINO DEL ARQUITECTO SENIOR</span>
-    <h1>Senior Mode <span class="gradient-text">/ Production Lab</span></h1>
-    <p>18 misiones identificables (S01–S18) × 6 actividades conectadas (108 retos) con criterios separados por misión, variantes reproducibles por seed e invariantes deterministas.</p>
+    return `<div class="page-intro-row">
+    <div class="page-title m-0">
+      <span class="eyebrow crown-color">${renderPixelNavIconSvg('senior', 14)} EL CAMINO DEL ARQUITECTO SENIOR</span>
+      <h1>Senior Mode <span>/ Production Lab</span></h1>
+      <p>18 misiones identificables (S01–S18) × 6 actividades conectadas (108 retos) con criterios separados por misión, variantes reproducibles por seed e invariantes deterministas.</p>
+    </div>
+    <div class="intro-stat-card intro-stat-gold" aria-label="Misiones Senior">
+      <span>INCIDENTES &amp; ADRs</span>
+      <strong>${attempted_count}<small>/${missions.length}</small></strong>
+      <small>${awarded_count} validados</small>
+    </div>
   </div>
 
   <div class="senior-hero">
     <div>
-      <span class="eyebrow">♛ DISEÑA BAJO PRESIÓN REAL</span>
+      <span class="eyebrow crown-color">♛ DISEÑA BAJO PRESIÓN REAL</span>
       <h2>Elige. Justifica. Verifica. Evoluciona.</h2>
       <p>Cada check reporta honestamente <code>PASS / FAIL / NOT_RUN / BLOCKED / REQUIRES_REVIEW</code>. Ningún criterio abierto se marca «aprobado por IA».</p>
       <div class="hero-tags"><span>18 misiones con criterios propios</span><span>Seed 0–1.000.000 reproducible</span><span>Criterios inmutables tras entrega</span></div>
@@ -316,24 +323,31 @@ export function renderSeniorDashboardHtml(options) {
             const pb = playbooks[mission.id];
             const saved = savedMissions[mission.id];
             const tier_label = tier === 'CRITICO' ? 'CRÍTICO' : tier;
-            return `<article class="mission-card senior-mission-card" data-mission-card="${esc(mission.id)}">
+            const tier_cls = tier === 'CRITICO'
+                ? 'tier-critico'
+                : tier === 'AVANZADO'
+                    ? 'tier-avanzado'
+                    : 'tier-profesional';
+            return `<article class="mission-card senior-mission-card ${tier_cls}" data-mission-card="${esc(mission.id)}">
                 <div class="level-ghost-num" aria-hidden="true">${esc(mission.id.slice(1))}</div>
-                <div class="map-node-top">
-                  <span class="mission-index">${esc(mission.id)} · ${tier_label}</span>
+                <div class="senior-card-head">
+                  <span class="mission-index"><i class="severity-dot" aria-hidden="true"></i> ${esc(mission.id)} · ${tier_label}</span>
                   <span class="map-badge sr-score">${saved ? `✓ Seed ${saved.seed} (${saved.score} pt)` : '◌ Disponible'}</span>
                 </div>
                 <h3>${esc(mission.title)}</h3>
                 <p>${esc(mission.brief)}</p>
                 ${pb
-                ? `<div class="senior-criteria-box">
-                        <small><b>◈ Foco:</b> ${esc(pb.focus)}</small>
-                        <small><b>⬡ Componentes clave:</b> ${esc(pb.required.join(' + '))}</small>
-                        <small><b>▤ Entregable:</b> ${esc(pb.artifact)}</small>
+                ? `<div class="senior-terminal-box">
+                        <code>&gt;_ ${esc(pb.focus)}</code>
+                        <small>Entregable: ${esc(pb.artifact)}</small>
+                      </div>
+                      <div class="module-tags mt-10">
+                        ${pb.required.map((req) => `<span class="tag tag-gold">${esc(req)}</span>`).join('')}
                       </div>`
                 : ''}
-                <div class="mission-footer mt-12">
+                <div class="mission-footer mt-14">
                   <a class="text-link" href="#/mision/${esc(mission.id)}${saved ? `?seed=${saved.seed}` : ''}">Brief ADR ↗</a>
-                  <a class="btn primary small" href="#/taller-senior/${esc(mission.id)}${saved ? `?seed=${saved.seed}` : ''}">Taller 6 retos ↗</a>
+                  <a class="btn primary small" href="#/taller-senior/${esc(mission.id)}${saved ? `?seed=${saved.seed}` : ''}">Taller 6 retos →</a>
                 </div>
               </article>`;
         })

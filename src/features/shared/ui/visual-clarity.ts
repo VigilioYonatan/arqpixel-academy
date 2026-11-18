@@ -280,17 +280,17 @@ export function renderHomeInteractiveBlueprintHtml(active_id: HomeBlueprintId): 
         <svg class="senior-pipeline-svg" viewBox="0 0 880 134" role="img" aria-label="Topología ${esc(active.headline)}">
           <defs>
             <marker id="home-bp-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
-              <path d="M0,0 L8,4 L0,8 z" fill="#16e1ee"/>
+              <path d="M0,0 L8,4 L0,8 z" fill="#ffb340"/>
             </marker>
           </defs>
           ${active.nodes
             .map(([title, subtitle], idx) => {
               const x = 16 + idx * 222;
-              const stroke = idx === 2 ? '#53e2ba' : '#18e1ee';
+              const stroke = idx === 2 ? '#4dd8a1' : idx === 1 ? '#67aaff' : '#ffb340';
               return `<g>
-                <rect x="${x}" y="38" width="174" height="76" rx="12" fill="#0b233a" stroke="${stroke}" stroke-width="1.6"/>
-                <text x="${x + 87}" y="68" text-anchor="middle" fill="#f2fbff" font-size="12.5" font-weight="bold" font-family="sans-serif">${esc(title)}</text>
-                <text x="${x + 87}" y="91" text-anchor="middle" fill="#8fd8f2" font-size="10.5" font-family="sans-serif">${esc(subtitle)}</text>
+                <rect x="${x}" y="38" width="174" height="76" rx="12" fill="#0d1729" stroke="${stroke}" stroke-width="1.6"/>
+                <text x="${x + 87}" y="68" text-anchor="middle" fill="#f0f5ff" font-size="12.5" font-weight="bold" font-family="sans-serif">${esc(title)}</text>
+                <text x="${x + 87}" y="91" text-anchor="middle" fill="#b7c6db" font-size="10.5" font-family="sans-serif">${esc(subtitle)}</text>
               </g>`;
             })
             .join('')}
@@ -300,9 +300,9 @@ export function renderHomeInteractiveBlueprintHtml(active_id: HomeBlueprintId): 
               const mid_x = x + 198;
               const pill_w = Math.max(88, edge_label.length * 6.4 + 16);
               return `<g>
-                <line x1="${x + 174}" y1="76" x2="${x + 222}" y2="76" class="arch-flow-edge" stroke="#16e1ee" stroke-width="2.2" marker-end="url(#home-bp-arrow)"/>
-                <rect x="${Math.round(mid_x - pill_w / 2)}" y="9" width="${Math.round(pill_w)}" height="20" rx="6" fill="#081b2e" stroke="#1b5878"/>
-                <text x="${mid_x}" y="22.5" text-anchor="middle" fill="#9beeff" font-size="9.5" font-family="monospace">${esc(edge_label)}</text>
+                <line x1="${x + 174}" y1="76" x2="${x + 222}" y2="76" class="arch-flow-edge" stroke="#ffb340" stroke-width="2.2" marker-end="url(#home-bp-arrow)"/>
+                <rect x="${Math.round(mid_x - pill_w / 2)}" y="9" width="${Math.round(pill_w)}" height="20" rx="6" fill="#090f1c" stroke="#2b3e57"/>
+                <text x="${mid_x}" y="22.5" text-anchor="middle" fill="#ffb340" font-size="9.5" font-family="monospace">${esc(edge_label)}</text>
               </g>`;
             })
             .join('')}

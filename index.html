@@ -1,1 +1,59 @@
-<!doctype html><html lang="es"><head><meta charset="UTF-8"/><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; base-uri 'none'; object-src 'none'; form-action 'none'"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><meta name="theme-color" content="#071322"/><meta name="description" content="ARQPIXEL Academy: aprende Arquitectura de Software con diagramas, patrones, DDD, laboratorios y Senior Mode."/><title>ARQPIXEL Academy</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23081930'/%3E%3Cpath d='M50 12 83 30 50 49 17 30ZM17 44l33 19 33-19M17 62l33 19 33-19' fill='none' stroke='%2300dafa' stroke-width='8' stroke-linejoin='round'/%3E%3C/svg%3E"/><link rel="stylesheet" href="./styles.css"/></head><body><div id="app"><p class="boot-loading">Iniciando ARQPIXEL…</p></div><script type="module" src="./app.js"></script></body></html>
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; base-uri 'none'; object-src 'none'; form-action 'none'"
+    />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta name="theme-color" content="#090f1c" />
+    <meta
+      name="description"
+      content="ARQPIXEL Academy: aprende Arquitectura de Software con diagramas C4, patrones GoF, DDD, laboratorios interactivos y Senior Mode."
+    />
+    <title>ARQPIXEL Academy · Arquitectura de Software</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23090f1c' stroke='%232b3e57' stroke-width='4'/%3E%3Cpath d='M50 14 83 32 50 50 17 32ZM17 46l33 18 33-18M17 63l33 18 33-18' fill='none' stroke='%23ff9900' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"
+    />
+    <link
+      rel="preload"
+      href="./fonts/dm-sans-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="./fonts/space-grotesk-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="modulepreload" href="./app.js" />
+  </head>
+  <body>
+    <div id="app">
+      <div class="boot-stage" role="status" aria-live="polite" aria-busy="true">
+        <div class="route-loading-card">
+          <div class="boot-icon-badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2 2 7l10 5 10-5-10-5Z" />
+              <path d="m2 17 10 5 10-5" />
+              <path d="m2 12 10 5 10-5" />
+            </svg>
+          </div>
+          <span class="boot-kicker"><i class="live-dot" aria-hidden="true"></i> ARQPIXEL ACADEMY · EDICIÓN LOCAL</span>
+          <strong>Cargando entorno de arquitectura…</strong>
+          <p>Preparando 36 lecciones, 18 misiones Senior, 8 laboratorios y motores interactivos sin llamadas externas.</p>
+          <div class="boot-progress-track" aria-hidden="true">
+            <span class="boot-progress-bar"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
