@@ -35,13 +35,25 @@ const SPOKEN_PREFIX_LETTERS = Object.freeze({
     A: 'a',
     S: 'ese',
 });
+const SPOKEN_TEENS = Object.freeze({
+    '10': 'diez',
+    '11': 'once',
+    '12': 'doce',
+    '13': 'trece',
+    '14': 'catorce',
+    '15': 'quince',
+    '16': 'dieciséis',
+    '17': 'diecisiete',
+    '18': 'dieciocho',
+});
 export function cleanArchitectureSpeechText(text) {
     let out = text.replace(/\b([BIAS])(\d)(\d)\b/g, (_full, letter, d1, d2) => {
         const l = SPOKEN_PREFIX_LETTERS[letter] ?? letter;
         if (d1 === '0') {
             return `${l} cero ${SPOKEN_DIGITS[d2] ?? d2}`;
         }
-        return `${l} ${d1}${d2}`;
+        const pair = `${d1}${d2}`;
+        return `${l} ${SPOKEN_TEENS[pair] ?? pair}`;
     });
     for (const [pattern, spoken] of ARCHITECTURE_SPEECH_REPLACEMENTS) {
         out = out.split(pattern).join(spoken);

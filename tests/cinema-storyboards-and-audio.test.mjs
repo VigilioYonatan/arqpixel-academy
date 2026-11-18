@@ -41,7 +41,7 @@ function hasValidMp3Signature(buf) {
   return buf[0] === 0xff && (buf[1] & 0xe0) === 0xe0;
 }
 
-test('ADR-0007 / BDD-01: audio-manifest.json valida los 10 videos Studio HD a 2 voces y sincroniza byte a byte public/audio con dist/audio', () => {
+test('ADR-0007 / BDD-01: audio-manifest.json valida los 15 videos Studio HD a 2 voces y sincroniza byte a byte public/audio con dist/audio', () => {
   const parsed = audioManifestCatalogSchema.safeParse(rawAudioManifest);
   assert.equal(parsed.success, true, 'data/audio-manifest.json debe cumplir audioManifestCatalogSchema');
 
@@ -54,8 +54,13 @@ test('ADR-0007 / BDD-01: audio-manifest.json valida los 10 videos Studio HD a 2 
     'CLASS-B04',
     'CLASS-B05',
     'CLASS-B06',
+    'CLASS-B07',
+    'CLASS-B08',
+    'CLASS-B09',
+    'CLASS-B10',
     'SENIOR-S01',
     'SENIOR-S02',
+    'SENIOR-S03',
   ];
   assert.equal(Object.keys(parsed.data).length, expectedHdIds.length);
   for (const id of expectedHdIds) {
@@ -107,11 +112,11 @@ test('ADR-0007 / BDD-01: audio-manifest.json valida los 10 videos Studio HD a 2 
   );
 });
 
-test('ADR-0007 / BDD-02: los 10 storyboards Studio HD coinciden exactamente 1:1 con generate-cinema-audio.py, cues[] y speakers[] y renderizan <track kind="captions">', () => {
+test('ADR-0007 / BDD-02: los 15 storyboards Studio HD coinciden exactamente 1:1 con generate-cinema-audio.py, cues[] y speakers[] y renderizan <track kind="captions">', () => {
   const audioManifest = audioManifestCatalogSchema.parse(rawAudioManifest, 'audio-manifest.json');
   const pyScript = readFileSync('scripts/generate-cinema-audio.py', 'utf8');
-  const modIds = ['B01', 'B02', 'B03', 'B04', 'B05', 'B06'];
-  const srIds = ['S01', 'S02'];
+  const modIds = ['B01', 'B02', 'B03', 'B04', 'B05', 'B06', 'B07', 'B08', 'B09', 'B10'];
+  const srIds = ['S01', 'S02', 'S03'];
 
   const hdDecks = [
     buildHomeIntroDeck(audioManifest),
@@ -194,14 +199,18 @@ test('ADR-0007 / BDD-04: sanitización fonética cleanArchitectureSpeechText y f
   assert.equal(formatCinemaTime(125.9), '02:05');
 
   const spoken = cleanArchitectureSpeechText(
-    'En S02 y B06 validamos C1, C2, C4, DDD, CQRS, HTTPS, DNS, TLS, PostgreSQL, rollback, p95, SLO y STRIDE sin REQUIRES_REVIEW falso.',
+    'En S03 y B10 validamos MVC, POO, SRP, DIP, SDKs, Strategy, Adapter, fallback, C1, C4, DDD, CQRS, HTTPS, PostgreSQL, rollback, p95, SLO y STRIDE sin REQUIRES_REVIEW falso.',
   );
   assert.doesNotMatch(spoken, /\bC4\b/);
   assert.doesNotMatch(spoken, /\bDDD\b/);
   assert.doesNotMatch(spoken, /\bCQRS\b/);
   assert.doesNotMatch(spoken, /\bHTTPS\b/);
-  assert.match(spoken, /ese cero dos/);
-  assert.match(spoken, /be cero seis/);
+  assert.doesNotMatch(spoken, /\bMVC\b/);
+  assert.match(spoken, /ese cero tres/);
+  assert.match(spoken, /be diez/);
+  assert.match(spoken, /eme uve ce/);
+  assert.match(spoken, /programación orientada a objetos/);
+  assert.match(spoken, /fólbak/);
   assert.match(spoken, /ce uno/);
   assert.match(spoken, /Póstgres/);
   assert.match(spoken, /rólbak/);

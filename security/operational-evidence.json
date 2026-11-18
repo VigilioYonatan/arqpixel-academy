@@ -25,8 +25,8 @@
   },
   "bundle_metrics": {
     "jsModuleCount": 57,
-    "totalJsRawBytes": 1005571,
-    "totalJsGzipBytes": 306688,
+    "totalJsRawBytes": 1025390,
+    "totalJsGzipBytes": 310893,
     "lazyVendorRawBytes": 2133699,
     "lazyVendorGzipBytes": 421591,
     "largestJsChunk": {
@@ -36,7 +36,7 @@
     "cssRawBytes": 105226,
     "cssGzipBytes": 22416,
     "arquibotSpritesChecked": 16,
-    "studioAudioTracksChecked": 10
+    "studioAudioTracksChecked": 15
   },
   "artifact_sha256": {
     "dist/index.html": "b5f7d1bd33574f39f90ba4fd32fa17e791fcd27c3a130a23cd9c9d501e7e45d0",

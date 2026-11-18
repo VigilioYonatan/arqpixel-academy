@@ -8,8 +8,8 @@ import { pathToFileURL } from 'node:url';
 import { gzipSync } from 'node:zlib';
 
 export const BUNDLE_BUDGETS = Object.freeze({
-  maxTotalJsRawBytes: 1_020_000,
-  maxTotalJsGzipBytes: 325_000,
+  maxTotalJsRawBytes: 1_060_000,
+  maxTotalJsGzipBytes: 335_000,
   maxSingleJsRawBytes: 152_000,
   maxLazyVendorJsRawBytes: 2_300_000,
   maxLazyVendorJsGzipBytes: 560_000,

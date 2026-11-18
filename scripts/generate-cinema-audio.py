@@ -91,6 +91,20 @@ def clean_for_speech(text: str) -> str:
         ("DDD", "de de de"),
         ("SOLID", "sólid"),
         ("GoF", "Gang of Four"),
+        ("MVC", "eme uve ce"),
+        ("POO", "programación orientada a objetos"),
+        ("SRP", "ese erre pe"),
+        ("OCP", "o ce pe"),
+        ("LSP", "ele ese pe"),
+        ("ISP", "i ese pe"),
+        ("DIP", "de i pe"),
+        ("YAGNI", "yagni"),
+        ("SDKs", "ese de kas"),
+        ("SDK", "ese de ka"),
+        ("Strategy", "Estráteyi"),
+        ("Adapter", "Adápter"),
+        ("Factory", "Fáctori"),
+        ("Singleton", "Síngleton"),
         ("CQRS", "ce cu erre ese"),
         ("ACID", "ácid"),
         ("SLOs", "ese ele os"),
@@ -116,6 +130,10 @@ def clean_for_speech(text: str) -> str:
         ("trade-offs", "treid ofs"),
         ("trade-off", "treid of"),
         ("rollback", "rólbak"),
+        ("fallback", "fólbak"),
+        ("timeouts", "taim auts"),
+        ("timeout", "taim aut"),
+        ("setters", "séters"),
         ("checkout", "chekaut"),
         ("Frontend", "Fróntend"),
         ("Strangler", "Estrángler"),
@@ -584,6 +602,123 @@ def build_batch_2_scripts() -> dict[str, tuple[str, list[dict]]]:
     return decks
 
 
+def build_batch_3_scripts() -> dict[str, tuple[str, list[dict]]]:
+    """Next 5 studio-mastered 2-voice HD capsules (Videos 11–15): CLASS-B07, CLASS-B08, CLASS-B09, CLASS-B10 & SENIOR-S03."""
+    decks: dict[str, tuple[str, list[dict]]] = {}
+
+    # 11. CLASS-B07 — Module B07: MVC y separación de concerns
+    decks["CLASS-B07"] = (
+        "class-b07.mp3",
+        [
+            {
+                "speaker": "host",
+                "rate": "+5%",
+                "spoken": "Adoptamos MVC en NexoShop, pero ahora el controlador de reservas valida cabeceras HTTP, calcula penalizaciones horarias y ejecuta consultas SQL directas. ¿Por qué nos cuesta tanto reutilizar esa lógica?",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Porque cayó en el antipatrón del controlador obeso. MVC solo separa la entrega visual y la entrada HTTP, pero las reglas de negocio deben vivir en casos de uso y entidades reutilizables desde web, trabajos programados o línea de comandos.",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Mantén el controlador delgado: traduce la petición, delega la decisión al dominio y devuelve la respuesta sin mezclar infraestructura ni trasladar todo el desorden a una clase utilitaria gigante.",
+            },
+        ],
+    )
+
+    # 12. CLASS-B08 — Module B08: POO para arquitectos
+    decks["CLASS-B08"] = (
+        "class-b08.mp3",
+        [
+            {
+                "speaker": "host",
+                "rate": "+5%",
+                "spoken": "Para modelar pedidos VIP, envíos exprés y promociones internacionales creamos una jerarquía de herencia de doce niveles, y cada nueva combinación rompe las subclases vecinas. ¿Qué alternativa tenemos en POO?",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Sustituye la herencia profunda por composición e interfaces pequeñas. En lugar de multiplicar subclases rígidas, inyecta políticas intercambiables de precios, impuestos y envío dentro de un servicio coordinador.",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Además, evita objetos anémicos llenos de setters públicos que permiten estados inválidos. Encapsula las transiciones dentro de métodos del dominio que protejan siempre sus precondiciones.",
+            },
+        ],
+    )
+
+    # 13. CLASS-B09 — Module B09: Cohesión, acoplamiento y modularidad
+    decks["CLASS-B09"] = (
+        "class-b09.mp3",
+        [
+            {
+                "speaker": "host",
+                "rate": "+5%",
+                "spoken": "Nuestro módulo contable importa colores de campañas promocionales de la interfaz, y cada vez que marketing cambia un banner tenemos que volver a probar y desplegar contabilidad. ¿Cómo evitamos ese arrastre?",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Aplicando el principio de dependencias estables. Los módulos centrales que muchos consumen deben tener acoplamiento saliente mínimo y contratos estables, nunca depender de módulos volátiles de presentación.",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Los bordes visuales cambian rápido y el núcleo monetario cambia lento. Publica únicamente contratos pequeños y explícitos entre módulos para contener el radio de impacto de cada entrega.",
+            },
+        ],
+    )
+
+    # 14. CLASS-B10 — Module B10: Introducción a SOLID
+    decks["CLASS-B10"] = (
+        "class-b10.mp3",
+        [
+            {
+                "speaker": "host",
+                "rate": "+5%",
+                "spoken": "Al empezar a aplicar SOLID en el equipo surgió el debate: ¿debemos crear una interfaz por cada clase del proyecto, incluso para funciones internas que solo suman dos importes?",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Nunca por dogma. SRP separa actores con distintos motivos de cambio, y DIP invierte dependencias justo en las fronteras de entrada y salida, como repositorios o pasarelas externas, para probar el negocio en aislamiento.",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Crear interfaces vacías donde no existe variación ni infraestructura solo duplica archivos y oscurece la lectura. Usa SOLID como bisturí frente al cambio real, no como burocracia preventiva.",
+            },
+        ],
+    )
+
+    # 15. SENIOR-S03 — Production Incident S03: Selección de patrones GoF
+    decks["SENIOR-S03"] = (
+        "senior-s03.mp3",
+        [
+            {
+                "speaker": "host",
+                "rate": "+5%",
+                "spoken": "Misión Senior S03: Integración multi-proveedor. NexoShop opera con pasarelas externas de notificaciones y pagos cuyos SDKs devuelven formatos y errores incompatibles, contaminando todos los casos de uso.",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Aquí brillan Adapter y Strategy combinados con criterio: defines un único puerto del dominio, traduces cada SDK externo en su propio adaptador aislado e instrumentas observabilidad, timeouts y fallback controlado.",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "En el taller modela Dominio aislado y Observabilidad, verifica contratos de error y latencia por proveedor y justifica en tu ADR por qué evitaste condicionales dispersos, quedando listo para REQUIRES_REVIEW.",
+            },
+        ],
+    )
+
+    return decks
+
+
 async def main() -> None:
     force_regen = "--force" in sys.argv
     AUDIO_OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -595,7 +730,7 @@ async def main() -> None:
         except Exception:
             existing_manifest = {}
 
-    decks = {**build_batch_1_scripts(), **build_batch_2_scripts()}
+    decks = {**build_batch_1_scripts(), **build_batch_2_scripts(), **build_batch_3_scripts()}
     print(f"🎙️ Verificando/generando {len(decks)} pistas de audio neuronal HD + mastering DSP con {FFMPEG}...")
     sem = asyncio.Semaphore(3)
 

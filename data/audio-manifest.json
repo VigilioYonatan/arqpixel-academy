@@ -140,5 +140,75 @@
       "mentor",
       "mentor"
     ]
+  },
+  "CLASS-B07": {
+    "src": "./audio/class-b07.mp3",
+    "totalSec": 37.98,
+    "cues": [
+      0.45,
+      13.65,
+      26.49
+    ],
+    "speakers": [
+      "host",
+      "mentor",
+      "mentor"
+    ]
+  },
+  "CLASS-B08": {
+    "src": "./audio/class-b08.mp3",
+    "totalSec": 36.31,
+    "cues": [
+      0.45,
+      14.1,
+      25.45
+    ],
+    "speakers": [
+      "host",
+      "mentor",
+      "mentor"
+    ]
+  },
+  "CLASS-B09": {
+    "src": "./audio/class-b09.mp3",
+    "totalSec": 32.48,
+    "cues": [
+      0.45,
+      11.18,
+      21.79
+    ],
+    "speakers": [
+      "host",
+      "mentor",
+      "mentor"
+    ]
+  },
+  "CLASS-B10": {
+    "src": "./audio/class-b10.mp3",
+    "totalSec": 32.88,
+    "cues": [
+      0.45,
+      9.93,
+      21.97
+    ],
+    "speakers": [
+      "host",
+      "mentor",
+      "mentor"
+    ]
+  },
+  "SENIOR-S03": {
+    "src": "./audio/senior-s03.mp3",
+    "totalSec": 37.7,
+    "cues": [
+      0.45,
+      13.69,
+      25.0
+    ],
+    "speakers": [
+      "host",
+      "mentor",
+      "mentor"
+    ]
   }
 }
