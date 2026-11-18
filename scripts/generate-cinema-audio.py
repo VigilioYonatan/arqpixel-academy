@@ -1,6 +1,7 @@
 import asyncio
 import json
 import math
+import re
 import struct
 import subprocess
 import sys
@@ -35,15 +36,57 @@ VOICE_HOST = "es-CO-SalomeNeural"      # Sofía: warm, clear, curious Tech Lead 
 VOICE_MENTOR = "es-ES-AlvaroNeural"    # ArquiBot Mentor: deep, confident Principal Software Architect
 
 
+_SPOKEN_DIGITS = {
+    "1": "uno",
+    "2": "dos",
+    "3": "tres",
+    "4": "cuatro",
+    "5": "cinco",
+    "6": "seis",
+    "7": "siete",
+    "8": "ocho",
+    "9": "nueve",
+}
+
+_SPOKEN_TEENS = {
+    "10": "diez",
+    "11": "once",
+    "12": "doce",
+    "13": "trece",
+    "14": "catorce",
+    "15": "quince",
+    "16": "dieciséis",
+    "17": "diecisiete",
+    "18": "dieciocho",
+}
+
+_SPOKEN_LETTERS = {"B": "be", "I": "i", "A": "a", "S": "ese"}
+
+
 def clean_for_speech(text: str) -> str:
     """Translates software architecture acronyms & technical tokens into natural spoken Spanish."""
+    out = re.sub(
+        r"\b([BIAS])0([1-9])\b",
+        lambda m: f"{_SPOKEN_LETTERS[m.group(1)]} cero {_SPOKEN_DIGITS[m.group(2)]}",
+        text,
+    )
+    out = re.sub(
+        r"\b([BIAS])(1[0-8])\b",
+        lambda m: f"{_SPOKEN_LETTERS[m.group(1)]} {_SPOKEN_TEENS[m.group(2)]}",
+        out,
+    )
     replacements = [
         ("ARQPIXEL Academy", "Arc Píxel Academy"),
         ("ARQPIXEL", "Arc Píxel"),
         ("NexoShop", "Nexo Shop"),
-        ("REQUIRES_REVIEW", "requiere revisión humana"),
+        ("PostgreSQL", "Póstgres"),
+        ("Clean Architecture", "Arquitectura Clean"),
+        ("REQUIRES_REVIEW", "revisión humana obligatoria"),
         ("FNV-1a", "efe ene uve uno a"),
         ("C1/C2/C3", "ce uno, ce dos y ce tres"),
+        ("C1", "ce uno"),
+        ("C2", "ce dos"),
+        ("C3", "ce tres"),
         ("C4", "ce cuatro"),
         ("DDD", "de de de"),
         ("SOLID", "sólid"),
@@ -54,8 +97,13 @@ def clean_for_speech(text: str) -> str:
         ("SLO", "ese ele o"),
         ("SLI", "ese ele i"),
         ("RPO/RTO", "erre pe o y erre te o"),
-        ("p95", "pe noventa y cinco"),
-        ("p99", "pe noventa y nueve"),
+        ("HTTPS", "ache te te pe ese"),
+        ("HTTP", "ache te te pe"),
+        ("DNS", "de ene ese"),
+        ("TLS", "te ele ese"),
+        ("POST", "post"),
+        ("p95", "percentil noventa y cinco"),
+        ("p99", "percentil noventa y nueve"),
         ("STRIDE", "estraid"),
         ("IDOR", "ídor"),
         ("DLQ", "cola de mensajes fallidos"),
@@ -67,20 +115,11 @@ def clean_for_speech(text: str) -> str:
         ("3D", "tres de"),
         ("trade-offs", "treid ofs"),
         ("trade-off", "treid of"),
+        ("rollback", "rólbak"),
         ("checkout", "chekaut"),
         ("Frontend", "Fróntend"),
         ("Strangler", "Estrángler"),
-        ("B01", "be cero uno"),
-        ("B02", "be cero dos"),
-        ("B03", "be cero tres"),
-        ("I01", "i cero uno"),
-        ("A01", "a cero uno"),
-        ("A05", "a cero cinco"),
-        ("S01", "ese cero uno"),
-        ("S09", "ese cero nueve"),
-        ("S18", "ese dieciocho"),
     ]
-    out = text
     for old, new in replacements:
         out = out.replace(old, new)
     return out
@@ -428,26 +467,165 @@ def build_batch_1_scripts() -> dict[str, tuple[str, list[dict]]]:
     return decks
 
 
+def build_batch_2_scripts() -> dict[str, tuple[str, list[dict]]]:
+    """Next 5 studio-mastered 2-voice HD capsules (Videos 6–10): CLASS-B03, CLASS-B04, CLASS-B05, CLASS-B06 & SENIOR-S02."""
+    decks: dict[str, tuple[str, list[dict]]] = {}
+
+    # 6. CLASS-B03 — Module B03: Componentes, módulos y responsabilidades
+    decks["CLASS-B03"] = (
+        "class-b03.mp3",
+        [
+            {
+                "speaker": "host",
+                "rate": "+5%",
+                "spoken": "En NexoShop metimos catálogo, cálculo de impuestos y envío de correos dentro de un mismo gestor de pedidos, y ahora cualquier ajuste fiscal rompe el carrito. ¿Qué falló?",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Falló la cohesión. La alta cohesión agrupa lo que cambia por el mismo motivo de negocio, mientras el bajo acoplamiento comunica Catálogo, Pedidos y Facturación mediante contratos mínimos sin dependencias circulares.",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Tampoco caigas en el extremo opuesto de partir una regla simple en quince microarchivos vacíos. Mide tu diseño preguntando cuántos módulos debes tocar cuando cambia una sola regla de negocio.",
+            },
+        ],
+    )
+
+    # 7. CLASS-B04 — Module B04: Diagramas de arquitectura (Modelo C4)
+    decks["CLASS-B04"] = (
+        "class-b04.mp3",
+        [
+            {
+                "speaker": "host",
+                "rate": "+5%",
+                "spoken": "Dibujamos un diagrama gigante donde aparece el cliente humano conectado con una flecha que dice usa hacia un índice de PostgreSQL, y ningún equipo entiende nada. ¿Cómo lo ordenamos?",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "El modelo C4 funciona como un mapa con niveles de zoom según la audiencia. En Contexto C1 muestras personas y sistemas externos; al acercarte a Contenedores C2 revelas la web, la API, la base de datos y sus protocolos reales.",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Prohíbe las flechas mudas que solo dicen usa. Etiqueta siempre la intención y el protocolo concreto, y evita dibujar a mano el nivel de código que cambia en cada entrega.",
+            },
+        ],
+    )
+
+    # 8. CLASS-B05 — Module B05: Cliente-servidor y web moderna
+    decks["CLASS-B05"] = (
+        "class-b05.mp3",
+        [
+            {
+                "speaker": "host",
+                "rate": "+5%",
+                "spoken": "En una compra web el navegador ya validó el stock y calculó el precio final con descuento. ¿Por qué no guardamos directamente ese total cuando llega el POST a pedidos?",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Porque el navegador vive en un entorno controlado por terceros. Entre el clic del usuario y la base de datos cruzas DNS, TLS y red móvil inestable; la interfaz mejora la experiencia, pero solo el servidor y el dominio poseen autoridad.",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Recibe únicamente identificadores y cantidades, recalcula importes en el backend y diseña pensando qué ocurre si la conexión se corta justo después de confirmar el pedido.",
+            },
+        ],
+    )
+
+    # 9. CLASS-B06 — Module B06: Arquitectura en capas e inversión de dependencias
+    decks["CLASS-B06"] = (
+        "class-b06.mp3",
+        [
+            {
+                "speaker": "host",
+                "rate": "+5%",
+                "spoken": "Creamos cuatro carpetas llamadas Presentación, Aplicación, Dominio e Infraestructura, pero nuestras entidades de Dominio importan el ORM y leen cabeceras HTTP. ¿Eso sigue siendo arquitectura en capas?",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Solo tienes cuatro carpetas, no fronteras reales. En Clean Architecture y Hexagonal las dependencias apuntan hacia adentro: el Dominio define puertos puros con acoplamiento saliente cero, y la Infraestructura se adapta a ellos.",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Así ejecutas cientos de pruebas de negocio en milisegundos sin levantar bases de datos. Eso sí: aplica capas donde existan invariantes reales que proteger, no por burocracia en un script trivial.",
+            },
+        ],
+    )
+
+    # 10. SENIOR-S02 — Production Incident S02: SOLID bajo presión
+    decks["SENIOR-S02"] = (
+        "senior-s02.mp3",
+        [
+            {
+                "speaker": "host",
+                "rate": "+5%",
+                "spoken": "Misión Senior S02: SOLID bajo presión. Comercial lanza campañas nuevas cada semana y cada cambio en la función de descuentos rompe planes antiguos en producción. ¿Congelamos campañas o creamos veinte clases abstractas?",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "Ni condicionales frágiles ni sobreingeniería especulativa. Aísla únicamente el eje real de variación detrás de una política de descuento componible, cubierta por pruebas de regresión y protegida con plan de rollback.",
+            },
+            {
+                "speaker": "mentor",
+                "rate": "+4%",
+                "spoken": "En el taller conecta Dominio aislado y Plan de rollback sin añadir complejidad innecesaria, valida tus límites de capacidad y justifica en el ADR por qué descartaste abstracciones prematuras, sujeto a REQUIRES_REVIEW.",
+            },
+        ],
+    )
+
+    return decks
+
+
 async def main() -> None:
+    force_regen = "--force" in sys.argv
     AUDIO_OUT_DIR.mkdir(parents=True, exist_ok=True)
-    decks = build_batch_1_scripts()
-    print(f"🎙️ Generando {len(decks)} pistas de audio neuronal HD + mastering DSP con {FFMPEG}...")
+
+    existing_manifest: dict[str, dict] = {}
+    if MANIFEST_PATH.exists() and not force_regen:
+        try:
+            existing_manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+        except Exception:
+            existing_manifest = {}
+
+    decks = {**build_batch_1_scripts(), **build_batch_2_scripts()}
+    print(f"🎙️ Verificando/generando {len(decks)} pistas de audio neuronal HD + mastering DSP con {FFMPEG}...")
     sem = asyncio.Semaphore(3)
 
-    tasks = {
-        deck_id: asyncio.create_task(build_deck_audio(deck_id, fname, scenes, sem))
-        for deck_id, (fname, scenes) in decks.items()
-    }
+    tasks: dict[str, asyncio.Task] = {}
+    manifest: dict[str, dict] = {}
 
-    manifest = {}
+    for deck_id, (fname, scenes) in decks.items():
+        cached = existing_manifest.get(deck_id)
+        mp3_file = AUDIO_OUT_DIR / fname
+        if (
+            not force_regen
+            and cached
+            and mp3_file.exists()
+            and mp3_file.stat().st_size > 20_000
+            and len(cached.get("cues", [])) == len(scenes)
+        ):
+            print(f"  ↺ [{deck_id}] {fname} en caché ({cached['totalSec']}s)")
+            manifest[deck_id] = cached
+        else:
+            tasks[deck_id] = asyncio.create_task(build_deck_audio(deck_id, fname, scenes, sem))
+
     for deck_id, task in tasks.items():
         manifest[deck_id] = await task
 
+    ordered_manifest = {deck_id: manifest[deck_id] for deck_id in decks}
     MANIFEST_PATH.write_text(
-        json.dumps(manifest, indent=2, ensure_ascii=False) + "\n",
+        json.dumps(ordered_manifest, indent=2, ensure_ascii=False) + "\n",
         encoding="utf-8",
     )
-    print(f"\n✅ Audio manifest guardado en {MANIFEST_PATH} ({len(manifest)} videos listos)")
+    print(f"\n✅ Audio manifest guardado en {MANIFEST_PATH} ({len(ordered_manifest)} videos listos)")
 
 
 if __name__ == "__main__":

@@ -25,23 +25,23 @@
   },
   "bundle_metrics": {
     "jsModuleCount": 57,
-    "totalJsRawBytes": 984516,
-    "totalJsGzipBytes": 302413,
+    "totalJsRawBytes": 1005571,
+    "totalJsGzipBytes": 306688,
     "lazyVendorRawBytes": 2133699,
     "lazyVendorGzipBytes": 421591,
     "largestJsChunk": {
       "file": "app.js",
       "bytes": 145788
     },
-    "cssRawBytes": 105243,
-    "cssGzipBytes": 22424,
+    "cssRawBytes": 105226,
+    "cssGzipBytes": 22416,
     "arquibotSpritesChecked": 16,
-    "studioAudioTracksChecked": 5
+    "studioAudioTracksChecked": 10
   },
   "artifact_sha256": {
     "dist/index.html": "b5f7d1bd33574f39f90ba4fd32fa17e791fcd27c3a130a23cd9c9d501e7e45d0",
     "dist/app.js": "37179f6522347c27c20b0e9cc12cb6df6dba74b444af540af90a80328b1b681a",
-    "dist/styles.css": "dfd5449c46415570a73586f612441880f7b8c8d3af0bcf1db23a671aa9d7bbf7",
+    "dist/styles.css": "d08119eb6ad515e3e4ea3487cd3a89f8db63dcbf524c6863ea568d3de5fe27d0",
     "dist/_headers": "f5ee20f8f645701cc953aaa38828da1a1eb29c0332e924b29863c7b7f31e3ae3",
     "security/sbom.cdx.json": "0ccd8716593494a82bb525ba2d5f4e004c70d530c1dfa3b807476ba9f6070035",
     "compatibility.json": "88f29955f4ca3343c84cf323d9c53f7d707894bc114ffe21276b5299df88e40c"

@@ -41,11 +41,23 @@ function hasValidMp3Signature(buf) {
   return buf[0] === 0xff && (buf[1] & 0xe0) === 0xe0;
 }
 
-test('ADR-0007 / BDD-01: audio-manifest.json valida los 5 videos Studio HD a 2 voces y sincroniza byte a byte public/audio con dist/audio', () => {
+test('ADR-0007 / BDD-01: audio-manifest.json valida los 10 videos Studio HD a 2 voces y sincroniza byte a byte public/audio con dist/audio', () => {
   const parsed = audioManifestCatalogSchema.safeParse(rawAudioManifest);
   assert.equal(parsed.success, true, 'data/audio-manifest.json debe cumplir audioManifestCatalogSchema');
 
-  const expectedHdIds = ['HOME-INTRO', 'SENIOR-OVERVIEW', 'CLASS-B01', 'CLASS-B02', 'SENIOR-S01'];
+  const expectedHdIds = [
+    'HOME-INTRO',
+    'SENIOR-OVERVIEW',
+    'CLASS-B01',
+    'CLASS-B02',
+    'CLASS-B03',
+    'CLASS-B04',
+    'CLASS-B05',
+    'CLASS-B06',
+    'SENIOR-S01',
+    'SENIOR-S02',
+  ];
+  assert.equal(Object.keys(parsed.data).length, expectedHdIds.length);
   for (const id of expectedHdIds) {
     const meta = parsed.data[id];
     assert.ok(meta, `Falta pista Studio HD ${id} en data/audio-manifest.json`);
@@ -95,19 +107,25 @@ test('ADR-0007 / BDD-01: audio-manifest.json valida los 5 videos Studio HD a 2 v
   );
 });
 
-test('ADR-0007 / BDD-02: los 5 storyboards Studio HD coinciden exactamente 1:1 con cues[] y speakers[] y renderizan <track kind="captions">', () => {
+test('ADR-0007 / BDD-02: los 10 storyboards Studio HD coinciden exactamente 1:1 con generate-cinema-audio.py, cues[] y speakers[] y renderizan <track kind="captions">', () => {
   const audioManifest = audioManifestCatalogSchema.parse(rawAudioManifest, 'audio-manifest.json');
-  const b01 = modules.find((m) => m.id === 'B01');
-  const b02 = modules.find((m) => m.id === 'B02');
-  const s01 = missions.find((m) => m.id === 'S01');
-  assert.ok(b01 && b02 && s01);
+  const pyScript = readFileSync('scripts/generate-cinema-audio.py', 'utf8');
+  const modIds = ['B01', 'B02', 'B03', 'B04', 'B05', 'B06'];
+  const srIds = ['S01', 'S02'];
 
   const hdDecks = [
     buildHomeIntroDeck(audioManifest),
     buildSeniorOverviewDeck(audioManifest),
-    buildModuleCinemaDeck(b01, audioManifest),
-    buildModuleCinemaDeck(b02, audioManifest),
-    buildSeniorMissionCinemaDeck(s01, SENIOR_PLAYBOOKS.S01, audioManifest),
+    ...modIds.map((id) => {
+      const m = modules.find((x) => x.id === id);
+      assert.ok(m, `Falta módulo ${id}`);
+      return buildModuleCinemaDeck(m, audioManifest);
+    }),
+    ...srIds.map((id) => {
+      const s = missions.find((x) => x.id === id);
+      assert.ok(s, `Falta misión ${id}`);
+      return buildSeniorMissionCinemaDeck(s, SENIOR_PLAYBOOKS[id], audioManifest);
+    }),
   ];
 
   for (const deck of hdDecks) {
@@ -117,6 +135,13 @@ test('ADR-0007 / BDD-02: los 5 storyboards Studio HD coinciden exactamente 1:1 c
       deck.audio.cues.length,
       `${deck.id}: número de escenas (${deck.scenes.length}) !== cues.length (${deck.audio.cues.length})`,
     );
+    for (const sc of deck.scenes) {
+      assert.equal(
+        pyScript.includes(sc.speech),
+        true,
+        `Deriva voz↔subtítulo en ${deck.id} (${sc.chapter}): el diálogo no coincide exactamente con scripts/generate-cinema-audio.py`,
+      );
+    }
     const timeline = computeDeckTimeline(deck);
     assert.equal(timeline.total, deck.audio.totalSec);
     assert.equal(timeline.starts[0], 0);
@@ -169,13 +194,17 @@ test('ADR-0007 / BDD-04: sanitización fonética cleanArchitectureSpeechText y f
   assert.equal(formatCinemaTime(125.9), '02:05');
 
   const spoken = cleanArchitectureSpeechText(
-    'En S01 y B01 validamos C4, DDD, CQRS, p95, SLO y STRIDE sin REQUIRES_REVIEW falso.',
+    'En S02 y B06 validamos C1, C2, C4, DDD, CQRS, HTTPS, DNS, TLS, PostgreSQL, rollback, p95, SLO y STRIDE sin REQUIRES_REVIEW falso.',
   );
   assert.doesNotMatch(spoken, /\bC4\b/);
   assert.doesNotMatch(spoken, /\bDDD\b/);
   assert.doesNotMatch(spoken, /\bCQRS\b/);
-  assert.match(spoken, /ese cero uno/);
-  assert.match(spoken, /be cero uno/);
+  assert.doesNotMatch(spoken, /\bHTTPS\b/);
+  assert.match(spoken, /ese cero dos/);
+  assert.match(spoken, /be cero seis/);
+  assert.match(spoken, /ce uno/);
+  assert.match(spoken, /Póstgres/);
+  assert.match(spoken, /rólbak/);
   assert.match(spoken, /percentil noventa y cinco/);
   assert.match(spoken, /revisión humana obligatoria/);
 });

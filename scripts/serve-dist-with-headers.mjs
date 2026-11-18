@@ -91,18 +91,44 @@ export function createDistHttpServer(distRoot = resolve('dist')) {
     }
 
     const ext = extname(safeTarget).toLowerCase();
-    res.statusCode = 200;
+    const buf = readFileSync(safeTarget);
+    const totalLen = buf.length;
     res.setHeader('Content-Type', MIME_TYPES[ext] || 'application/octet-stream');
+    res.setHeader('Accept-Ranges', 'bytes');
     res.setHeader(
       'Cache-Control',
       ext === '.html' || ext === '.json' ? 'no-cache' : 'public, max-age=3600',
     );
 
+    const rangeHeader = req.headers.range;
+    if (rangeHeader && /^bytes=\d*-\d*$/.test(rangeHeader) && totalLen > 0) {
+      const [startRaw, endRaw] = rangeHeader.replace(/^bytes=/, '').split('-');
+      const start = startRaw ? Number(startRaw) : 0;
+      const end = endRaw ? Math.min(totalLen - 1, Number(endRaw)) : totalLen - 1;
+      if (Number.isNaN(start) || Number.isNaN(end) || start > end || start >= totalLen) {
+        res.statusCode = 416;
+        res.setHeader('Content-Range', `bytes */${totalLen}`);
+        res.end();
+        return;
+      }
+      res.statusCode = 206;
+      res.setHeader('Content-Range', `bytes ${start}-${end}/${totalLen}`);
+      res.setHeader('Content-Length', String(end - start + 1));
+      if (method === 'HEAD') {
+        res.end();
+        return;
+      }
+      res.end(buf.subarray(start, end + 1));
+      return;
+    }
+
+    res.statusCode = 200;
+    res.setHeader('Content-Length', String(totalLen));
     if (method === 'HEAD') {
       res.end();
       return;
     }
-    res.end(readFileSync(safeTarget));
+    res.end(buf);
   });
 }
 

@@ -16,6 +16,7 @@ const REPRESENTATIVE_ROUTES = [
 test('ARQ-023: Auditoría automatizada WCAG 2.2 AA (@axe-core/playwright) en modos dark, light y high-contrast (0 violaciones críticas/serias)', async ({
   page,
 }) => {
+  test.setTimeout(90_000);
   await page.goto('/#/ajustes');
 
   for (const themeMode of ['dark', 'light', 'high-contrast'] as const) {

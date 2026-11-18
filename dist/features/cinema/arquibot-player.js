@@ -381,7 +381,7 @@ export function renderArquiBotCinemaHtml(deck, options = {}) {
     aria-label="Video: ${esc(deck.heading)}"
   >
     ${deck.audio
-        ? `<audio class="cinema-audio-el" src="${esc(deck.audio.src)}" preload="metadata">
+        ? `<audio class="cinema-audio-el" src="${esc(deck.audio.src)}" preload="none">
             <track kind="captions" src="${esc(vtt_uri)}" srclang="es" label="Subtítulos en español" default />
           </audio>`
         : ''}
@@ -430,6 +430,8 @@ export function bindCinemaPlayersInDom(manifest_lookup) {
         let timer_id;
         let last_rendered_scene = -1;
         let last_spoken_scene = -1;
+        let pending_seek_sec = null;
+        let last_audio_time = 0;
         const resolveSceneIdx = (t) => {
             let idx = 0;
             for (let i = 0; i < timeline.starts.length; i++) {
@@ -513,40 +515,76 @@ export function bindCinemaPlayersInDom(manifest_lookup) {
                     speakFallbackTurn(sc.speech, speed);
             }
         };
+        const applyAudioTimeSafely = (target_sec) => {
+            if (!deck.audio || !audio_el)
+                return true;
+            if (audio_el.readyState >= 1) {
+                try {
+                    audio_el.currentTime = target_sec;
+                    if (Math.abs(audio_el.currentTime - target_sec) <= 0.6) {
+                        last_audio_time = audio_el.currentTime;
+                        pending_seek_sec = null;
+                        return true;
+                    }
+                }
+                catch {
+                    /* seekable range still buffering */
+                }
+            }
+            pending_seek_sec = target_sec;
+            return false;
+        };
         const startClockLoop = () => {
             clearTickTimer();
-            let last_audio_time = audio_el?.currentTime ?? 0;
+            last_audio_time = audio_el?.currentTime ?? current_time;
             let stalled_ticks = 0;
             timer_id = window.setInterval(() => {
                 if (status !== 'playing')
                     return;
                 if (deck.audio && audio_el && !fallback_clock && !audio_el.error) {
-                    const t = audio_el.currentTime;
-                    if (Math.abs(t - last_audio_time) < 0.001) {
-                        stalled_ticks += 1;
-                        if (stalled_ticks >= CINEMA_STALL_TICKS_LIMIT) {
-                            fallback_clock = true;
-                        }
-                    }
-                    else {
-                        stalled_ticks = 0;
-                        last_audio_time = t;
-                        current_time = t;
-                        if (audio_el.ended || t >= timeline.total - 0.05) {
-                            current_time = timeline.total;
-                            status = 'ended';
-                            clearTickTimer();
-                            renderFullScreen();
-                            return;
-                        }
-                        const next_scene = resolveSceneIdx(current_time);
-                        if (next_scene !== last_rendered_scene) {
-                            renderFullScreen();
+                    if (pending_seek_sec !== null) {
+                        if (!applyAudioTimeSafely(pending_seek_sec)) {
+                            stalled_ticks += 1;
+                            if (stalled_ticks >= CINEMA_STALL_TICKS_LIMIT) {
+                                fallback_clock = true;
+                                pending_seek_sec = null;
+                            }
+                            else {
+                                return;
+                            }
                         }
                         else {
-                            updateFastTickDom(next_scene, computeSceneProgress(next_scene, current_time));
+                            stalled_ticks = 0;
                         }
-                        return;
+                    }
+                    if (!fallback_clock) {
+                        const t = audio_el.currentTime;
+                        if (Math.abs(t - last_audio_time) < 0.001) {
+                            stalled_ticks += 1;
+                            if (stalled_ticks >= CINEMA_STALL_TICKS_LIMIT) {
+                                fallback_clock = true;
+                            }
+                        }
+                        else {
+                            stalled_ticks = 0;
+                            last_audio_time = t;
+                            current_time = t;
+                            if (audio_el.ended || t >= timeline.total - 0.05) {
+                                current_time = timeline.total;
+                                status = 'ended';
+                                clearTickTimer();
+                                renderFullScreen();
+                                return;
+                            }
+                            const next_scene = resolveSceneIdx(current_time);
+                            if (next_scene !== last_rendered_scene) {
+                                renderFullScreen();
+                            }
+                            else {
+                                updateFastTickDom(next_scene, computeSceneProgress(next_scene, current_time));
+                            }
+                            return;
+                        }
                     }
                 }
                 current_time = Math.min(timeline.total, current_time + (CINEMA_TICK_MS / 1000) * speed);
@@ -585,18 +623,20 @@ export function bindCinemaPlayersInDom(manifest_lookup) {
             status = 'playing';
             if (deck.audio && audio_el) {
                 try {
-                    audio_el.currentTime = current_time;
+                    applyAudioTimeSafely(current_time);
                     audio_el.playbackRate = speed;
                     audio_el.muted = muted;
                     const play_promise = audio_el.play();
                     if (play_promise && typeof play_promise.catch === 'function') {
                         play_promise.catch(() => {
                             fallback_clock = true;
+                            pending_seek_sec = null;
                         });
                     }
                 }
                 catch {
                     fallback_clock = true;
+                    pending_seek_sec = null;
                 }
             }
             else {
@@ -609,14 +649,7 @@ export function bindCinemaPlayersInDom(manifest_lookup) {
             const clamped = Math.max(0, Math.min(timeline.total, target_sec));
             current_time = clamped;
             last_spoken_scene = -1;
-            if (deck.audio && audio_el) {
-                try {
-                    audio_el.currentTime = clamped;
-                }
-                catch {
-                    /* metadata not ready yet */
-                }
-            }
+            applyAudioTimeSafely(clamped);
             if (status === 'idle' || status === 'ended') {
                 status = 'playing';
                 if (deck.audio && audio_el) {
@@ -624,11 +657,16 @@ export function bindCinemaPlayersInDom(manifest_lookup) {
                         audio_el.playbackRate = speed;
                         audio_el.muted = muted;
                         const p = audio_el.play();
-                        if (p && typeof p.catch === 'function')
-                            p.catch(() => { fallback_clock = true; });
+                        if (p && typeof p.catch === 'function') {
+                            p.catch(() => {
+                                fallback_clock = true;
+                                pending_seek_sec = null;
+                            });
+                        }
                     }
                     catch {
                         fallback_clock = true;
+                        pending_seek_sec = null;
                     }
                 }
                 startClockLoop();
@@ -637,6 +675,13 @@ export function bindCinemaPlayersInDom(manifest_lookup) {
             renderFullScreen();
         };
         if (audio_el) {
+            const flushPendingSeek = () => {
+                if (pending_seek_sec !== null) {
+                    applyAudioTimeSafely(pending_seek_sec);
+                }
+            };
+            audio_el.addEventListener('loadedmetadata', flushPendingSeek);
+            audio_el.addEventListener('canplay', flushPendingSeek);
             audio_el.addEventListener('ended', () => {
                 current_time = timeline.total;
                 status = 'ended';
